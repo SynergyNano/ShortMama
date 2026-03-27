@@ -102,15 +102,13 @@ export function SearchProgress({
           />
         </div>
 
-        <button onClick={onCancel} className="cancel-button">
-          <X className="w-4 h-4" />
-          Cancel Search
+        <button type="button" onClick={onCancel} className="cancel-button">
+          <X className="w-4 h-4" strokeWidth={2} aria-hidden />
+          검색 취소
         </button>
       </div>
 
       <style jsx>{`
-        /* 깜박임을 유발하는 등장 애니메이션(fadeInUp, slideDown) 정의를 제거했습니다 */
-
         @keyframes queuePulse {
           0%,
           100% {
@@ -118,30 +116,28 @@ export function SearchProgress({
             transform: scale(1);
           }
           50% {
-            opacity: 0.8;
-            transform: scale(1.02);
+            opacity: 0.92;
+            transform: scale(1.01);
           }
         }
 
         .search-progress-container {
           margin: 24px 0;
-          padding: 32px;
-          background: linear-gradient(135deg, rgba(37, 37, 48, 0.9) 0%, rgba(26, 26, 36, 0.9) 100%);
-          border: 1px solid rgba(0, 229, 115, 0.2);
-          border-radius: 12px;
-          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-          /* animation: fadeInUp 0.4s ease-out;  <-- 제거: 상태 업데이트 시 깜박임 원인 */
-          transition: all 0.3s ease; /* 부드러운 전환 추가 */
+          padding: 28px 32px;
+          background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+          border: 1px solid rgba(24, 24, 27, 0.08);
+          border-radius: 16px;
+          box-shadow: 0 4px 24px rgba(24, 24, 27, 0.06), 0 0 0 1px rgba(13, 148, 136, 0.06);
+          transition: box-shadow 0.3s ease, border-color 0.3s ease;
         }
 
         .search-progress-container.queued {
-          border-color: rgba(0, 229, 115, 0.3);
-          background: linear-gradient(135deg, rgba(37, 37, 48, 0.9) 0%, rgba(26, 26, 36, 0.9) 100%);
+          border-color: rgba(13, 148, 136, 0.2);
         }
 
         .search-progress-container.active {
-          border-color: rgba(0, 229, 115, 0.3);
-          background: linear-gradient(135deg, rgba(37, 37, 48, 0.9) 0%, rgba(26, 26, 36, 0.9) 100%);
+          border-color: rgba(13, 148, 136, 0.28);
+          box-shadow: 0 8px 32px rgba(13, 148, 136, 0.08), 0 0 0 1px rgba(13, 148, 136, 0.08);
         }
 
         .progress-content {
@@ -153,147 +149,143 @@ export function SearchProgress({
         .queue-position-display {
           margin-bottom: 20px;
           padding: 20px;
-          background: linear-gradient(135deg, rgba(0, 229, 115, 0.1) 0%, rgba(157, 78, 221, 0.08) 100%);
-          border: 1px solid rgba(0, 229, 115, 0.2);
-          border-radius: 16px;
-          /* animation: slideDown 0.4s ease-out; <-- 제거 */
+          background: linear-gradient(135deg, rgba(13, 148, 136, 0.08) 0%, rgba(5, 150, 105, 0.06) 100%);
+          border: 1px solid rgba(13, 148, 136, 0.18);
+          border-radius: 14px;
         }
 
         .queue-number {
-          font-size: 48px;
+          font-size: 44px;
           font-weight: 700;
-          color: #00E573;
+          color: #0f766e;
           line-height: 1;
-          letter-spacing: -0.02em;
-          animation: queuePulse 1.5s ease-in-out infinite; /* Pulse는 무한 반복이라 괜찮음 */
-          text-shadow: 0 0 20px rgba(0, 229, 115, 0.5);
+          letter-spacing: -0.03em;
+          animation: queuePulse 1.5s ease-in-out infinite;
         }
 
         .queue-total {
           font-size: 14px;
-          color: rgba(255, 255, 255, 0.5);
+          color: rgba(24, 24, 27, 0.45);
           margin-top: 6px;
           font-weight: 600;
-          letter-spacing: 0.5px;
+          letter-spacing: 0.02em;
         }
 
         .queue-message {
           font-size: 13px;
           font-weight: 600;
-          color: #00E573;
+          color: #0d9488;
           margin-bottom: 10px;
           margin-top: 12px;
-          letter-spacing: 0.04em;
-          /* animation: slideDown ... <-- 제거 */
+          letter-spacing: 0.02em;
         }
 
         .estimated-wait {
           font-size: 12px;
-          color: rgba(255, 255, 255, 0.5);
+          color: rgba(24, 24, 27, 0.45);
           margin: 0;
           margin-top: 8px;
           font-weight: 500;
-          /* animation: slideDown ... <-- 제거 */
         }
 
         .spinner-container {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 12px;
-          margin-bottom: 24px;
+          gap: 10px;
+          margin-bottom: 20px;
         }
 
         .spinner-icon {
-          width: 24px;
-          height: 24px;
-          color: #00E573;
-          opacity: 0.9;
+          width: 22px;
+          height: 22px;
+          color: #0d9488;
+          opacity: 0.95;
         }
 
         .elapsed-time {
-          font-size: 28px;
-          font-weight: 700;
-          color: #00FF7F;
+          font-size: 20px;
+          font-weight: 600;
+          font-variant-numeric: tabular-nums;
+          color: #3f3f46;
           letter-spacing: -0.02em;
         }
 
         .status-message {
           font-size: 13px;
           font-weight: 600;
-          color: rgba(255, 255, 255, 0.75);
-          margin-bottom: 24px;
-          margin-top: 16px;
-          letter-spacing: 0.04em;
-          /* animation: slideDown ... <-- 제거 */
+          color: rgba(24, 24, 27, 0.72);
+          margin-bottom: 22px;
+          margin-top: 4px;
+          letter-spacing: 0.01em;
+          line-height: 1.5;
         }
 
         .progress-bar-container {
           width: 100%;
           height: 8px;
-          background-color: rgba(0, 229, 115, 0.08);
+          background-color: rgba(24, 24, 27, 0.06);
           border-radius: 9999px;
           overflow: hidden;
-          margin-bottom: 28px;
+          margin-bottom: 24px;
         }
 
         .progress-bar-fill {
           height: 100%;
           border-radius: 9999px;
-          background: linear-gradient(90deg, #00E573 0%, #22c55e 50%, #9D4EDD 100%);
+          background: linear-gradient(90deg, #0d9488 0%, #14b8a6 45%, #059669 100%);
           transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
           will-change: width;
         }
 
         .progress-bar-fill.queued {
-          opacity: 0.9;
+          opacity: 0.88;
         }
 
         .progress-bar-fill.active {
           opacity: 1;
-          box-shadow: 0 0 12px rgba(0, 229, 115, 0.4);
+          box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.15);
         }
 
         .cancel-button {
-          margin-top: 8px;
-          padding: 8px 18px;
-          background: rgba(0, 229, 115, 0.15);
-          border: 1px solid rgba(0, 229, 115, 0.3);
-          border-radius: 6px;
+          margin-top: 4px;
+          padding: 10px 20px;
+          background: #ffffff;
+          border: 1px solid rgba(24, 24, 27, 0.12);
+          border-radius: 10px;
           cursor: pointer;
           font-size: 13px;
           font-weight: 600;
-          color: #00E573;
+          color: #52525b;
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 6px;
-          transition: all 0.2s ease;
+          gap: 8px;
+          transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .cancel-button:hover {
-          background: rgba(0, 229, 115, 0.25);
-          border-color: #00E573;
-          box-shadow: 0 4px 12px rgba(0, 229, 115, 0.3);
-          transform: translateY(-2px);
+          background: #fafafa;
+          border-color: rgba(13, 148, 136, 0.35);
+          color: #0f766e;
+          box-shadow: 0 2px 8px rgba(24, 24, 27, 0.06);
         }
 
         .cancel-button:active {
           transform: translateY(0);
-          box-shadow: 0 2px 6px rgba(0, 229, 115, 0.2);
         }
 
         @media (max-width: 640px) {
           .search-progress-container {
             margin: 16px 0;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 14px;
           }
           .queue-number {
-            font-size: 36px;
+            font-size: 34px;
           }
           .elapsed-time {
-            font-size: 24px;
+            font-size: 18px;
           }
           .status-message {
             font-size: 12px;

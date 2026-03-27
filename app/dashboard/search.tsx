@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
-import { Download, Play, Heart, MessageCircle, Share2, Info, ExternalLink, Loader, Subtitles, Copy, Bookmark, BookmarkCheck, RefreshCw } from "lucide-react";
+import { Download, Play, Heart, MessageCircle, Share2, Info, ExternalLink, Loader, Subtitles, Copy, Bookmark, BookmarkCheck, RefreshCw, Search as SearchIcon } from "lucide-react";
 import Toast, { type Toast as ToastType } from "@/app/components/Toast/Toast";
 import ViewCountFilter from "@/app/components/Filters/ViewCountFilter/ViewCountFilter";
 import PeriodFilter from "@/app/components/Filters/PeriodFilter/PeriodFilter";
@@ -68,7 +68,7 @@ export default function Search() {
   const [sortBy, setSortBy] = useState("plays");
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [isTitleRefreshing, setIsTitleRefreshing] = useState(false);
-  const [sidebarWidth, setSidebarWidth] = useState<number>(600);
+  const [sidebarWidth, setSidebarWidth] = useState<number>(380);
   const [isResizing, setIsResizing] = useState(false);
   const [error, setError] = useState("");
   const [downloadingVideoId, setDownloadingVideoId] = useState<string | null>(null);
@@ -1490,17 +1490,34 @@ export default function Search() {
   return (
     <>
       <Toast toasts={toasts} onRemove={(id) => setToasts((prev) => prev.filter((t) => t.id !== id))} position="top-center" />
-      <div className="main-container">
+      <div className="dashboard-shell">
+        <header className="dashboard-topbar">
+          <div className="dashboard-topbar-brand">
+            <span
+              className="dashboard-wordmark"
+              onClick={handleTitleClick}
+              style={{ cursor: "pointer", transition: "opacity 0.3s", opacity: isTitleRefreshing ? 0.5 : 1 }}
+            >
+              숏마마
+            </span>
+            <span className="dashboard-tagline">숏폼 검색·분석</span>
+          </div>
+          <div className="dashboard-topbar-actions">
+            <div className="subscription-status-wrap">
+              <button type="button" className="btn-subscription" onClick={() => setShowSubscriptionModal(true)}>
+                구독
+              </button>
+              <span className={`subscription-status-badge ${isSubscribed && subscriptionPlanName ? "subscribed" : "unsubscribed"}`}>
+                {isSubscribed === null ? "—" : isSubscribed && subscriptionPlanName ? subscriptionPlanName : "미구독 중"}
+              </span>
+            </div>
+            <UserDropdown onOpenSubscription={() => setShowSubscriptionModal(true)} />
+          </div>
+        </header>
+
+        <div className="main-container">
         {/* 왼쪽 패널 */}
         <div className="sidebar" style={{ width: `${sidebarWidth}px` }}>
-          <div
-            className="sidebar-title"
-            onClick={handleTitleClick}
-            style={{ cursor: "pointer", transition: "opacity 0.3s", opacity: isTitleRefreshing ? 0.5 : 1 }}
-          >
-            숏마마
-          </div>
-
           <div className="sidebar-card">
             <div className="search-section">
             {/* 검색 입력 - 맨 위에 */}
@@ -1538,142 +1555,37 @@ export default function Search() {
 
             {/* 번역 정보 표시 (검색어 입력 바로 아래) - 한 번 나타나면 계속 표시 */}
             {showTranslationPanel && (
-              <div
-                style={{
-                  marginTop: "16px",
-                  padding: "14px",
-                  background: "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)",
-                  border: "1px solid rgba(0, 229, 115, 0.25)",
-                  borderRadius: "12px",
-                  boxShadow: "0 4px 16px rgba(24, 24, 27, 0.06)",
-                  minHeight: "80px",
-                }}
-              >
+              <div className="translation-panel">
                 {/* 원문 표시 */}
                 <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "8px",
-                    marginBottom: translatedQuery || isTranslating ? "14px" : "0",
-                    padding: "12px",
-                    background: "#f4f4f5",
-                    borderRadius: "10px",
-                    border: "1px solid rgba(24, 24, 27, 0.08)",
-                  }}
+                  className={`translation-panel-original${translatedQuery || isTranslating ? " translation-panel-original--spaced" : ""}`}
                 >
-                  <div
-                    style={{
-                      fontSize: "11px",
-                      color: "rgba(24, 24, 27, 0.5)",
-                      fontWeight: "700",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.5px",
-                    }}
-                  >
+                  <div className="translation-panel-label">
                     📋 원문 ({detectedLanguage === "ko" ? "한국어" : detectedLanguage === "zh" ? "中文" : "English"})
                   </div>
-                  <div
-                    style={{
-                      fontSize: "14px",
-                      fontWeight: "600",
-                      color: "#18181b",
-                      lineHeight: "1.5",
-                    }}
-                  >
-                    - {searchInput}
-                  </div>
+                  <div className="translation-panel-text">- {searchInput}</div>
                 </div>
 
                 {/* 번역 중 상태 */}
                 {isTranslating && (
-                  <div
-                    style={{
-                      padding: "14px",
-                      background: "linear-gradient(135deg, rgba(0, 229, 115, 0.1) 0%, rgba(0, 229, 115, 0.05) 100%)",
-                      border: "1px solid rgba(0, 229, 115, 0.25)",
-                      borderRadius: "10px",
-                      textAlign: "center",
-                      color: "#00E573",
-                      fontSize: "13px",
-                      fontWeight: "600",
-                    }}
-                  >
-                    ⏳ 번역 중...
-                  </div>
+                  <div className="translation-panel-translating">⏳ 번역 중...</div>
                 )}
 
                 {/* 번역본 표시 (translatedQuery가 있고 원문과 다를 때) */}
                 {!isTranslating && translatedQuery && translatedQuery !== searchInput && (
                   <>
-                    <div
-                      style={{
-                        textAlign: "center",
-                        fontSize: "11px",
-                        color: "rgba(24, 24, 27, 0.5)",
-                        margin: "6px 0 12px 0",
-                        fontWeight: "600",
-                      }}
-                    >
-                      ↓ 번역됨 ↓
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                        padding: "12px",
-                        background: "linear-gradient(135deg, rgba(157, 78, 221, 0.1) 0%, rgba(157, 78, 221, 0.05) 100%)",
-                        border: "1px solid rgba(157, 78, 221, 0.25)",
-                        borderRadius: "10px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontSize: "11px",
-                          color: "#C77DFF",
-                          fontWeight: "700",
-                          textTransform: "uppercase",
-                          letterSpacing: "0.5px",
-                        }}
-                      >
+                    <div className="translation-panel-divider">↓ 번역됨 ↓</div>
+                    <div className="translation-panel-translated">
+                      <div className="translation-panel-label translation-panel-label--accent">
                         🌐 번역본 ({targetLanguage === "ko" ? "한국어" : targetLanguage === "zh" ? "中文" : "English"})
                       </div>
-                      <div
-                        style={{
-                          fontSize: "14px",
-                          fontWeight: "600",
-                          color: "#18181b",
-                          lineHeight: "1.5",
-                        }}
-                      >
-                        - {translatedQuery}
-                      </div>
+                      <div className="translation-panel-text">- {translatedQuery}</div>
                       <button
+                        type="button"
+                        className="translation-copy-btn"
                         onClick={() => {
                           navigator.clipboard.writeText(translatedQuery);
                           addToast("success", "번역 결과가 클립보드에 복사되었습니다!", "📋 복사 완료");
-                        }}
-                        style={{
-                          marginTop: "4px",
-                          padding: "8px 16px",
-                          background: "linear-gradient(135deg, #00E573 0%, #00B85C 100%)",
-                          color: "#000000",
-                          border: "none",
-                          borderRadius: "8px",
-                          fontSize: "12px",
-                          fontWeight: "600",
-                          cursor: "pointer",
-                          transition: "all 0.3s",
-                          boxShadow: "0 2px 6px rgba(0, 229, 115, 0.3)",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 229, 115, 0.5)";
-                          e.currentTarget.style.transform = "translateY(-2px)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.boxShadow = "0 2px 6px rgba(0, 229, 115, 0.3)";
-                          e.currentTarget.style.transform = "translateY(0)";
                         }}
                       >
                         📋 복사
@@ -1684,38 +1596,12 @@ export default function Search() {
 
                 {/* 번역 안 됨 안내 (같은 언어) */}
                 {!isTranslating && !translatedQuery && detectedLanguage === targetLanguage && (
-                  <div
-                    style={{
-                      padding: "14px",
-                      background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
-                      border: "1px solid rgba(24, 24, 27, 0.1)",
-                      borderRadius: "10px",
-                      textAlign: "center",
-                      color: "rgba(24, 24, 27, 0.75)",
-                      fontSize: "13px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    ℹ️ 입력 언어와 선택 언어가 동일하여 번역하지 않습니다
-                  </div>
+                  <div className="translation-panel-info">ℹ️ 입력 언어와 선택 언어가 동일하여 번역하지 않습니다</div>
                 )}
 
                 {/* 번역 대기 상태 (검색 전) */}
                 {!isTranslating && !translatedQuery && detectedLanguage !== targetLanguage && (
-                  <div
-                    style={{
-                      padding: "14px",
-                      background: "linear-gradient(135deg, rgba(157, 78, 221, 0.08) 0%, rgba(157, 78, 221, 0.04) 100%)",
-                      border: "1px solid rgba(157, 78, 221, 0.25)",
-                      borderRadius: "10px",
-                      textAlign: "center",
-                      color: "rgba(24, 24, 27, 0.85)",
-                      fontSize: "13px",
-                      fontWeight: "600",
-                    }}
-                  >
-                    💬 검색 버튼을 클릭하면 번역 후 검색됩니다
-                  </div>
+                  <div className="translation-panel-pending">💬 검색 버튼을 클릭하면 번역 후 검색됩니다</div>
                 )}
               </div>
             )}
@@ -1797,22 +1683,10 @@ export default function Search() {
 
               {/* 플랫폼별 추천 표시 - 항상 표시 */}
               <div
-                style={{
-                  fontSize: "12px",
-                  marginTop: "6px",
-                  padding: "8px 10px",
-                  backgroundColor: platform === "douyin" && targetLanguage !== "zh" ? "rgba(0, 229, 115, 0.1)" : "transparent",
-                  border: platform === "douyin" && targetLanguage !== "zh" ? "1px solid rgba(0, 229, 115, 0.2)" : "none",
-                  borderRadius: "4px",
-                  minHeight: "32px",
-                  opacity: platform === "douyin" && targetLanguage !== "zh" ? 1 : 0,
-                  transition: "opacity 0.2s ease, background-color 0.2s ease",
-                  display: "flex",
-                  alignItems: "center",
-                }}
+                className={`douyin-lang-tip${platform === "douyin" && targetLanguage !== "zh" ? " douyin-lang-tip--visible" : ""}`}
               >
                 {platform === "douyin" && targetLanguage !== "zh" && (
-                  <span style={{ color: "#00E573", fontWeight: "600" }}>💡 팁: Douyin은 중국어 검색이 더 정확합니다</span>
+                  <span className="douyin-lang-tip-text">💡 팁: Douyin은 중국어 검색이 더 정확합니다</span>
                 )}
               </div>
             </div>
@@ -1883,23 +1757,6 @@ export default function Search() {
                 ) : (
                   "검색결과"
                 )}
-              </div>
-              <div className="header-account">
-                <div className="subscription-status-wrap">
-                  <button
-                    type="button"
-                    className="btn-subscription"
-                    onClick={() => setShowSubscriptionModal(true)}
-                  >
-                    구독
-                  </button>
-                  <span
-                    className={`subscription-status-badge ${isSubscribed && subscriptionPlanName ? "subscribed" : "unsubscribed"}`}
-                  >
-                    {isSubscribed === null ? "—" : isSubscribed && subscriptionPlanName ? subscriptionPlanName : "미구독 중"}
-                  </span>
-                </div>
-                <UserDropdown onOpenSubscription={() => setShowSubscriptionModal(true)} />
               </div>
             </div>
             <div className="content-header-row--tools">
@@ -2022,36 +1879,14 @@ export default function Search() {
                 />
               </div>
             ) : results.length === 0 ? (
-              <div
-                className="no-results"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "100%",
-                  padding: "40px 20px",
-                }}
-              >
-                <div
-                  style={{
-                    width: "60px",
-                    height: "60px",
-                    borderRadius: "50%",
-                    backgroundColor: "#f5f5f5",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: "20px",
-                    fontSize: "28px",
-                  }}
-                >
-                  🔍
+              <div className="dashboard-empty-state">
+                <div className="dashboard-empty-icon-wrap">
+                  <SearchIcon className="dashboard-empty-icon" strokeWidth={1.5} aria-hidden />
                 </div>
-                <p style={{ fontSize: "16px", fontWeight: "600", marginBottom: "8px", color: "#18181b", textAlign: "center" }}>
+                <p className="dashboard-empty-title">
                   {isBookmarkView ? "찜한 영상이 없습니다" : error ? "검색 결과가 없습니다" : "검색어를 입력하여 시작하세요"}
                 </p>
-                <p style={{ fontSize: "13px", color: "#999999", textAlign: "center", maxWidth: "300px" }}>
+                <p className="dashboard-empty-desc">
                   {isBookmarkView ? "영상 카드의 ☆ 버튼으로 찜할 수 있습니다" : error ? "다른 키워드나 필터로 다시 시도해보세요" : "관심있는 콘텐츠를 찾아보세요"}
                 </p>
               </div>
@@ -2247,6 +2082,7 @@ export default function Search() {
             )}
           </div>
         </div>
+      </div>
       </div>
 
       {/* 상세 모달 */}
