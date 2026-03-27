@@ -42,7 +42,7 @@ module.exports = {
       user: 'node',
       host: 'your-railway-host',
       ref: 'origin/main',
-      repo: 'git@github.com:your-repo/tik-tok-scout.git',
+      repo: 'git@github.com:your-org/shortmama.git',
       path: '/var/www/shortmama',
       'post-deploy': 'npm install && npm run build && pm2 reload ecosystem.config.js --env production'
     }

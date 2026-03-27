@@ -4,124 +4,148 @@ import Link from "next/link";
 import { useState } from "react";
 import styles from "./page.module.css";
 
-export default function HomeContent() {
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+const MOCK_PREVIEW_CELLS = [
+  { duration: "0:12", views: "128K" },
+  { duration: "0:24", views: "42.1K" },
+  { duration: "0:08", views: "902K" },
+  { duration: "0:31", views: "12.4K" },
+];
 
-  const handleTitleClick = () => {
-    setIsRefreshing(true);
-    setTimeout(() => {
-      setIsRefreshing(false);
-    }, 600);
+const STEPS = [
+  {
+    n: "01",
+    title: "검색",
+    desc: "키워드·해시태그로 TikTok·Douyin 영상을 한 번에 찾습니다.",
+  },
+  {
+    n: "02",
+    title: "분석",
+    desc: "조회·반응 데이터로 트렌드와 포맷을 빠르게 파악합니다.",
+  },
+  {
+    n: "03",
+    title: "활용",
+    desc: "다운로드·자막 추출로 기획과 제작에 바로 연결합니다.",
+  },
+];
+
+export default function HomeContent() {
+  const [brandPulse, setBrandPulse] = useState(false);
+
+  const handleBrandClick = () => {
+    setBrandPulse(true);
+    setTimeout(() => setBrandPulse(false), 500);
   };
 
-  const platforms = [
-    {
-      id: 0,
-      platform: "TikTok",
-      icon: "🎵",
-      gradient: "from-[#FE2C55] to-[#25F4EE]",
-      title: "TikTok Global",
-      description: "전세계 트렌드를 실시간으로",
-      features: ["키워드·해시태그 검색", "영상 다운로드", "AI 자막 추출"],
-    },
-    {
-      id: 1,
-      platform: "Douyin",
-      icon: "🎬",
-      gradient: "from-[#EE1D51] to-[#FF6B9D]",
-      title: "Douyin China",
-      description: "중국 시장의 모든 것",
-      features: ["중국 트렌드 검색", "한·중 자동 번역", "AI 자막 추출"],
-    },
-  ];
-
   return (
-    <div className={styles.mainContainer}>
-      {/* 배경 요소들 */}
-      <div className={styles.bgOrbs}>
-        <div className={`${styles.orb} ${styles.orb1}`}></div>
-        <div className={`${styles.orb} ${styles.orb2}`}></div>
-        <div className={`${styles.orb} ${styles.orb3}`}></div>
-      </div>
-      <div className={styles.gridPattern}></div>
-      <div className={styles.platformWatermarks}>
-        <div className={`${styles.platformLogo} ${styles.tiktokLogo}`}></div>
-        <div className={`${styles.platformLogo} ${styles.douyinLogo}`}></div>
-      </div>
+    <div className={styles.page}>
+      <div className={styles.bgMesh} aria-hidden />
+      <div className={styles.bgGrain} aria-hidden />
 
-      {/* 메인 콘텐츠 */}
-      <div className={`${styles.contentWrapper} ${styles.animateFadeInUp}`}>
-        {/* 타이틀 */}
-        <div className={styles.titleSection}>
-          <h1 onClick={handleTitleClick} className={`${styles.neonTitle} ${isRefreshing ? styles.titleRefresh : ""}`}>
-            숏마마
-          </h1>
-          <div className={styles.titleUnderline}></div>
-          <p className={styles.titleTagline}>
-            ShortMama - 틱톡 영상 검색 및 분석
-          </p>
-        </div>
-
-        {/* 히어로 섹션 */}
-        <div className={styles.heroSection}>
-          <h2 className={styles.heroTitle}>숏폼의 모든 것을 한눈에</h2>
-          <p className={styles.heroSubtitle}>TikTok · Douyin 검색 · 다운로드 · AI 자막 추출</p>
-
-          {/* 통계 하이라이트 */}
-          <div className={styles.statsHighlight}>
-            <span className={styles.statItem}>
-              <span className={styles.neonText}>2</span> 플랫폼
-            </span>
-            <span className={styles.divider}>•</span>
-            <span className={styles.statItem}>
-              <span className={styles.neonText}>검색</span> · 다운로드
-            </span>
-            <span className={styles.divider}>•</span>
-            <span className={styles.statItem}>
-              <span className={styles.neonText}>AI</span> 자막 추출
-            </span>
+      <div className={styles.inner}>
+        <header className={styles.hero}>
+          <div className={styles.heroCopy}>
+            <p className={styles.eyebrow}>ShortMama · 숏폼 워크스페이스</p>
+            <h1 className={styles.headline}>
+              <button
+                type="button"
+                className={`${styles.wordmark} ${brandPulse ? styles.wordmarkPulse : ""}`}
+                onClick={handleBrandClick}
+                aria-label="숏마마"
+              >
+                숏마마
+              </button>
+            </h1>
+            <p className={styles.lead}>
+              글로벌·중국 숏폼을 데이터로 읽고, 검색부터 자막·다운로드까지 한 흐름으로.
+            </p>
+            <div className={styles.heroActions}>
+              <Link href="/auth/signup" className={styles.ctaPrimary}>
+                무료로 시작하기
+              </Link>
+              <Link href="/auth/login" className={styles.ctaGhost}>
+                로그인
+              </Link>
+            </div>
+            <p className={styles.microNote}>
+              TikTok·Douyin은 각 회사의 상표입니다.
+            </p>
           </div>
-        </div>
 
-        {/* 플랫폼 카드들 */}
-        <div className={styles.platformCardsGrid}>
-          {platforms.map((platform) => (
-            <div
-              key={platform.id}
-              className={styles.platformCard}
-              style={
-                {
-                  "--gradient": `linear-gradient(135deg, var(--${
-                    platform.id === 0 ? "pink" : platform.id === 1 ? "red" : "pink-light"
-                  }), var(--${platform.id === 0 ? "cyan" : platform.id === 1 ? "red" : "pink-light"}))`,
-                } as any
-              }
-              onMouseEnter={() => setHoveredCard(platform.id)}
-              onMouseLeave={() => setHoveredCard(null)}
-            >
-              <div className={styles.cardGradient}></div>
-              <div className={styles.cardContent}>
-                <div className={styles.platformIcon}>{platform.icon}</div>
-                <h3 className={styles.platformTitle}>{platform.title}</h3>
-                <p className={styles.platformDescription}>{platform.description}</p>
-                <ul className={styles.featuresList}>
-                  {platform.features.map((feature, idx) => (
-                    <li key={idx} className={styles.featureItem}>
-                      <span className={styles.featureBullet}>•</span> {feature}
-                    </li>
-                  ))}
-                </ul>
+          <div className={styles.heroPanel} aria-hidden>
+            <div className={styles.mockChrome}>
+              <span className={styles.mockDot} />
+              <span className={styles.mockDot} />
+              <span className={styles.mockDot} />
+            </div>
+            <div className={styles.mockBody}>
+              <div className={styles.mockSearchRow}>
+                <span className={styles.mockInput} />
+                <span className={styles.mockBtn} />
+              </div>
+              <div className={styles.mockTags}>
+                <span className={styles.mockTag}>TikTok</span>
+                <span className={styles.mockTagMuted}>Douyin</span>
+              </div>
+              <div className={styles.mockGrid}>
+                {MOCK_PREVIEW_CELLS.map((cell, i) => (
+                  <div key={i} className={styles.mockCell}>
+                    <div className={styles.mockCellBg} aria-hidden />
+                    <div className={styles.mockCellShine} aria-hidden />
+                    <div className={styles.mockCellWave} aria-hidden>
+                      <span className={styles.mockWaveBar} />
+                      <span className={styles.mockWaveBar} />
+                      <span className={styles.mockWaveBar} />
+                      <span className={styles.mockWaveBar} />
+                      <span className={styles.mockWaveBar} />
+                      <span className={styles.mockWaveBar} />
+                      <span className={styles.mockWaveBar} />
+                    </div>
+                    <span className={styles.mockCellDuration}>{cell.duration}</span>
+                    <div className={styles.mockCellPlay} aria-hidden>
+                      <span className={styles.mockCellPlayInner} />
+                    </div>
+                    <div className={styles.mockCellFooter}>
+                      <span className={styles.mockCellViews}>{cell.views}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        </header>
 
-        {/* CTA 버튼 */}
-        <Link href="/auth/signup" className={styles.neonCtaButton}>
-          <span className={styles.ctaText}>지금 시작하기</span>
-          <span className={styles.ctaArrow}>→</span>
-        </Link>
+        <section className={styles.stepsSection} aria-labelledby="steps-heading">
+          <h2 id="steps-heading" className={styles.sectionTitle}>
+            이렇게 이어집니다
+          </h2>
+          <ol className={styles.stepList}>
+            {STEPS.map((step) => (
+              <li key={step.n} className={styles.stepCard}>
+                <span className={styles.stepNum}>{step.n}</span>
+                <span className={styles.stepTitle}>{step.title}</span>
+                <p className={styles.stepDesc}>{step.desc}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section className={styles.stripSection}>
+          <p className={styles.stripLabel}>지원 플랫폼</p>
+          <div className={styles.stripPills}>
+            <span className={styles.pill}>TikTok</span>
+            <span className={styles.pill}>Douyin</span>
+          </div>
+        </section>
+
+        <div className={styles.bottomCta}>
+          <Link href="/auth/signup" className={styles.ctaPrimaryWide}>
+            지금 시작하기
+            <span className={styles.ctaArrow} aria-hidden>
+              →
+            </span>
+          </Link>
+        </div>
       </div>
     </div>
   );

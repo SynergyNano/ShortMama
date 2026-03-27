@@ -3,7 +3,7 @@ version: '3.8'
 services:
   redis:
     image: redis:7-alpine
-    container_name: tiktok-scout-redis
+    container_name: shortmama-redis
     ports:
       - "6379:6379"
     command: redis-server --maxmemory 2gb --maxmemory-policy allkeys-lru --appendonly yes

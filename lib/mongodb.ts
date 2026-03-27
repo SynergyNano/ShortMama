@@ -27,7 +27,8 @@ export async function connectToDatabase() {
 
   try {
     await client.connect()
-    const db = client.db('tiktok-scout')
+    const dbName = process.env.MONGODB_DB_NAME || 'shortmama'
+    const db = client.db(dbName)
 
     cachedClient = client
     cachedDb = db

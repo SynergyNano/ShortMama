@@ -65,8 +65,8 @@ function ErrorPageContent() {
                 <p className="font-semibold mb-2">고객 지원팀에 연락해주세요:</p>
                 <p>
                   이메일:{' '}
-                  <a href="mailto:support@tiktokscout.com" className="text-blue-600 hover:underline">
-                    support@tiktokscout.com
+                  <a href="mailto:synergynano2026@gmail.com" className="text-blue-600 hover:underline">
+                    synergynano2026@gmail.com
                   </a>
                 </p>
               </div>
@@ -89,7 +89,7 @@ function ErrorPageContent() {
         <div className="text-center mt-6">
           <Link
             href="/"
-            className="inline-flex items-center justify-center px-6 py-2 text-sm font-semibold text-gray-700 hover:text-gray-900 bg:white hover:bg-gray-50 border border-gray-300 hover:border-gray-400 rounded-lg transition-all"
+            className="inline-flex items-center justify-center px-6 py-2 text-sm font-semibold text-gray-700 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-300 hover:border-gray-400 rounded-lg transition-all"
           >
             ← 메인으로
           </Link>
@@ -99,7 +99,7 @@ function ErrorPageContent() {
         <div className="text-center mt-6 text-sm text-gray-600">
           <p>
             여전히 문제가 있으신가요?{' '}
-            <a href="mailto:support@tiktokscout.com" className="text-blue-600 hover:text-blue-700">
+            <a href="mailto:synergynano2026@gmail.com" className="text-blue-600 hover:text-blue-700">
               고객 지원 문의
             </a>
           </p>

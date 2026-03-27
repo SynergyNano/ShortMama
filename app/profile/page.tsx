@@ -40,8 +40,8 @@ export default function ProfilePage() {
   // 로딩 상태 체크
   if (status === 'loading') {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black flex items-center justify-center">
-        <Loader2 size={40} className="animate-spin text-pink-500" />
+      <div className="min-h-screen bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35 flex items-center justify-center">
+        <Loader2 size={40} className="animate-spin text-teal-600" />
       </div>
     )
   }
@@ -132,59 +132,53 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black">
-      {/* Background orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-radial from-pink-600/20 via-transparent to-transparent rounded-full blur-3xl" />
-        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-radial from-cyan-600/20 via-transparent to-transparent rounded-full blur-3xl" />
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
+        <div className="absolute w-[480px] h-[480px] bg-teal-400/20 rounded-full blur-[120px] -top-48 -right-24" />
+        <div className="absolute w-[420px] h-[420px] bg-emerald-400/15 rounded-full blur-[110px] -bottom-40 -left-20" />
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-8">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold gradient-text mb-2">프로필 설정</h1>
-          <p className="text-white/70">개인정보 및 비밀번호를 관리하세요</p>
+          <p className="text-zinc-600">개인정보 및 비밀번호를 관리하세요</p>
         </div>
 
-        {/* Error Message */}
         {error && (
-          <div className="mb-6 bg-red-500/20 border border-red-500/50 rounded-lg p-4 flex gap-3">
-            <AlertCircle size={20} className="text-red-400 flex-shrink-0 mt-0.5" />
-            <p className="text-red-400">{error}</p>
+          <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex gap-3">
+            <AlertCircle size={20} className="text-red-500 flex-shrink-0 mt-0.5" />
+            <p className="text-red-700">{error}</p>
           </div>
         )}
 
-        {/* Success Message */}
         {success && (
-          <div className="mb-6 bg-green-500/20 border border-green-500/50 rounded-lg p-4 flex gap-3">
-            <CheckCircle size={20} className="text-green-400 flex-shrink-0 mt-0.5" />
-            <p className="text-green-400">{success}</p>
+          <div className="mb-6 bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex gap-3">
+            <CheckCircle size={20} className="text-emerald-600 flex-shrink-0 mt-0.5" />
+            <p className="text-emerald-800">{success}</p>
           </div>
         )}
 
         <div className="space-y-6">
           {/* 사용자 정보 */}
-          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8">
-            <h2 className="text-2xl font-bold text-pink-400 mb-6">기본 정보</h2>
+          <div className="bg-white/95 border border-zinc-200 rounded-2xl p-8 shadow-sm">
+            <h2 className="text-2xl font-bold text-teal-800 mb-6">기본 정보</h2>
 
             <form onSubmit={handleSaveProfile} className="space-y-4">
-              {/* Email (읽기 전용) */}
               <div>
-                <label className="block text-sm font-medium text-white/90 mb-2">
+                <label className="block text-sm font-medium text-zinc-800 mb-2">
                   이메일
                 </label>
                 <input
                   type="email"
                   value={session?.user?.email || ''}
                   disabled
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white/50 cursor-not-allowed"
+                  className="w-full px-4 py-3 bg-zinc-100 border border-zinc-200 rounded-lg text-zinc-500 cursor-not-allowed"
                 />
-                <p className="text-xs text-white/50 mt-1">이메일은 변경할 수 없습니다</p>
+                <p className="text-xs text-zinc-400 mt-1">이메일은 변경할 수 없습니다</p>
               </div>
 
-              {/* Name */}
               <div>
-                <label className="block text-sm font-medium text-white/90 mb-2">
+                <label className="block text-sm font-medium text-zinc-800 mb-2">
                   이름
                 </label>
                 <input
@@ -192,13 +186,12 @@ export default function ProfilePage() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="이름"
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 transition-all"
+                  className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all"
                 />
               </div>
 
-              {/* Phone */}
               <div>
-                <label className="block text-sm font-medium text-white/90 mb-2">
+                <label className="block text-sm font-medium text-zinc-800 mb-2">
                   핸드폰 번호
                 </label>
                 <input
@@ -215,14 +208,14 @@ export default function ProfilePage() {
                     setFormData({ ...formData, phone: value })
                   }}
                   placeholder="01012345678"
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 transition-all"
+                  className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full px-4 py-3 bg-gradient-to-r from-pink-500 to-cyan-400 text-black rounded-lg hover:shadow-[0_0_20px_rgba(254,44,85,0.5)] transition-all font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full px-4 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl shadow-md shadow-teal-900/10 hover:shadow-lg transition-all font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {loading && <Loader2 size={20} className="animate-spin" />}
                 저장
@@ -231,13 +224,12 @@ export default function ProfilePage() {
           </div>
 
           {/* 패스워드 변경 */}
-          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8">
-            <h2 className="text-2xl font-bold text-cyan-400 mb-6">패스워드 변경</h2>
+          <div className="bg-white/95 border border-zinc-200 rounded-2xl p-8 shadow-sm">
+            <h2 className="text-2xl font-bold text-teal-800 mb-6">패스워드 변경</h2>
 
             <form onSubmit={handleChangePassword} className="space-y-4">
-              {/* Current Password */}
               <div>
-                <label className="block text-sm font-medium text-white/90 mb-2">
+                <label className="block text-sm font-medium text-zinc-800 mb-2">
                   현재 비밀번호
                 </label>
                 <div className="relative">
@@ -248,21 +240,20 @@ export default function ProfilePage() {
                       setPasswordData({ ...passwordData, currentPassword: e.target.value })
                     }
                     placeholder="현재 비밀번호"
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 transition-all pr-12"
+                    className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all pr-12"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-3.5 text-white/50 hover:text-white/70 transition-colors"
+                    className="absolute right-4 top-3.5 text-zinc-400 hover:text-zinc-600 transition-colors"
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
               </div>
 
-              {/* New Password */}
               <div>
-                <label className="block text-sm font-medium text-white/90 mb-2">
+                <label className="block text-sm font-medium text-zinc-800 mb-2">
                   새 비밀번호
                 </label>
                 <div className="relative">
@@ -273,21 +264,20 @@ export default function ProfilePage() {
                       setPasswordData({ ...passwordData, newPassword: e.target.value })
                     }
                     placeholder="새 비밀번호 (8자 이상)"
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 transition-all pr-12"
+                    className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all pr-12"
                   />
                   <button
                     type="button"
                     onClick={() => setShowNewPassword(!showNewPassword)}
-                    className="absolute right-4 top-3.5 text-white/50 hover:text-white/70 transition-colors"
+                    className="absolute right-4 top-3.5 text-zinc-400 hover:text-zinc-600 transition-colors"
                   >
                     {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
               </div>
 
-              {/* Confirm Password */}
               <div>
-                <label className="block text-sm font-medium text-white/90 mb-2">
+                <label className="block text-sm font-medium text-zinc-800 mb-2">
                   비밀번호 확인
                 </label>
                 <div className="relative">
@@ -298,12 +288,12 @@ export default function ProfilePage() {
                       setPasswordData({ ...passwordData, confirmPassword: e.target.value })
                     }
                     placeholder="비밀번호 확인"
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 transition-all pr-12"
+                    className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all pr-12"
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-3.5 text-white/50 hover:text-white/70 transition-colors"
+                    className="absolute right-4 top-3.5 text-zinc-400 hover:text-zinc-600 transition-colors"
                   >
                     {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
@@ -313,7 +303,7 @@ export default function ProfilePage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full px-4 py-3 bg-gradient-to-r from-cyan-500 to-pink-400 text-black rounded-lg hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full px-4 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl shadow-md shadow-teal-900/10 hover:shadow-lg transition-all font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {loading && <Loader2 size={20} className="animate-spin" />}
                 패스워드 변경
@@ -322,28 +312,28 @@ export default function ProfilePage() {
           </div>
 
           {/* 개인정보 열람 */}
-          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8">
-            <h2 className="text-2xl font-bold text-yellow-400 mb-4">개인정보 관리</h2>
-            <p className="text-white/70 mb-6">GDPR 준수: 언제든지 자신의 정보를 조회하고 다운로드할 수 있습니다.</p>
+          <div className="bg-white/95 border border-zinc-200 rounded-2xl p-8 shadow-sm">
+            <h2 className="text-2xl font-bold text-teal-800 mb-4">개인정보 관리</h2>
+            <p className="text-zinc-600 mb-6">GDPR 준수: 언제든지 자신의 정보를 조회하고 다운로드할 수 있습니다.</p>
             <div className="flex gap-3">
               <a
                 href="/profile/data"
-                className="flex-1 px-4 py-3 bg-gradient-to-r from-yellow-500 to-orange-400 text-black rounded-lg hover:shadow-[0_0_20px_rgba(234,179,8,0.5)] transition-all font-semibold text-center"
+                className="flex-1 px-4 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl shadow-md hover:shadow-lg transition-all font-semibold text-center"
               >
                 개인정보 조회
               </a>
               <button
+                type="button"
                 onClick={handleLogout}
-                className="flex-1 px-4 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-lg hover:shadow-[0_0_20px_rgba(107,114,128,0.5)] transition-all font-semibold"
+                className="flex-1 px-4 py-3 bg-zinc-100 text-zinc-800 border border-zinc-200 rounded-xl hover:bg-zinc-200 transition-all font-semibold"
               >
                 로그아웃
               </button>
             </div>
           </div>
 
-          {/* 구독 관리 */}
-          <div id="subscription" className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8">
-            <h2 className="text-2xl font-bold text-cyan-400 mb-6">구독 관리</h2>
+          <div id="subscription" className="bg-white/95 border border-zinc-200 rounded-2xl p-8 shadow-sm">
+            <h2 className="text-2xl font-bold text-teal-800 mb-6">구독 관리</h2>
             <SubscriptionCard
               userEmail={session?.user?.email}
             />

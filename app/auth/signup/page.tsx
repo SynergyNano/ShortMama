@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SignupForm from "@/app/components/auth/SignupForm";
+import AuthPageShell from "@/app/components/auth/AuthPageShell";
 
 export const metadata = {
   title: "회원가입 | 숏마마",
@@ -7,78 +8,20 @@ export const metadata = {
 };
 
 export default function SignupPage() {
-  const SUPPORT_EMAIL = "synergynano2026@gmail.com";
-
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-black via-gray-950 to-black flex items-center justify-center p-4">
-      {/* 배경 Orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute w-[600px] h-[600px] bg-gradient-to-br from-pink-500 to-transparent rounded-full blur-[100px] opacity-15 -top-64 -right-32 animate-pulse"></div>
-        <div
-          className="absolute w-[500px] h-[500px] bg-gradient-to-br from-cyan-400 to-transparent rounded-full blur-[100px] opacity-15 -bottom-32 -left-32 animate-pulse"
-          style={{ animationDelay: "1s" }}
-        ></div>
-        <div
-          className="absolute w-[400px] h-[400px] bg-gradient-to-br from-red-500 to-transparent rounded-full blur-[100px] opacity-15 top-1/2 left-1/3 animate-pulse"
-          style={{ animationDelay: "2s" }}
-        ></div>
-      </div>
-
-      {/* Grid Pattern */}
-      <div
-        className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
-          backgroundSize: "50px 50px",
-        }}
-      ></div>
-
-      <div className="relative z-10 w-full max-w-md">
-        {/* 헤더 */}
-        <div className="text-center mb-8 animate-fade-in-up">
-          <h1 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-pink-400 to-cyan-400 mb-2 drop-shadow-[0_0_10px_rgba(254,44,85,0.5)]">
-            숏마마
-          </h1>
-          <p className="text-white/70 text-lg">새 계정을 만들어 시작하세요</p>
-        </div>
-
-        {/* 폼 컨테이너 */}
-        <div className="bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 p-8 shadow-2xl hover:border-white/30 transition-all">
-          {/* 회원가입 폼 */}
-          <SignupForm />
-
-          {/* 로그인 링크 */}
-          <div className="mt-6 text-center">
-            <p className="text-white/70">
-              이미 계정이 있으신가요?{" "}
-              <Link href="/auth/login" className="text-pink-400 hover:text-pink-300 font-semibold transition-colors">
-                로그인
-              </Link>
-            </p>
-          </div>
-        </div>
-
-        {/* 메인으로 버튼 */}
-        <div className="text-center mt-6">
+    <AuthPageShell subtitle="새 계정을 만들어 시작하세요">
+      <SignupForm />
+      <div className="mt-6 text-center border-t border-zinc-100 pt-6">
+        <p className="text-zinc-600">
+          이미 계정이 있으신가요?{" "}
           <Link
-            href="/"
-            className="inline-flex items-center justify-center px-6 py-2 text-sm font-semibold text-white bg-white/25 hover:bg-white/35 border border-white/50 hover:border-white/60 rounded-lg transition-all shadow-sm"
+            href="/auth/login"
+            className="text-teal-600 hover:text-teal-700 font-semibold transition-colors"
           >
-            ← 메인으로
+            로그인
           </Link>
-        </div>
-
-        {/* 푸터 */}
-        <div className="text-center mt-6 text-sm text-white/50">
-          <p>
-            문제가 있으신가요?{" "}
-            <a href={`mailto:${SUPPORT_EMAIL}`} className="text-cyan-400 hover:text-cyan-300 transition-colors">
-              고객 지원
-            </a>
-          </p>
-        </div>
+        </p>
       </div>
-    </div>
+    </AuthPageShell>
   );
 }

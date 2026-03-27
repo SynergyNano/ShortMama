@@ -63,25 +63,26 @@ function BillingSuccessContent() {
   }, [searchParams]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black flex items-center justify-center p-4">
-      <div className="max-w-md w-full text-center">
+    <div className="min-h-screen bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35 flex items-center justify-center p-4">
+      <div className="max-w-md w-full text-center bg-white/95 rounded-3xl border border-zinc-200 shadow-xl p-10">
         {status === 'loading' && (
           <>
-            <div className="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto mb-6" />
-            <p className="text-white/80 text-lg">결제를 처리하고 있습니다...</p>
+            <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-6" />
+            <p className="text-zinc-700 text-lg">결제를 처리하고 있습니다...</p>
           </>
         )}
 
         {status === 'success' && (
           <>
-            <div className="w-20 h-20 rounded-full bg-cyan-500/20 flex items-center justify-center mx-auto mb-6">
-              <span className="text-4xl">✓</span>
+            <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-6">
+              <span className="text-4xl text-emerald-600">✓</span>
             </div>
-            <h1 className="text-2xl font-bold text-white mb-2">결제가 완료되었습니다</h1>
-            <p className="text-white/70 mb-8">구독이 정상적으로 활성화되었습니다.</p>
+            <h1 className="text-2xl font-bold text-zinc-900 mb-2">결제가 완료되었습니다</h1>
+            <p className="text-zinc-600 mb-8">구독이 정상적으로 활성화되었습니다.</p>
             <button
+              type="button"
               onClick={() => router.push('/dashboard')}
-              className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-pink-400 text-black rounded-lg font-semibold hover:opacity-90 transition-opacity"
+              className="px-8 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl font-semibold shadow-md shadow-teal-900/10 hover:shadow-lg transition-shadow"
             >
               대시보드로 이동
             </button>
@@ -90,21 +91,23 @@ function BillingSuccessContent() {
 
         {status === 'error' && (
           <>
-            <div className="w-20 h-20 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-6">
-              <span className="text-4xl text-red-400">✕</span>
+            <div className="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-6">
+              <span className="text-4xl text-red-500">✕</span>
             </div>
-            <h1 className="text-2xl font-bold text-white mb-2">결제 처리 실패</h1>
-            <p className="text-white/70 mb-8">{errorMessage}</p>
-            <div className="flex gap-4 justify-center">
+            <h1 className="text-2xl font-bold text-zinc-900 mb-2">결제 처리 실패</h1>
+            <p className="text-zinc-600 mb-8">{errorMessage}</p>
+            <div className="flex gap-4 justify-center flex-wrap">
               <button
+                type="button"
                 onClick={() => router.push('/pricing')}
-                className="px-6 py-3 bg-white/10 text:white border border-white/30 rounded-lg font-medium hover:bg-white/20"
+                className="px-6 py-3 bg-white text-zinc-800 border border-zinc-200 rounded-xl font-medium hover:bg-zinc-50"
               >
                 요금제 다시 보기
               </button>
               <button
+                type="button"
                 onClick={() => router.push('/dashboard')}
-                className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-pink-400 text-black rounded-lg font-semibold"
+                className="px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl font-semibold shadow-md"
               >
                 대시보드
               </button>
@@ -120,10 +123,10 @@ export default function BillingSuccessPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black flex items-center justify-center p-4">
-          <div className="max-w-md w-full text-center">
-            <p className="text-white/80 text-lg mb-4">결제 정보를 확인하는 중입니다...</p>
-            <div className="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto" />
+        <div className="min-h-screen bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35 flex items-center justify-center p-4">
+          <div className="max-w-md w-full text-center bg-white/95 rounded-3xl border border-zinc-200 p-10">
+            <p className="text-zinc-700 text-lg mb-4">결제 정보를 확인하는 중입니다...</p>
+            <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto" />
           </div>
         </div>
       }

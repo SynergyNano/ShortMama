@@ -134,7 +134,7 @@ export default function LoginForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* 이메일 */}
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-white/90 mb-2">
+        <label htmlFor="email" className="block text-sm font-medium text-zinc-800 mb-2">
           이메일
         </label>
         <input
@@ -143,17 +143,17 @@ export default function LoginForm() {
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           placeholder="example@example.com"
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 transition-all"
+          className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all"
           disabled={loading}
         />
         {fieldErrors.email && (
-          <p className="text-red-400 text-sm mt-1">{fieldErrors.email[0]}</p>
+          <p className="text-red-500 text-sm mt-1">{fieldErrors.email[0]}</p>
         )}
       </div>
 
       {/* 비밀번호 */}
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-white/90 mb-2">
+        <label htmlFor="password" className="block text-sm font-medium text-zinc-800 mb-2">
           비밀번호
         </label>
         <div className="relative">
@@ -163,19 +163,19 @@ export default function LoginForm() {
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             placeholder="비밀번호를 입력하세요"
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 transition-all pr-12"
+            className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all pr-12"
             disabled={loading}
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-4 top-3.5 text-white/50 hover:text-white/70 transition-colors"
+            className="absolute right-4 top-3.5 text-zinc-400 hover:text-zinc-600 transition-colors"
           >
             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
         {fieldErrors.password && (
-          <p className="text-red-400 text-sm mt-1">{fieldErrors.password[0]}</p>
+          <p className="text-red-500 text-sm mt-1">{fieldErrors.password[0]}</p>
         )}
       </div>
 
@@ -185,17 +185,17 @@ export default function LoginForm() {
           type="checkbox"
           checked={formData.rememberMe}
           onChange={(e) => setFormData({ ...formData, rememberMe: e.target.checked })}
-          className="w-4 h-4 bg-white/10 border border-white/30 rounded accent-pink-500 cursor-pointer"
+          className="w-4 h-4 rounded border-zinc-300 accent-teal-600 cursor-pointer"
           disabled={loading}
         />
-        <span className="text-sm text-white/70">로그인 상태 유지</span>
+        <span className="text-sm text-zinc-600">로그인 상태 유지</span>
       </label>
 
       {/* 에러 메시지 */}
       {error && (
-        <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-3 flex gap-2">
-          <AlertCircle size={20} className="text-red-400 flex-shrink-0 mt-0.5" />
-          <p className="text-red-400 text-sm">{error}</p>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex gap-2">
+          <AlertCircle size={20} className="text-red-500 flex-shrink-0 mt-0.5" />
+          <p className="text-red-600 text-sm">{error}</p>
         </div>
       )}
 
@@ -203,7 +203,7 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full px-4 py-3 bg-gradient-to-r from-pink-500 to-cyan-400 text-black rounded-lg hover:shadow-[0_0_20px_rgba(254,44,85,0.5)] transition-all font-semibold disabled:opacity-50 flex items-center justify-center gap-2 mt-6"
+        className="w-full px-4 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl shadow-md shadow-teal-900/10 hover:shadow-lg hover:shadow-teal-900/15 transition-all font-semibold disabled:opacity-50 flex items-center justify-center gap-2 mt-6"
       >
         {loading && <Loader2 size={20} className="animate-spin" />}
         로그인
@@ -211,7 +211,7 @@ export default function LoginForm() {
 
       {/* 비밀번호 찾기 */}
       <div className="text-center pt-2">
-        <Link href="/auth/forgot-password" className="text-sm text-cyan-400 hover:text-cyan-300 transition-colors">
+        <Link href="/auth/forgot-password" className="text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors">
           비밀번호 찾기
         </Link>
       </div>

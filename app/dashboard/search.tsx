@@ -16,9 +16,9 @@ import { validateKeyword } from "@/lib/utils/validateKeyword";
 import "./search.css";
 
 const STORAGE_KEYS = {
-  sidebarWidth: "tik-tok-scout-sidebar-width",
-  searchHistory: "tik-tok-scout-search-history",
-  language: "tik-tok-scout-language-preference",
+  sidebarWidth: "shortmama-sidebar-width",
+  searchHistory: "shortmama-search-history",
+  language: "shortmama-language-preference",
 } as const;
 
 const SEARCH_TIMING = {

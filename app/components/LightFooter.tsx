@@ -9,39 +9,39 @@ export default function LightFooter() {
         {/* Links - Single Line */}
         <div className="flex flex-wrap gap-1.5 items-center mb-4 text-sm leading-tight justify-center">
           {/* 서비스 */}
-          <Link href="/pricing" className="text-gray-600 hover:text-cyan-600 transition-colors">
+          <Link href="/pricing" className="text-gray-600 hover:text-teal-700 transition-colors">
             요금제
           </Link>
           <span className="text-gray-300">|</span>
 
-          <Link href="/dashboard" className="text-gray-600 hover:text-cyan-600 transition-colors">
+          <Link href="/dashboard" className="text-gray-600 hover:text-teal-700 transition-colors">
             대시보드
           </Link>
           <span className="text-gray-300">|</span>
 
-          <Link href="/contact" className="text-gray-600 hover:text-cyan-600 transition-colors">
+          <Link href="/contact" className="text-gray-600 hover:text-teal-700 transition-colors">
             고객센터
           </Link>
           <span className="text-gray-300">|</span>
 
           {/* 회사 */}
-          <Link href="/contact" className="text-gray-600 hover:text-cyan-600 transition-colors">
+          <Link href="/contact" className="text-gray-600 hover:text-teal-700 transition-colors">
             사업자정보
           </Link>
           <span className="text-gray-300">|</span>
 
           {/* 정책 */}
-          <Link href="/terms" className="text-gray-600 hover:text-cyan-600 transition-colors">
+          <Link href="/terms" className="text-gray-600 hover:text-teal-700 transition-colors">
             이용약관
           </Link>
           <span className="text-gray-300">|</span>
 
-          <Link href="/privacy" className="text-gray-600 hover:text-cyan-600 transition-colors">
+          <Link href="/privacy" className="text-gray-600 hover:text-teal-700 transition-colors">
             개인정보처리방침
           </Link>
           <span className="text-gray-300">|</span>
 
-          <Link href="/refund-policy" className="text-gray-600 hover:text-cyan-600 transition-colors">
+          <Link href="/refund-policy" className="text-gray-600 hover:text-teal-700 transition-colors">
             환불정책
           </Link>
         </div>

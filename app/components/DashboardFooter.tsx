@@ -7,23 +7,23 @@ export default function DashboardFooter() {
     <footer className="border-t border-gray-200 bg-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-wrap gap-2 items-center mb-6 text-sm leading-tight justify-center">
-          <Link href="/pricing" className="text-gray-600 hover:text-cyan-600 transition-colors">
+          <Link href="/pricing" className="text-gray-600 hover:text-teal-700 transition-colors">
             요금제
           </Link>
           <span className="text-gray-300">|</span>
-          <Link href="/refund-policy" className="text-gray-600 hover:text-cyan-600 transition-colors">
+          <Link href="/refund-policy" className="text-gray-600 hover:text-teal-700 transition-colors">
             환불정책
           </Link>
           <span className="text-gray-300">|</span>
-          <Link href="/terms" className="text-gray-600 hover:text-cyan-600 transition-colors">
+          <Link href="/terms" className="text-gray-600 hover:text-teal-700 transition-colors">
             이용약관
           </Link>
           <span className="text-gray-300">|</span>
-          <Link href="/privacy" className="text-gray-600 hover:text-cyan-600 transition-colors">
+          <Link href="/privacy" className="text-gray-600 hover:text-teal-700 transition-colors">
             개인정보처리방침
           </Link>
           <span className="text-gray-300">|</span>
-          <Link href="/contact" className="text-gray-600 hover:text-cyan-600 transition-colors">
+          <Link href="/contact" className="text-gray-600 hover:text-teal-700 transition-colors">
             고객센터
           </Link>
         </div>

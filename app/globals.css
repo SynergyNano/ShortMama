@@ -33,6 +33,11 @@
 }
 
 @layer utilities {
+  /* 숏마마 — 문서/프로필 제목 그라데이션 */
+  .gradient-text {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-teal-700 to-emerald-600;
+  }
+
   .text-gold {
     color: #d4af37;
   }
@@ -53,7 +58,7 @@
     box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
   }
 
-  /* Chzzk Dark Theme Colors & Design Tokens */
+  /* Extended theme tokens (optional / legacy) */
   :root {
     /* ===== SPACING (8px base unit) ===== */
     --spacing-xs: 4px;
@@ -103,17 +108,16 @@
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
     --shadow-xl: 0 24px 80px rgba(0, 0, 0, 0.7);
 
-    /* ===== Chzzk Green (Primary) ===== */
+    /* Accent greens / purples (optional) */
     --chzzk-green: #00E573;
     --chzzk-green-dark: #00B85C;
     --chzzk-green-glow: rgba(0, 229, 115, 0.3);
     --chzzk-green-bright: #00FF7F;
 
-    /* ===== Chzzk Purple (Secondary) ===== */
     --chzzk-purple: #9D4EDD;
     --chzzk-purple-light: #C77DFF;
 
-    /* ===== Dark Theme Base ===== */
+    /* Dark surfaces (optional) */
     --bg-primary: #0A0A0F;
     --bg-secondary: #121218;
     --bg-tertiary: #1A1A24;

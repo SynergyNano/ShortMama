@@ -73,35 +73,33 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black">
-      {/* Background orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-radial from-pink-600/20 via-transparent to-transparent rounded-full blur-3xl" />
-        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-radial from-cyan-600/20 via-transparent to-transparent rounded-full blur-3xl" />
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
+        <div className="absolute w-[520px] h-[520px] bg-teal-400/20 rounded-full blur-[120px] -top-48 -right-24" />
+        <div className="absolute w-[480px] h-[480px] bg-emerald-400/15 rounded-full blur-[110px] -bottom-40 -left-20" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-16">
-        {/* Navigation */}
         <div className="mb-8">
           <button
+            type="button"
             onClick={() => router.push('/')}
-            className="px-6 py-2 text-white bg-white/25 hover:bg-white/35 border border-white/50 hover:border-white/60 rounded-lg transition-all text-sm font-semibold shadow-sm"
+            className="px-6 py-2.5 text-sm font-semibold text-zinc-700 bg-white hover:bg-zinc-50 border border-zinc-200 hover:border-zinc-300 rounded-xl transition-colors shadow-sm"
           >
             ← 메인으로
           </button>
         </div>
 
-        {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-teal-700 via-teal-600 to-emerald-600 bg-clip-text text-transparent">
               요금제
             </span>
           </h1>
-          <p className="text-white/70 text-lg max-w-2xl mx-auto">
+          <p className="text-zinc-600 text-lg max-w-2xl mx-auto">
             당신의 필요에 맞는 완벽한 플랜을 선택하세요
           </p>
-          <p className="text-white/50 text-sm mt-4">
+          <p className="text-zinc-400 text-sm mt-4">
             최근 수정일: {LAST_UPDATED} · 토스페이먼츠로 안전하게 결제합니다
           </p>
         </div>
@@ -117,7 +115,7 @@ export default function PricingPage() {
               {/* Badge - outside overflow so it overlaps top of card without clipping */}
               {plan.highlighted && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
-                  <span className="bg-gradient-to-r from-cyan-500 to-pink-500 text-black px-4 py-1 rounded-full text-sm font-bold whitespace-nowrap block">
+                  <span className="bg-gradient-to-r from-teal-600 to-emerald-600 text-white px-4 py-1 rounded-full text-sm font-bold whitespace-nowrap block shadow-md">
                     가장 인기
                   </span>
                 </div>
@@ -125,7 +123,7 @@ export default function PricingPage() {
 
                 {selectedPlan === plan.id && !plan.highlighted && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
-                  <span className="bg-gradient-to-r from-cyan-400 to-cyan-300 text-black px-4 py-1 rounded-full text-sm font-bold flex items-center gap-2">
+                  <span className="bg-gradient-to-r from-teal-500 to-emerald-500 text-white px-4 py-1 rounded-full text-sm font-bold flex items-center gap-2 shadow-md">
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
@@ -140,8 +138,8 @@ export default function PricingPage() {
                 <div
                   className={`absolute inset-0 rounded-2xl blur-xl transition-all duration-300 ${
                     selectedPlan === plan.id
-                      ? 'bg-gradient-to-r from-cyan-500/40 to-pink-500/40 opacity-100'
-                      : 'bg-gradient-to-r from-cyan-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100'
+                      ? 'bg-gradient-to-r from-teal-400/35 to-emerald-400/35 opacity-100'
+                      : 'bg-gradient-to-r from-teal-300/20 to-emerald-300/20 opacity-0 group-hover:opacity-100'
                   }`}
                 />
 
@@ -149,41 +147,41 @@ export default function PricingPage() {
                 <div
                   className={`relative p-8 rounded-2xl border backdrop-blur-md transition-all duration-300 h-full flex flex-col ${
                     selectedPlan === plan.id
-                      ? 'border-cyan-400/80 bg-white/15 ring-2 ring-cyan-400/50'
-                      : 'border-white/20 bg-white/10 group-hover:border-white/40 group-hover:bg-white/15'
+                      ? 'border-teal-400 bg-white ring-2 ring-teal-200 shadow-md'
+                      : 'border-zinc-200 bg-white group-hover:border-teal-200 group-hover:bg-teal-50/40'
                   }`}
                 >
                 {/* Plan name */}
-                <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
-                <p className="text-white/60 text-sm mb-6">{plan.description}</p>
+                <h3 className="text-2xl font-bold text-zinc-900 mb-2">{plan.name}</h3>
+                <p className="text-zinc-500 text-sm mb-6">{plan.description}</p>
 
                 {/* Price */}
                 <div className="mb-6">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text">
+                    <span className="text-4xl font-bold text-transparent bg-gradient-to-r from-teal-700 to-emerald-600 bg-clip-text">
                       ₩{plan.price.toLocaleString()}
                     </span>
-                    <span className="text-white/60">/월</span>
+                    <span className="text-zinc-500">/월</span>
                   </div>
                 </div>
 
                 {/* Daily Limit */}
-                <div className="mb-8 pb-8 border-b border-white/10">
-                  <p className="text-white/80">
-                    <span className="font-semibold text-cyan-400">
+                <div className="mb-8 pb-8 border-b border-zinc-100">
+                  <p className="text-zinc-700">
+                    <span className="font-semibold text-teal-700">
                       {plan.total === -1 ? '무제한' : `${plan.total}회`}
                     </span>
-                    <span className="text-white/60"> 일일 사용</span>
+                    <span className="text-zinc-500"> 일일 사용</span>
                   </p>
-                  <p className="text-xs text-white/50 mt-2">(검색+다운로드+자막 합산)</p>
+                  <p className="text-xs text-zinc-400 mt-2">(검색+다운로드+자막 합산)</p>
                 </div>
 
                 {/* Features - flex-1 to grow and push button down */}
                 <ul className="space-y-3 mb-0">
                   {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex gap-3 text-white/80 text-sm">
+                    <li key={idx} className="flex gap-3 text-zinc-700 text-sm">
                       <svg
-                        className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5"
+                        className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -205,25 +203,25 @@ export default function PricingPage() {
         </div>
 
         {/* Product / Service Details (심사 제출용) */}
-        <div className="max-w-4xl mx-auto bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-md mb-12">
-          <h2 className="text-2xl font-bold text-white mb-4">상품/서비스 상세</h2>
-          <div className="space-y-4 text-white/70 text-sm leading-relaxed">
+        <div className="max-w-4xl mx-auto bg-zinc-50 border border-zinc-200 rounded-2xl p-8 mb-12 shadow-sm">
+          <h2 className="text-2xl font-bold text-zinc-900 mb-4">상품/서비스 상세</h2>
+          <div className="space-y-4 text-zinc-600 text-sm leading-relaxed">
             <p>
-              <strong className="text-white">서비스명:</strong> ShortMama (숏마마)
+              <strong className="text-zinc-900">서비스명:</strong> ShortMama (숏마마)
             </p>
             <p>
-              <strong className="text-white">상품 형태:</strong> 월간 구독형 디지털 서비스 (웹 기반)
+              <strong className="text-zinc-900">상품 형태:</strong> 월간 구독형 디지털 서비스 (웹 기반)
             </p>
             <p>
-              <strong className="text-white">제공 내용:</strong> TikTok / Douyin 영상 검색 및 분석 기능과
+              <strong className="text-zinc-900">제공 내용:</strong> TikTok / Douyin 영상 검색 및 분석 기능과
               다운로드·자막 추출 기능(플랜별 일일 사용량 제한)
             </p>
             <p>
-              <strong className="text-white">이용 방식:</strong> 회원 가입 후 대시보드에서 검색/다운로드/자막 추출 기능 사용
+              <strong className="text-zinc-900">이용 방식:</strong> 회원 가입 후 대시보드에서 검색/다운로드/자막 추출 기능 사용
             </p>
-            <p className="text-white/60">
+            <p className="text-zinc-500">
               환불/해지 기준은{" "}
-              <a href="/refund-policy" className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4">
+              <a href="/refund-policy" className="text-teal-600 hover:text-teal-700 underline underline-offset-4 font-medium">
                 환불정책
               </a>
               에서 확인하실 수 있습니다.
@@ -232,40 +230,41 @@ export default function PricingPage() {
         </div>
 
         {/* FAQ Section */}
-        <div className="max-w-3xl mx-auto mt-16 bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-md">
-          <h2 className="text-2xl font-bold text-white mb-8">자주 묻는 질문</h2>
+        <div className="max-w-3xl mx-auto mt-16 bg-zinc-50 border border-zinc-200 rounded-2xl p-8 shadow-sm">
+          <h2 className="text-2xl font-bold text-zinc-900 mb-8">자주 묻는 질문</h2>
 
           <div className="space-y-6">
             <div>
-              <h3 className="text-white font-semibold mb-2">언제든지 요금제를 변경할 수 있나요?</h3>
-              <p className="text-white/70">네, 구독 중 언제든지 상위 요금제로 업그레이드할 수 있습니다. 하위 요금제로의 변경은 다음 결제일부터 적용됩니다.</p>
+              <h3 className="text-zinc-900 font-semibold mb-2">언제든지 요금제를 변경할 수 있나요?</h3>
+              <p className="text-zinc-600">네, 구독 중 언제든지 상위 요금제로 업그레이드할 수 있습니다. 하위 요금제로의 변경은 다음 결제일부터 적용됩니다.</p>
             </div>
 
             <div>
-              <h3 className="text-white font-semibold mb-2">구독을 취소하려면?</h3>
-              <p className="text-white/70">계정 설정에서 언제든지 구독을 취소할 수 있습니다. 취소 후 구독 기간이 종료될 때까지 서비스를 이용할 수 있으며, 다음 결제는 발생하지 않습니다.</p>
+              <h3 className="text-zinc-900 font-semibold mb-2">구독을 취소하려면?</h3>
+              <p className="text-zinc-600">계정 설정에서 언제든지 구독을 취소할 수 있습니다. 취소 후 구독 기간이 종료될 때까지 서비스를 이용할 수 있으며, 다음 결제는 발생하지 않습니다.</p>
             </div>
 
             <div>
-              <h3 className="text-white font-semibold mb-2">환불이 가능한가요?</h3>
-              <p className="text-white/70">구독 시작 후 3일 이내에는 전액 환불이 가능합니다. <a href="/refund-policy" className="text-cyan-400 hover:text-cyan-300">환불정책</a>을 참고하세요.</p>
+              <h3 className="text-zinc-900 font-semibold mb-2">환불이 가능한가요?</h3>
+              <p className="text-zinc-600">구독 시작 후 3일 이내에는 전액 환불이 가능합니다. <a href="/refund-policy" className="text-teal-600 hover:text-teal-700 font-medium">환불정책</a>을 참고하세요.</p>
             </div>
 
             <div>
-              <h3 className="text-white font-semibold mb-2">자동 갱신은 어떻게 작동하나요?</h3>
-              <p className="text-white/70">매월 같은 날짜에 자동으로 결제됩니다. 언제든지 구독을 취소하면 자동 갱신이 중지되며, 다음 결제는 발생하지 않습니다.</p>
+              <h3 className="text-zinc-900 font-semibold mb-2">자동 갱신은 어떻게 작동하나요?</h3>
+              <p className="text-zinc-600">매월 같은 날짜에 자동으로 결제됩니다. 언제든지 구독을 취소하면 자동 갱신이 중지되며, 다음 결제는 발생하지 않습니다.</p>
             </div>
           </div>
         </div>
 
         {/* CTA Section */}
         <div className="mt-16 text-center">
-          <p className="text-white/70 mb-4">궁금한 점이 있으신가요?</p>
-          <p className="text-white/60 mb-6">아래 이메일로 문의해주세요</p>
+          <p className="text-zinc-600 mb-4">궁금한 점이 있으신가요?</p>
+          <p className="text-zinc-500 mb-6">아래 이메일로 문의해주세요</p>
           <button
             ref={emailRef}
             onClick={handleCopyEmail}
-            className="inline-block px-8 py-3 bg-gradient-to-r from-cyan-500 to-pink-400 text-black rounded-lg font-semibold hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all cursor-pointer group relative"
+            type="button"
+            className="inline-block px-8 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl font-semibold shadow-md shadow-teal-900/10 hover:shadow-lg transition-all cursor-pointer group relative"
           >
             <span className="flex items-center gap-2">
               📧 {SUPPORT_EMAIL}
@@ -274,7 +273,7 @@ export default function PricingPage() {
               </span>
             </span>
           </button>
-          <p className="text-white/50 text-sm mt-3">클릭하면 이메일 주소가 복사됩니다</p>
+          <p className="text-zinc-400 text-sm mt-3">클릭하면 이메일 주소가 복사됩니다</p>
         </div>
       </div>
     </div>

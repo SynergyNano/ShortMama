@@ -252,9 +252,9 @@ export default function SearchPage() {
                     {Math.round(progress)}%
                   </span>
                 </div>
-                <div className="w-full bg-blue-200 dark:bg-blue-800 rounded-full h-2.5 overflow-hidden">
+                <div className="w-full bg-teal-100 rounded-full h-2.5 overflow-hidden">
                   <div
-                    className="bg-gradient-to-r from-blue-500 to-cyan-400 h-full rounded-full"
+                    className="bg-gradient-to-r from-teal-600 to-emerald-500 h-full rounded-full"
                     style={{ width: `${progress}%`, transition: 'width 800ms ease-out' }}
                   />
                 </div>

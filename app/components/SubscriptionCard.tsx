@@ -52,7 +52,7 @@ export default function SubscriptionCard({ userEmail }: SubscriptionCardProps) {
       const data = await res.json();
       if (res.ok) {
         showToast("success", `구독이 취소되었습니다. ${data.serviceUntil ? `${data.serviceUntil}까지 이용 가능합니다.` : ""}`);
-        setSubscription((prev) => prev ? { ...prev, status: "cancelled" } : null);
+        setSubscription((prev) => (prev ? { ...prev, status: "cancelled" } : null));
       } else {
         showToast("error", data.error || "구독 취소에 실패했습니다.");
       }
@@ -66,41 +66,37 @@ export default function SubscriptionCard({ userEmail }: SubscriptionCardProps) {
   if (isLoading) {
     return (
       <div className="mb-8 flex items-center justify-center py-8">
-        <Loader2 size={24} className="animate-spin text-cyan-400" />
+        <Loader2 size={24} className="animate-spin text-teal-600" />
       </div>
     );
   }
 
   return (
     <div className="mb-8">
-      {/* 토스트 */}
       {toast && (
         <div
-          className={`fixed top-4 right-4 border rounded-lg p-4 flex gap-3 z-40 animate-in fade-in slide-in-from-top ${
-            toast.type === "success"
-              ? "bg-green-500/20 border-green-500/50"
-              : "bg-red-500/20 border-red-500/50"
+          className={`fixed top-4 right-4 border rounded-xl p-4 flex gap-3 z-40 shadow-lg bg-white ${
+            toast.type === "success" ? "border-emerald-200" : "border-red-200"
           }`}
         >
           <AlertCircle
             size={20}
-            className={`flex-shrink-0 mt-0.5 ${toast.type === "success" ? "text-green-400" : "text-red-400"}`}
+            className={`flex-shrink-0 mt-0.5 ${toast.type === "success" ? "text-emerald-600" : "text-red-600"}`}
           />
-          <p className={`font-medium ${toast.type === "success" ? "text-green-400" : "text-red-400"}`}>
+          <p className={`font-medium ${toast.type === "success" ? "text-emerald-800" : "text-red-700"}`}>
             {toast.message}
           </p>
         </div>
       )}
 
       {isSubscribed && subscription ? (
-        // 구독 중인 경우
-        <div className="bg-gradient-to-r from-cyan-500/10 to-pink-500/10 border border-cyan-400/30 rounded-2xl p-6 md:p-8 backdrop-blur-md">
+        <div className="bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200/80 rounded-2xl p-6 md:p-8 shadow-sm">
           <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6">
             <div className="flex-1">
-              <h2 className="text-2xl font-bold text-white mb-3">
+              <h2 className="text-2xl font-bold text-zinc-900 mb-3">
                 {subscription.planName} 구독 중 ✓
               </h2>
-              <div className="space-y-2 text-sm text-white/70 mb-4">
+              <div className="space-y-2 text-sm text-zinc-600 mb-4">
                 <p>📧 {userEmail}</p>
                 {subscription.currentPeriodEnd && (
                   <p>
@@ -111,14 +107,14 @@ export default function SubscriptionCard({ userEmail }: SubscriptionCardProps) {
                   </p>
                 )}
                 {subscription.status === "cancelled" && (
-                  <p className="text-yellow-400">⚠️ 취소된 구독 (기간 만료 후 종료)</p>
+                  <p className="text-amber-700 font-medium">⚠️ 취소된 구독 (기간 만료 후 종료)</p>
                 )}
               </div>
             </div>
             <div className="flex gap-3 md:flex-col">
               <Link
                 href="/pricing"
-                className="px-6 py-2 bg-gradient-to-r from-cyan-500 to-pink-400 text-black rounded-lg font-semibold hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all whitespace-nowrap text-center"
+                className="px-6 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl font-semibold shadow-md shadow-teal-900/10 hover:shadow-lg transition-all whitespace-nowrap text-center"
               >
                 플랜 변경
               </Link>
@@ -126,7 +122,7 @@ export default function SubscriptionCard({ userEmail }: SubscriptionCardProps) {
                 <button
                   onClick={handleCancelSubscription}
                   disabled={isCancelling}
-                  className="px-6 py-2 bg-white/10 text-white border border-white/20 rounded-lg font-semibold hover:bg-white/20 transition-all whitespace-nowrap disabled:opacity-50 flex items-center gap-2 justify-center"
+                  className="px-6 py-2 bg-white text-zinc-800 border border-zinc-200 rounded-xl font-semibold hover:bg-zinc-50 transition-all whitespace-nowrap disabled:opacity-50 flex items-center gap-2 justify-center"
                 >
                   {isCancelling && <Loader2 size={14} className="animate-spin" />}
                   구독 취소
@@ -136,20 +132,19 @@ export default function SubscriptionCard({ userEmail }: SubscriptionCardProps) {
           </div>
         </div>
       ) : (
-        // 구독 없는 경우
-        <div className="bg-gradient-to-r from-cyan-500/10 to-pink-500/10 border border-cyan-400/30 rounded-2xl p-6 md:p-8 backdrop-blur-md">
+        <div className="bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200/80 rounded-2xl p-6 md:p-8 shadow-sm">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
             <div>
-              <h2 className="text-2xl font-bold text-white mb-2">
+              <h2 className="text-2xl font-bold text-zinc-900 mb-2">
                 아직 구독 중이 아닙니다
               </h2>
-              <p className="text-white/70">
+              <p className="text-zinc-600">
                 구독 플랜을 선택하고 서비스를 이용해보세요!
               </p>
             </div>
             <Link
               href="/pricing"
-              className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-pink-400 text-black rounded-lg font-semibold hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all whitespace-nowrap text-center"
+              className="px-8 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl font-semibold shadow-md shadow-teal-900/10 hover:shadow-lg transition-all whitespace-nowrap text-center"
             >
               구독하기
             </Link>
