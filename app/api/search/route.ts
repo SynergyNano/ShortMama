@@ -1,0 +1,172 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { auth } from '@/lib/auth'
+import { getVideoFromCache, getVideoFromMongoDB } from '@/lib/cache'
+import { searchQueue } from '@/lib/queue/search-queue'
+import { Platform } from '@/types/video'
+import { checkApiUsage, incrementApiUsage } from '@/lib/apiUsage'
+
+const VALID_PLATFORMS: Platform[] = ['tiktok', 'douyin']
+const MAX_QUERY_LENGTH = 100
+const isDev = process.env.NODE_ENV !== 'production'
+
+interface SearchRequest {
+  query: string
+  platform: Platform
+  dateRange?: string
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    // 인증 확인
+    const session = await auth()
+
+    if (!session || !session.user) {
+      return NextResponse.json(
+        { error: '인증이 필요합니다.' },
+        { status: 401 }
+      )
+    }
+
+    // 승인 상태 확인
+    if (!session.user.isApproved) {
+      return NextResponse.json(
+        { error: '관리자 승인이 필요합니다.' },
+        { status: 403 }
+      )
+    }
+
+    const body: SearchRequest = await request.json()
+    const { query, platform, dateRange } = body
+
+    const trimmedQuery = query?.trim()
+
+    // 입력 유효성 검사 - 검색어
+    if (!trimmedQuery) {
+      return NextResponse.json(
+        { error: '검색어를 입력해주세요.' },
+        { status: 400 }
+      )
+    }
+
+    if (trimmedQuery.length > MAX_QUERY_LENGTH) {
+      return NextResponse.json(
+        { error: `검색어는 최대 ${MAX_QUERY_LENGTH}자까지 입력 가능합니다.` },
+        { status: 400 }
+      )
+    }
+
+    // 입력 유효성 검사 - 플랫폼
+    if (!platform || !VALID_PLATFORMS.includes(platform)) {
+      return NextResponse.json(
+        { error: '유효하지 않은 플랫폼입니다.' },
+        { status: 400 }
+      )
+    }
+
+    // 할당량 체크 (관리자는 무제한)
+    if (!session.user.isAdmin) {
+      const usageCheck = await checkApiUsage(session.user.email)
+
+      if (!usageCheck.allowed) {
+        return NextResponse.json({
+          error: '일일 검색 한도를 초과했습니다.',
+          details: {
+            used: usageCheck.used,
+            limit: usageCheck.limit,
+            remaining: usageCheck.remaining,
+            resetTime: usageCheck.resetTime
+          }
+        }, { status: 429 })
+      }
+    }
+
+    // ✅ IMPROVED: 캐시 먼저 확인
+    let cached = await getVideoFromCache(trimmedQuery, platform, dateRange)
+
+    if (cached) {
+      if (isDev) {
+        console.log(`[SearchAPI] ✅ Cache HIT (L1 메모리)`, {
+          query: trimmedQuery.substring(0, 30),
+          platform,
+          videoCount: cached.videos.length,
+          timestamp: new Date().toISOString()
+        })
+      }
+      return NextResponse.json({
+        status: 'completed',
+        data: cached.videos,
+        cached: true,
+        timestamp: Date.now()
+      })
+    }
+
+    // L2 MongoDB 캐시 확인
+    const mongoCache = await getVideoFromMongoDB(trimmedQuery, platform, dateRange)
+    if (mongoCache) {
+      if (isDev) {
+        console.log(`[SearchAPI] ✅ Cache HIT (L2 MongoDB)`, {
+          query: trimmedQuery.substring(0, 30),
+          platform,
+          videoCount: mongoCache.videos.length,
+          timestamp: new Date().toISOString()
+        })
+      }
+      return NextResponse.json({
+        status: 'completed',
+        data: mongoCache.videos,
+        cached: true,
+        timestamp: Date.now()
+      })
+    }
+
+    // 캐시 미스 → 할당량 차감
+    if (!session.user.isAdmin) {
+      await incrementApiUsage(session.user.email, trimmedQuery, 'search')
+    }
+
+    if (isDev) {
+      console.log(`[SearchAPI] ❌ Cache MISS (재스크래핑 필요)`, {
+        query: trimmedQuery.substring(0, 30),
+        platform,
+        dateRange: dateRange || 'all',
+        timestamp: new Date().toISOString()
+      })
+    }
+
+    const job = await searchQueue.add('search', {
+      query: trimmedQuery,
+      platform,
+      dateRange,
+    })
+
+    // 큐 길이 기반 예상 대기시간 계산
+    const queueLength = await searchQueue.getWaitingCount()
+    const estimatedWaitSeconds = Math.max(15, queueLength * 2)
+
+    if (isDev) {
+      console.log(`[SearchAPI] 📋 작업을 Queue에 추가`, {
+        jobId: job.id,
+        query: trimmedQuery.substring(0, 30),
+        platform,
+        queuePosition: queueLength + 1,
+        estimatedWaitSeconds,
+        timestamp: new Date().toISOString()
+      })
+    }
+
+    return NextResponse.json({
+      status: 'queued',
+      jobId: job.id,
+      message: '검색 작업이 대기열에 추가되었습니다',
+      estimatedWaitSeconds,
+      queuePosition: queueLength + 1,
+      timestamp: Date.now()
+    })
+  } catch (error) {
+    console.error('[SearchAPI] Error:', error)
+    return NextResponse.json(
+      { error: '검색 요청 처리 중 오류가 발생했습니다.' },
+      { status: 500 }
+    )
+  }
+}

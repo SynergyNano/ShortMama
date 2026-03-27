@@ -1,0 +1,305 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import { Loader2, X } from "lucide-react";
+
+interface SearchProgressProps {
+  isSearching: boolean;
+  onCancel: () => void;
+  jobStatus?: "waiting" | "active" | "delayed" | "paused";
+  realProgress?: number;
+  queuePosition?: number;
+  totalQueueSize?: number;
+  statusMessage?: string;
+  estimatedWaitSeconds?: number;
+}
+
+export function SearchProgress({
+  isSearching,
+  onCancel,
+  jobStatus,
+  realProgress,
+  queuePosition,
+  totalQueueSize,
+  statusMessage: apiStatusMessage,
+  estimatedWaitSeconds,
+}: SearchProgressProps) {
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const maxProgressRef = useRef(0);
+
+  useEffect(() => {
+    if (!isSearching) {
+      setElapsedSeconds(0);
+      maxProgressRef.current = 0;
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setElapsedSeconds((prev) => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isSearching]);
+
+  const visualState = jobStatus === "active" ? "ACTIVE" : "QUEUED";
+
+  // 진행률은 절대 감소하지 않도록 유지 (깜빡임 방지)
+  const rawProgress = realProgress ?? (visualState === "ACTIVE" ? 10 : 5);
+  const stableProgress = Math.max(rawProgress, maxProgressRef.current);
+  if (rawProgress > maxProgressRef.current) {
+    maxProgressRef.current = rawProgress;
+  }
+  const displayProgress = Math.min(Math.max(stableProgress, visualState === "ACTIVE" ? 8 : 5), 99);
+
+  const queueMessage =
+    queuePosition && totalQueueSize ? `Position ${queuePosition} of ${totalQueueSize}` : queuePosition ? `Position ${queuePosition}` : null;
+
+  const isFirstInQueue = queuePosition === 1 && visualState === "QUEUED";
+  const elapsedExceedsEstimate = estimatedWaitSeconds && elapsedSeconds > estimatedWaitSeconds;
+
+  let displayMessage = apiStatusMessage;
+  if (!displayMessage) {
+    if (elapsedExceedsEstimate) {
+      displayMessage = "Processing...";
+    } else if (isFirstInQueue) {
+      displayMessage = "Starting worker...";
+    } else if (visualState === "QUEUED") {
+      displayMessage = "Waiting in queue...";
+    } else {
+      displayMessage = "Processing your request...";
+    }
+  }
+
+  const showEstimatedWait = estimatedWaitSeconds && !elapsedExceedsEstimate;
+
+  return (
+    <div className={`search-progress-container ${visualState.toLowerCase()}`}>
+      <div className="progress-content">
+        {visualState === "QUEUED" && queuePosition ? (
+          <>
+            <div className="queue-position-display">
+              <div className="queue-number">{queuePosition}</div>
+              {totalQueueSize && <div className="queue-total">of {totalQueueSize}</div>}
+            </div>
+            {queueMessage && <p className="queue-message">{queueMessage}</p>}
+            {showEstimatedWait && <p className="estimated-wait">Estimated wait: {Math.ceil(estimatedWaitSeconds)}s</p>}
+          </>
+        ) : (
+          <>
+            <div className="spinner-container">
+              <Loader2 className="spinner-icon animate-spin" />
+              <span className="elapsed-time">{elapsedSeconds}s</span>
+            </div>
+          </>
+        )}
+
+        <p className="status-message">{displayMessage}</p>
+
+        <div className="progress-bar-container">
+          <div
+            className={`progress-bar-fill ${visualState.toLowerCase()}`}
+            style={{ width: `${displayProgress}%` }}
+          />
+        </div>
+
+        <button onClick={onCancel} className="cancel-button">
+          <X className="w-4 h-4" />
+          Cancel Search
+        </button>
+      </div>
+
+      <style jsx>{`
+        /* 깜박임을 유발하는 등장 애니메이션(fadeInUp, slideDown) 정의를 제거했습니다 */
+
+        @keyframes queuePulse {
+          0%,
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.8;
+            transform: scale(1.02);
+          }
+        }
+
+        .search-progress-container {
+          margin: 24px 0;
+          padding: 32px;
+          background: linear-gradient(135deg, rgba(37, 37, 48, 0.9) 0%, rgba(26, 26, 36, 0.9) 100%);
+          border: 1px solid rgba(0, 229, 115, 0.2);
+          border-radius: 12px;
+          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+          /* animation: fadeInUp 0.4s ease-out;  <-- 제거: 상태 업데이트 시 깜박임 원인 */
+          transition: all 0.3s ease; /* 부드러운 전환 추가 */
+        }
+
+        .search-progress-container.queued {
+          border-color: rgba(0, 229, 115, 0.3);
+          background: linear-gradient(135deg, rgba(37, 37, 48, 0.9) 0%, rgba(26, 26, 36, 0.9) 100%);
+        }
+
+        .search-progress-container.active {
+          border-color: rgba(0, 229, 115, 0.3);
+          background: linear-gradient(135deg, rgba(37, 37, 48, 0.9) 0%, rgba(26, 26, 36, 0.9) 100%);
+        }
+
+        .progress-content {
+          max-width: 480px;
+          margin: 0 auto;
+          text-align: center;
+        }
+
+        .queue-position-display {
+          margin-bottom: 20px;
+          padding: 20px;
+          background: linear-gradient(135deg, rgba(0, 229, 115, 0.1) 0%, rgba(157, 78, 221, 0.08) 100%);
+          border: 1px solid rgba(0, 229, 115, 0.2);
+          border-radius: 16px;
+          /* animation: slideDown 0.4s ease-out; <-- 제거 */
+        }
+
+        .queue-number {
+          font-size: 48px;
+          font-weight: 700;
+          color: #00E573;
+          line-height: 1;
+          letter-spacing: -0.02em;
+          animation: queuePulse 1.5s ease-in-out infinite; /* Pulse는 무한 반복이라 괜찮음 */
+          text-shadow: 0 0 20px rgba(0, 229, 115, 0.5);
+        }
+
+        .queue-total {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.5);
+          margin-top: 6px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+        }
+
+        .queue-message {
+          font-size: 13px;
+          font-weight: 600;
+          color: #00E573;
+          margin-bottom: 10px;
+          margin-top: 12px;
+          letter-spacing: 0.04em;
+          /* animation: slideDown ... <-- 제거 */
+        }
+
+        .estimated-wait {
+          font-size: 12px;
+          color: rgba(255, 255, 255, 0.5);
+          margin: 0;
+          margin-top: 8px;
+          font-weight: 500;
+          /* animation: slideDown ... <-- 제거 */
+        }
+
+        .spinner-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          margin-bottom: 24px;
+        }
+
+        .spinner-icon {
+          width: 24px;
+          height: 24px;
+          color: #00E573;
+          opacity: 0.9;
+        }
+
+        .elapsed-time {
+          font-size: 28px;
+          font-weight: 700;
+          color: #00FF7F;
+          letter-spacing: -0.02em;
+        }
+
+        .status-message {
+          font-size: 13px;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.75);
+          margin-bottom: 24px;
+          margin-top: 16px;
+          letter-spacing: 0.04em;
+          /* animation: slideDown ... <-- 제거 */
+        }
+
+        .progress-bar-container {
+          width: 100%;
+          height: 8px;
+          background-color: rgba(0, 229, 115, 0.08);
+          border-radius: 9999px;
+          overflow: hidden;
+          margin-bottom: 28px;
+        }
+
+        .progress-bar-fill {
+          height: 100%;
+          border-radius: 9999px;
+          background: linear-gradient(90deg, #00E573 0%, #22c55e 50%, #9D4EDD 100%);
+          transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          will-change: width;
+        }
+
+        .progress-bar-fill.queued {
+          opacity: 0.9;
+        }
+
+        .progress-bar-fill.active {
+          opacity: 1;
+          box-shadow: 0 0 12px rgba(0, 229, 115, 0.4);
+        }
+
+        .cancel-button {
+          margin-top: 8px;
+          padding: 8px 18px;
+          background: rgba(0, 229, 115, 0.15);
+          border: 1px solid rgba(0, 229, 115, 0.3);
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 13px;
+          font-weight: 600;
+          color: #00E573;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          transition: all 0.2s ease;
+        }
+
+        .cancel-button:hover {
+          background: rgba(0, 229, 115, 0.25);
+          border-color: #00E573;
+          box-shadow: 0 4px 12px rgba(0, 229, 115, 0.3);
+          transform: translateY(-2px);
+        }
+
+        .cancel-button:active {
+          transform: translateY(0);
+          box-shadow: 0 2px 6px rgba(0, 229, 115, 0.2);
+        }
+
+        @media (max-width: 640px) {
+          .search-progress-container {
+            margin: 16px 0;
+            padding: 20px;
+            border-radius: 10px;
+          }
+          .queue-number {
+            font-size: 36px;
+          }
+          .elapsed-time {
+            font-size: 24px;
+          }
+          .status-message {
+            font-size: 12px;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}

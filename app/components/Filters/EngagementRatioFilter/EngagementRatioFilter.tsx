@@ -1,0 +1,107 @@
+'use client'
+
+interface EngagementRatioFilterProps {
+  selectedValues: string[]
+  onChange: (values: string[]) => void
+}
+
+export default function EngagementRatioFilter({
+  selectedValues,
+  onChange,
+}: EngagementRatioFilterProps) {
+  const handleChange = (value: string) => {
+    if (value === 'all') {
+      // "전체" 클릭 시: 모든 단계 선택/해제
+      if (selectedValues.includes('all')) {
+        // "전체"가 이미 선택되었으면 해제
+        onChange([])
+      } else {
+        // "전체"를 선택하면 모든 항목 선택
+        onChange(['all'])
+      }
+    } else {
+      // 특정 단계 선택 시: "전체" 제거하고 단계 토글
+      let newValues = selectedValues.filter(v => v !== 'all')
+
+      if (newValues.includes(value)) {
+        // 이미 선택된 항목 해제
+        newValues = newValues.filter(v => v !== value)
+      } else {
+        // 새로운 항목 선택
+        newValues = [...newValues, value]
+      }
+
+      onChange(newValues)
+    }
+  }
+
+  return (
+    <div className="engagement-section">
+      <div className="engagement-subtitle">
+        (좋아요 + 댓글 + 공유) ÷ 조회수 기반 인기도 단계
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+        {[
+          { value: 'all', label: '전체' },
+          { value: '1', label: '1단계 - 낮음 (<2%)' },
+          { value: '2', label: '2단계 - 중간 (2~4%)' },
+          { value: '3', label: '3단계 - 좋음 (4~6%)' },
+          { value: '4', label: '4단계 - 매우좋음 (6~10%)' },
+          { value: '5', label: '5단계 - 최고 (≥10%)' },
+        ].map((option) => (
+          <label
+            key={option.value}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              padding: "6px 8px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              backgroundColor: selectedValues.includes(option.value) ? "rgba(0, 229, 115, 0.15)" : "transparent",
+              border: selectedValues.includes(option.value) ? "1px solid rgba(0, 229, 115, 0.3)" : "1px solid transparent",
+              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+              fontSize: "13px",
+              fontWeight: selectedValues.includes(option.value) ? "600" : "500",
+              color: selectedValues.includes(option.value) ? "#00E573" : "rgba(24, 24, 27, 0.55)",
+            }}
+          >
+            <input
+              type="checkbox"
+              name="engagementRatio"
+              value={option.value}
+              checked={selectedValues.includes(option.value)}
+              onChange={() => handleChange(option.value)}
+              style={{ display: "none" }}
+            />
+            <span style={{
+              width: "16px",
+              height: "16px",
+              borderRadius: "4px",
+              border: selectedValues.includes(option.value) ? "3px solid #00E573" : "2px solid rgba(24, 24, 27, 0.12)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginRight: "8px",
+              backgroundColor: selectedValues.includes(option.value) ? "#00E573" : "transparent",
+            }}>
+              {selectedValues.includes(option.value) && (
+                <span style={{ width: "3px", height: "6px", backgroundColor: "#000000", transform: "rotate(45deg)" }} />
+              )}
+            </span>
+            <span>{option.label}</span>
+          </label>
+        ))}
+      </div>
+
+      <style jsx>{`
+        .engagement-subtitle {
+          font-size: 12px;
+          color: rgba(24, 24, 27, 0.5);
+          margin-top: 0;
+          margin-bottom: 8px;
+          font-weight: 400;
+        }
+      `}</style>
+    </div>
+  )
+}

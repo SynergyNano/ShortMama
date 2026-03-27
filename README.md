@@ -1,11 +1,11 @@
-# TikTalk Killa
+# ShortMama (숏마마)
 
 TikTok, Douyin 비디오 검색 및 분석 도구입니다.
 
 ## 📁 프로젝트 구조
 
 ```
-titok-killa/
+shortmama/
 ├── app/                          # Next.js App Router
 │   ├── api/                      # API 라우트 (TikTok API 통합 예정)
 │   ├── components/               # React 컴포넌트 (UI)
@@ -50,7 +50,7 @@ cp .env.local.example .env.local
 
 필수 환경 변수:
 - `AUTH_SECRET` - Auth.js JWT 시크릿 (또는 `NEXTAUTH_SECRET`)
-- `AUTH_URL` - 애플리케이션 절대 URL (예: `https://tiktalk-killa.com`, 또는 `NEXTAUTH_URL`)
+- `AUTH_URL` - 애플리케이션 절대 URL (예: `https://shortmama.com`, 또는 `NEXTAUTH_URL`)
 - **배포 시 리다이렉트 루프 방지**: `AUTH_TRUST_HOST=true` 반드시 설정
 - `MONGODB_URI` - MongoDB 연결 문자열
 - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` - Google OAuth
@@ -98,7 +98,7 @@ npx next dev
 
 | 이름 | 값 | 비고 |
 |------|-----|------|
-| `AUTH_URL` | `https://tiktalk-killa.com` | 커스텀 도메인 사용 시 그 주소로. Vercel 기본 도메인만 쓰면 `https://프로젝트명.vercel.app` |
+| `AUTH_URL` | `https://shortmama.com` | 커스텀 도메인 사용 시 그 주소로. Vercel 기본 도메인만 쓰면 `https://프로젝트명.vercel.app` |
 | `AUTH_TRUST_HOST` | `true` | **필수** — Vercel 프록시 뒤에서 호스트 신뢰 |
 | `AUTH_SECRET` | (랜덤 문자열) | 없으면 `openssl rand -base64 32`로 생성. 기존 `NEXTAUTH_SECRET` 있어도 동일 값 사용 가능 |
 
