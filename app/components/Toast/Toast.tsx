@@ -37,15 +37,15 @@ const getIcon = (type: ToastType) => {
 const getIconColor = (type: ToastType): string => {
   switch (type) {
     case 'error':
-      return '#ef5350'
+      return '#dc2626'
     case 'warning':
-      return '#ffb74d'
+      return '#d97706'
     case 'success':
-      return '#66bb6a'
+      return '#0d9488'
     case 'info':
-      return '#64b5f6'
+      return '#0284c7'
     default:
-      return 'rgba(255, 255, 255, 0.85)'
+      return '#52525b'
   }
 }
 

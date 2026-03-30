@@ -4,6 +4,7 @@
   pointer-events: none;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0;
   padding: 0;
   width: 100%;
@@ -41,49 +42,68 @@
 
 .toast-wrapper {
   pointer-events: auto;
+  width: 100%;
+  max-width: min(560px, calc(100vw - 24px));
+  display: flex;
+  justify-content: center;
 }
 
 .toast-content {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 24px;
-  border-radius: 10px;
-  border: 1px solid;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(24, 24, 27, 0.1);
+  box-shadow:
+    0 4px 24px rgba(24, 24, 27, 0.08),
+    0 1px 2px rgba(24, 24, 27, 0.04);
   width: 100%;
-  backdrop-filter: blur(16px);
-  gap: 16px;
-  margin: 8px;
-  background: linear-gradient(135deg, rgba(28, 28, 32, 0.95) 0%, rgba(18, 18, 22, 0.98) 100%);
+  backdrop-filter: blur(12px);
+  gap: 12px;
+  margin: 12px 12px 0;
+  background: rgba(255, 255, 255, 0.96);
+  color: #18181b;
 }
 
-/* 블랙 테마에 맞는 타입별 포인트(테두리 + 은은한 틴트) */
 .toast-content--success {
-  border-color: rgba(46, 125, 50, 0.5);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04), inset 0 1px 0 rgba(76, 175, 80, 0.08);
+  border-color: rgba(13, 148, 136, 0.35);
+  background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 100%);
+  box-shadow:
+    0 4px 20px rgba(13, 148, 136, 0.12),
+    0 1px 2px rgba(24, 24, 27, 0.05);
 }
 
 .toast-content--error {
-  border-color: rgba(198, 40, 40, 0.5);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04), inset 0 1px 0 rgba(244, 67, 54, 0.08);
+  border-color: rgba(220, 38, 38, 0.35);
+  background: linear-gradient(180deg, #fef2f2 0%, #ffffff 100%);
+  box-shadow:
+    0 4px 20px rgba(220, 38, 38, 0.1),
+    0 1px 2px rgba(24, 24, 27, 0.05);
 }
 
 .toast-content--warning {
-  border-color: rgba(245, 124, 0, 0.5);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04), inset 0 1px 0 rgba(255, 152, 0, 0.08);
+  border-color: rgba(217, 119, 6, 0.4);
+  background: linear-gradient(180deg, #fffbeb 0%, #ffffff 100%);
+  box-shadow:
+    0 4px 20px rgba(217, 119, 6, 0.1),
+    0 1px 2px rgba(24, 24, 27, 0.05);
 }
 
 .toast-content--info {
-  border-color: rgba(25, 118, 210, 0.5);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04), inset 0 1px 0 rgba(33, 150, 243, 0.08);
+  border-color: rgba(2, 132, 199, 0.35);
+  background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
+  box-shadow:
+    0 4px 20px rgba(2, 132, 199, 0.1),
+    0 1px 2px rgba(24, 24, 27, 0.05);
 }
 
 .toast-body {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex: none;
+  flex: 1;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
 }
@@ -99,7 +119,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  flex: none;
+  flex: 1;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -108,21 +129,35 @@
 .toast-title {
   font-weight: 700;
   font-size: 14px;
-  color: #ffffff;
+  color: #18181b;
   white-space: nowrap;
   flex-shrink: 0;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .toast-message {
   font-size: 13px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.95);
-  line-height: 1.3;
+  color: rgba(24, 24, 27, 0.75);
+  line-height: 1.35;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+.toast-content--success .toast-title {
+  color: #0f766e;
+}
+
+.toast-content--error .toast-title {
+  color: #b91c1c;
+}
+
+.toast-content--warning .toast-title {
+  color: #b45309;
+}
+
+.toast-content--info .toast-title {
+  color: #0369a1;
 }
 
 .toast-close {
@@ -131,25 +166,24 @@
   border: none;
   cursor: pointer;
   padding: 4px;
-  margin-left: 12px;
+  margin-left: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.75);
-  border-radius: 4px;
-  transition: all 0.2s ease;
+  color: rgba(24, 24, 27, 0.45);
+  border-radius: 6px;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .toast-close:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  background-color: rgba(24, 24, 27, 0.06);
+  color: rgba(24, 24, 27, 0.85);
 }
 
-/* 화면 크기에 맞는 반응형 */
 @media (max-width: 640px) {
   .toast-content {
-    margin: 4px;
-    padding: 10px 16px;
+    margin: 10px 10px 0;
+    padding: 10px 14px;
   }
 
   .toast-message-wrapper {
