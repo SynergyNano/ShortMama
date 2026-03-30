@@ -1,7 +1,29 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
-import { Download, Play, Heart, MessageCircle, Share2, Info, ExternalLink, Loader, Subtitles, Copy, Bookmark, BookmarkCheck, RefreshCw, Search as SearchIcon } from "lucide-react";
+import {
+  Download,
+  Play,
+  Heart,
+  MessageCircle,
+  Share2,
+  Info,
+  ExternalLink,
+  Loader,
+  Subtitles,
+  Copy,
+  Bookmark,
+  BookmarkCheck,
+  RefreshCw,
+  Search as SearchIcon,
+  Music2,
+  Globe2,
+  Languages,
+  FileText,
+  Lightbulb,
+  SlidersHorizontal,
+  X,
+} from "lucide-react";
 import Toast, { type Toast as ToastType } from "@/app/components/Toast/Toast";
 import ViewCountFilter from "@/app/components/Filters/ViewCountFilter/ViewCountFilter";
 import PeriodFilter from "@/app/components/Filters/PeriodFilter/PeriodFilter";
@@ -16,7 +38,6 @@ import { validateKeyword } from "@/lib/utils/validateKeyword";
 import "./search.css";
 
 const STORAGE_KEYS = {
-  sidebarWidth: "shortmama-sidebar-width",
   searchHistory: "shortmama-search-history",
   language: "shortmama-language-preference",
 } as const;
@@ -68,8 +89,7 @@ export default function Search() {
   const [sortBy, setSortBy] = useState("plays");
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [isTitleRefreshing, setIsTitleRefreshing] = useState(false);
-  const [sidebarWidth, setSidebarWidth] = useState<number>(380);
-  const [isResizing, setIsResizing] = useState(false);
+  const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
   const [error, setError] = useState("");
   const [downloadingVideoId, setDownloadingVideoId] = useState<string | null>(null);
   const [extractingSubtitleId, setExtractingSubtitleId] = useState<string | null>(null);
@@ -112,7 +132,6 @@ export default function Search() {
   } | null>(null);
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
-  const resizeRef = useRef<HTMLDivElement>(null);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const videoRefs = useRef<Map<string, HTMLVideoElement>>(new Map());
@@ -480,14 +499,6 @@ export default function Search() {
   }, [clearSearchTimeout]);
 
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEYS.sidebarWidth);
-    if (saved) {
-      const n = parseInt(saved, 10);
-      if (!Number.isNaN(n)) setSidebarWidth(n);
-    }
-  }, []);
-
-  useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.searchHistory);
       if (saved) setSearchHistory(JSON.parse(saved));
@@ -518,46 +529,23 @@ export default function Search() {
     }
   }, [searchInput]);
 
-  // 드래그로 너비 조정
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isResizing) return;
-
-      const newWidth = e.clientX;
-      const minWidth = 300;
-      const maxWidth = 600;
-
-      if (newWidth >= minWidth && newWidth <= maxWidth) {
-        setSidebarWidth(newWidth);
-      }
-    };
-
-    const handleMouseUp = () => {
-      setIsResizing(false);
-    };
-
-    if (isResizing) {
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
-      document.body.style.cursor = "col-resize";
-      document.body.style.userSelect = "none";
-    }
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-      document.body.style.cursor = "auto";
-      document.body.style.userSelect = "auto";
-    };
-  }, [isResizing]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.sidebarWidth, String(sidebarWidth));
-  }, [sidebarWidth]);
-
   useEffect(() => {
     setFilters((prev) => ({ ...prev, uploadPeriod: "all" }));
   }, [platform]);
+
+  useEffect(() => {
+    if (!filterDrawerOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setFilterDrawerOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [filterDrawerOpen]);
 
   // 인기도 팝오버: 외부 클릭 시 닫기
   useEffect(() => {
@@ -1492,273 +1480,232 @@ export default function Search() {
       <Toast toasts={toasts} onRemove={(id) => setToasts((prev) => prev.filter((t) => t.id !== id))} position="top-center" />
       <div className="dashboard-shell">
         <header className="dashboard-topbar">
-          <div className="dashboard-topbar-brand">
-            <span
-              className="dashboard-wordmark"
-              onClick={handleTitleClick}
-              style={{ cursor: "pointer", transition: "opacity 0.3s", opacity: isTitleRefreshing ? 0.5 : 1 }}
-            >
-              숏마마
-            </span>
-            <span className="dashboard-tagline">숏폼 검색·분석</span>
-          </div>
-          <div className="dashboard-topbar-actions">
-            <div className="subscription-status-wrap">
-              <button type="button" className="btn-subscription" onClick={() => setShowSubscriptionModal(true)}>
-                구독
-              </button>
-              <span className={`subscription-status-badge ${isSubscribed && subscriptionPlanName ? "subscribed" : "unsubscribed"}`}>
-                {isSubscribed === null ? "—" : isSubscribed && subscriptionPlanName ? subscriptionPlanName : "미구독 중"}
+          <div className="dashboard-topbar-inner">
+            <div className="dashboard-topbar-brand">
+              <span
+                className="dashboard-wordmark"
+                onClick={handleTitleClick}
+                style={{ cursor: "pointer", transition: "opacity 0.3s", opacity: isTitleRefreshing ? 0.5 : 1 }}
+              >
+                숏마마
               </span>
+              <span className="dashboard-tagline">숏폼 검색·분석</span>
             </div>
-            <UserDropdown onOpenSubscription={() => setShowSubscriptionModal(true)} />
+            <div className="dashboard-topbar-actions">
+              <div className="subscription-status-wrap">
+                <button type="button" className="btn-subscription" onClick={() => setShowSubscriptionModal(true)}>
+                  구독
+                </button>
+                <span className={`subscription-status-badge ${isSubscribed && subscriptionPlanName ? "subscribed" : "unsubscribed"}`}>
+                  {isSubscribed === null ? "—" : isSubscribed && subscriptionPlanName ? subscriptionPlanName : "미구독 중"}
+                </span>
+              </div>
+              <UserDropdown onOpenSubscription={() => setShowSubscriptionModal(true)} />
+            </div>
           </div>
         </header>
 
         <div className="main-container">
-        {/* 왼쪽 패널 */}
-        <div className="sidebar" style={{ width: `${sidebarWidth}px` }}>
-          <div className="sidebar-card">
-            <div className="search-section">
-            {/* 검색 입력 - 맨 위에 */}
-            <div className="search-input-wrapper">
-              <div className="search-label">검색어</div>
-              <div className="search-container-with-button">
-                <div className="search-container">
-                  <input
-                    type="text"
-                    className="search-input"
-                    placeholder="검색할 키워드를 입력하세요"
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                  />
-                  {searchHistory.length > 0 && searchInput === "" && (
-                    <div className="search-history-dropdown active">
-                      {searchHistory.map((keyword) => (
-                        <div key={keyword} className="history-item" onClick={() => handleHistoryClick(keyword)}>
-                          <span>{keyword}</span>
-                          <button className="history-delete" onClick={(e) => handleDeleteHistory(e, keyword)} title="삭제">
-                            ✕
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+        <div className="workspace-scroll">
+        {/* 상단 검색 리본 — 좌측 사이드바 대신 SaaS형 상단 바 */}
+        <div className="search-ribbon">
+          <div className="search-ribbon-inner">
+            <div className="search-ribbon-stack">
+              <div className="search-ribbon-search search-ribbon-search--hero">
+                <div className="search-container-with-button search-input-group search-ribbon-input search-hero-input">
+                  <div className="search-container">
+                    <input
+                      type="text"
+                      className="search-input"
+                      placeholder="검색어를 입력하세요"
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                    />
+                    {searchHistory.length > 0 && searchInput === "" && (
+                      <div className="search-history-dropdown active">
+                        {searchHistory.map((keyword) => (
+                          <div key={keyword} className="history-item" onClick={() => handleHistoryClick(keyword)}>
+                            <span>{keyword}</span>
+                            <button type="button" className="history-delete" onClick={(e) => handleDeleteHistory(e, keyword)} title="삭제">
+                              ✕
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <button type="button" className="btn-search btn-search--inline btn-search--hero" onClick={debouncedSearch} disabled={isTranslating || isLoading}>
+                    {isTranslating ? "번역 중" : isLoading ? "검색 중" : "검색"}
+                  </button>
                 </div>
-                <button className="btn-search" onClick={debouncedSearch} disabled={isTranslating || isLoading}>
-                  {isTranslating ? "번역 중..." : isLoading ? "검색 중..." : "검색"}
+              </div>
+
+              <div className="ribbon-tray-inner ribbon-tray-inner--single-line" aria-label="검색 소스 및 조건">
+                <div className="ribbon-tray-inline-group">
+                  <span className="ribbon-inline-label">플랫폼</span>
+                  <div className="platform-selector platform-selector--segmented platform-selector--two platform-selector--ribbon platform-selector--inline-row">
+                    <label className={`platform-option ${platform === "tiktok" ? "active" : ""}`} onClick={() => setPlatform("tiktok")}>
+                      <input type="radio" name="platform" value="tiktok" checked={platform === "tiktok"} onChange={() => setPlatform("tiktok")} style={{ display: "none" }} />
+                      <Music2 className="platform-lucide" strokeWidth={2} aria-hidden />
+                      <span className="platform-name">TikTok</span>
+                    </label>
+                    <label className={`platform-option ${platform === "douyin" ? "active" : ""}`} onClick={() => setPlatform("douyin")}>
+                      <input type="radio" name="platform" value="douyin" checked={platform === "douyin"} onChange={() => setPlatform("douyin")} style={{ display: "none" }} />
+                      <Globe2 className="platform-lucide" strokeWidth={2} aria-hidden />
+                      <span className="platform-name">Douyin</span>
+                    </label>
+                  </div>
+                </div>
+                <span className="ribbon-tray-vsep" aria-hidden />
+                <div className="ribbon-tray-inline-group">
+                  <span className="ribbon-inline-label">언어</span>
+                  <div className="platform-selector platform-selector--segmented platform-selector--three platform-selector--ribbon platform-selector--inline-row">
+                    <label className={`platform-option ${targetLanguage === "ko" ? "active" : ""}`} onClick={() => setTargetLanguage("ko")}>
+                      <input type="radio" name="language" value="ko" checked={targetLanguage === "ko"} onChange={() => setTargetLanguage("ko")} style={{ display: "none" }} />
+                      <span className="platform-lang-code">KO</span>
+                      <span className="platform-name platform-name--inline">한국어</span>
+                    </label>
+                    <label className={`platform-option ${targetLanguage === "zh" ? "active" : ""}`} onClick={() => setTargetLanguage("zh")}>
+                      <input type="radio" name="language" value="zh" checked={targetLanguage === "zh"} onChange={() => setTargetLanguage("zh")} style={{ display: "none" }} />
+                      <span className="platform-lang-code">ZH</span>
+                      <span className="platform-name platform-name--inline">中文</span>
+                    </label>
+                    <label className={`platform-option ${targetLanguage === "en" ? "active" : ""}`} onClick={() => setTargetLanguage("en")}>
+                      <input type="radio" name="language" value="en" checked={targetLanguage === "en"} onChange={() => setTargetLanguage("en")} style={{ display: "none" }} />
+                      <span className="platform-lang-code">EN</span>
+                      <span className="platform-name platform-name--inline">영어</span>
+                    </label>
+                  </div>
+                </div>
+                <span className="ribbon-tray-vsep" aria-hidden />
+                <button
+                  type="button"
+                  className={`ribbon-filter-btn${filters.uploadPeriod !== "all" ? " ribbon-filter-btn--active" : ""}`}
+                  onClick={() => setFilterDrawerOpen(true)}
+                  title="기간 등 검색 조건"
+                >
+                  <SlidersHorizontal size={16} aria-hidden />
+                  조건
+                  {filters.uploadPeriod !== "all" && <span className="ribbon-filter-dot" />}
                 </button>
               </div>
             </div>
+
+            <div className={`douyin-lang-tip douyin-lang-tip--ribbon${platform === "douyin" && targetLanguage !== "zh" ? " douyin-lang-tip--visible" : ""}`}>
+              {platform === "douyin" && targetLanguage !== "zh" && (
+                <span className="douyin-lang-tip-text">
+                  <Lightbulb size={14} className="douyin-lang-tip-icon" aria-hidden />
+                  Douyin은 중국어 검색이 더 정확합니다
+                </span>
+              )}
             </div>
 
-            {/* 번역 정보 표시 (검색어 입력 바로 아래) - 한 번 나타나면 계속 표시 */}
             {showTranslationPanel && (
-              <div className="translation-panel">
-                {/* 원문 표시 */}
-                <div
-                  className={`translation-panel-original${translatedQuery || isTranslating ? " translation-panel-original--spaced" : ""}`}
-                >
+              <div className="translation-panel translation-panel--ribbon">
+                <div className={`translation-panel-original${translatedQuery || isTranslating ? " translation-panel-original--spaced" : ""}`}>
                   <div className="translation-panel-label">
-                    📋 원문 ({detectedLanguage === "ko" ? "한국어" : detectedLanguage === "zh" ? "中文" : "English"})
+                    <FileText size={12} className="translation-panel-label-icon" aria-hidden />
+                    원문 · {detectedLanguage === "ko" ? "한국어" : detectedLanguage === "zh" ? "中文" : "English"}
                   </div>
-                  <div className="translation-panel-text">- {searchInput}</div>
+                  <div className="translation-panel-text">{searchInput}</div>
                 </div>
 
-                {/* 번역 중 상태 */}
                 {isTranslating && (
-                  <div className="translation-panel-translating">⏳ 번역 중...</div>
+                  <div className="translation-panel-translating">
+                    <Loader className="animate-spin" size={16} aria-hidden />
+                    번역 중…
+                  </div>
                 )}
 
-                {/* 번역본 표시 (translatedQuery가 있고 원문과 다를 때) */}
                 {!isTranslating && translatedQuery && translatedQuery !== searchInput && (
                   <>
-                    <div className="translation-panel-divider">↓ 번역됨 ↓</div>
+                    <div className="translation-panel-divider" aria-hidden />
                     <div className="translation-panel-translated">
                       <div className="translation-panel-label translation-panel-label--accent">
-                        🌐 번역본 ({targetLanguage === "ko" ? "한국어" : targetLanguage === "zh" ? "中文" : "English"})
+                        <Languages size={12} className="translation-panel-label-icon" aria-hidden />
+                        번역 · {targetLanguage === "ko" ? "한국어" : targetLanguage === "zh" ? "中文" : "English"}
                       </div>
-                      <div className="translation-panel-text">- {translatedQuery}</div>
+                      <div className="translation-panel-text">{translatedQuery}</div>
                       <button
                         type="button"
                         className="translation-copy-btn"
                         onClick={() => {
                           navigator.clipboard.writeText(translatedQuery);
-                          addToast("success", "번역 결과가 클립보드에 복사되었습니다!", "📋 복사 완료");
+                          addToast("success", "번역 결과가 클립보드에 복사되었습니다.", "복사 완료");
                         }}
                       >
-                        📋 복사
+                        <Copy size={14} aria-hidden />
+                        복사
                       </button>
                     </div>
                   </>
                 )}
 
-                {/* 번역 안 됨 안내 (같은 언어) */}
                 {!isTranslating && !translatedQuery && detectedLanguage === targetLanguage && (
-                  <div className="translation-panel-info">ℹ️ 입력 언어와 선택 언어가 동일하여 번역하지 않습니다</div>
+                  <div className="translation-panel-info">입력 언어와 검색 언어가 같아 번역을 생략합니다.</div>
                 )}
 
-                {/* 번역 대기 상태 (검색 전) */}
                 {!isTranslating && !translatedQuery && detectedLanguage !== targetLanguage && (
-                  <div className="translation-panel-pending">💬 검색 버튼을 클릭하면 번역 후 검색됩니다</div>
+                  <div className="translation-panel-pending">검색 시 선택한 언어로 번역한 뒤 결과를 가져옵니다.</div>
                 )}
               </div>
             )}
+
+            {error && (
+              <div className="ribbon-error-banner" role="alert">
+                {error}
+              </div>
+            )}
           </div>
-
-          <div className="sidebar-card">
-            {/* 플랫폼 선택 */}
-            <div className="search-input-wrapper">
-              <div className="search-label">플랫폼 선택</div>
-              <div className="platform-selector">
-                <label className={`platform-option ${platform === "tiktok" ? "active" : ""}`} onClick={() => setPlatform("tiktok")}>
-                  <input
-                    type="radio"
-                    name="platform"
-                    value="tiktok"
-                    checked={platform === "tiktok"}
-                    onChange={() => setPlatform("tiktok")}
-                    style={{ display: "none" }}
-                  />
-                  <span className="platform-icon">🎵</span>
-                  <span className="platform-name">TikTok</span>
-                </label>
-                <label className={`platform-option ${platform === "douyin" ? "active" : ""}`} onClick={() => setPlatform("douyin")}>
-                  <input
-                    type="radio"
-                    name="platform"
-                    value="douyin"
-                    checked={platform === "douyin"}
-                    onChange={() => setPlatform("douyin")}
-                    style={{ display: "none" }}
-                  />
-                  <span className="platform-icon">🐉</span>
-                  <span className="platform-name">Douyin</span>
-                </label>
-              </div>
-            </div>
-
-            {/* 언어 선택 */}
-            <div className="search-input-wrapper" style={{ marginTop: "16px" }}>
-              <div className="search-label">검색 언어</div>
-              <div className="platform-selector">
-                <label className={`platform-option ${targetLanguage === "ko" ? "active" : ""}`} onClick={() => setTargetLanguage("ko")}>
-                  <input
-                    type="radio"
-                    name="language"
-                    value="ko"
-                    checked={targetLanguage === "ko"}
-                    onChange={() => setTargetLanguage("ko")}
-                    style={{ display: "none" }}
-                  />
-                  <span className="platform-icon">🇰🇷</span>
-                  <span className="platform-name">한국어</span>
-                </label>
-                <label className={`platform-option ${targetLanguage === "zh" ? "active" : ""}`} onClick={() => setTargetLanguage("zh")}>
-                  <input
-                    type="radio"
-                    name="language"
-                    value="zh"
-                    checked={targetLanguage === "zh"}
-                    onChange={() => setTargetLanguage("zh")}
-                    style={{ display: "none" }}
-                  />
-                  <span className="platform-icon">🇨🇳</span>
-                  <span className="platform-name">中文</span>
-                </label>
-                <label className={`platform-option ${targetLanguage === "en" ? "active" : ""}`} onClick={() => setTargetLanguage("en")}>
-                  <input
-                    type="radio"
-                    name="language"
-                    value="en"
-                    checked={targetLanguage === "en"}
-                    onChange={() => setTargetLanguage("en")}
-                    style={{ display: "none" }}
-                  />
-                  <span className="platform-icon">🇺🇸</span>
-                  <span className="platform-name">English</span>
-                </label>
-              </div>
-
-              {/* 플랫폼별 추천 표시 - 항상 표시 */}
-              <div
-                className={`douyin-lang-tip${platform === "douyin" && targetLanguage !== "zh" ? " douyin-lang-tip--visible" : ""}`}
-              >
-                {platform === "douyin" && targetLanguage !== "zh" && (
-                  <span className="douyin-lang-tip-text">💡 팁: Douyin은 중국어 검색이 더 정확합니다</span>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="sidebar-card">
-            <div
-              style={{
-                fontSize: "12px",
-                fontWeight: "700",
-                marginBottom: "12px",
-                color: "rgba(24, 24, 27, 0.75)",
-                letterSpacing: "0.02em",
-              }}
-            >
-              필터
-            </div>
-            <div className="sidebar-filter-period">
-              <div
-                style={{
-                  fontSize: "11px",
-                  fontWeight: "600",
-                  color: "rgba(24, 24, 27, 0.5)",
-                  marginBottom: "8px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                }}
-              >
-                기간
-              </div>
-              <PeriodFilter
-                value={filters.uploadPeriod}
-                onChange={(value) => setFilters({ ...filters, uploadPeriod: value })}
-                platform={platform}
-              />
-            </div>
-          </div>
-
-          {error && (
-            <div
-              className="sidebar-card"
-              style={{
-                color: "#b91c1c",
-                fontSize: "12px",
-                padding: "12px",
-                backgroundColor: "rgba(254, 226, 226, 0.55)",
-                border: "1px solid rgba(252, 165, 165, 0.9)",
-              }}
-            >
-              {error}
-            </div>
-          )}
         </div>
 
-        {/* 리사이저 */}
-        <div ref={resizeRef} className="sidebar-resizer" onMouseDown={() => setIsResizing(true)}></div>
+        {filterDrawerOpen && (
+          <>
+            <button type="button" className="filter-drawer-backdrop" aria-label="닫기" onClick={() => setFilterDrawerOpen(false)} />
+            <aside className="filter-drawer" role="dialog" aria-modal="true" aria-labelledby="filter-drawer-title">
+              <div className="filter-drawer-header">
+                <h2 id="filter-drawer-title" className="filter-drawer-title">
+                  검색 조건
+                </h2>
+                <button type="button" className="filter-drawer-close" onClick={() => setFilterDrawerOpen(false)} aria-label="조건 패널 닫기">
+                  <X size={20} strokeWidth={2} />
+                </button>
+              </div>
+              <div className="filter-drawer-body">
+                <div className="sidebar-field-label">업로드 기간</div>
+                <div className="sidebar-filter-period sidebar-filter-period--drawer">
+                  <PeriodFilter
+                    value={filters.uploadPeriod}
+                    onChange={(value) => setFilters({ ...filters, uploadPeriod: value })}
+                    platform={platform}
+                  />
+                </div>
+              </div>
+            </aside>
+          </>
+        )}
 
-        {/* 오른쪽 컨텐츠 영역 */}
-        <div className="content">
+        <div className="content content--full">
           <div className={`content-header${isBookmarkView ? " bookmark-view" : ""}`}>
             <div className="content-header-row--top">
-              <div className={`content-title${isBookmarkView ? " bookmark-view" : ""}`}>
-                {isBookmarkView ? (
-                  <>
-                    <BookmarkCheck size={18} style={{ display: "inline", marginRight: "6px", verticalAlign: "middle", color: "#0d9488" }} />
-                    찜 목록
-                  </>
-                ) : (
-                  "검색결과"
-                )}
+              <div className="content-title-block">
+                <h1 className={`content-title${isBookmarkView ? " bookmark-view" : ""}`}>
+                  {isBookmarkView ? (
+                    <>
+                      <BookmarkCheck size={20} className="content-title-icon" aria-hidden />
+                      찜한 영상
+                    </>
+                  ) : (
+                    "검색 결과"
+                  )}
+                </h1>
+                <p className="content-subtitle">
+                  {isBookmarkView ? "저장한 영상만 모아 볼 수 있어요." : "필터와 정렬로 원하는 숏폼만 골라 보세요."}
+                </p>
               </div>
             </div>
+            <div className="content-toolbar">
             <div className="content-header-row--tools">
               <button className="btn-video-download" onClick={handleVideoDownload}>
                 <Download size={16} style={{ display: "inline", marginRight: "4px" }} />
@@ -1849,10 +1796,11 @@ export default function Search() {
                 <option value="comments">댓글순</option>
                 <option value="recent">최신순</option>
               </select>
-              <button className="btn-excel" onClick={handleExcelDownload}>
+              <button type="button" className="btn-excel" onClick={handleExcelDownload}>
                 <Download size={16} style={{ display: "inline", marginRight: "4px" }} />
                 엑셀
               </button>
+            </div>
             </div>
           </div>
 
@@ -2081,6 +2029,7 @@ export default function Search() {
               </>
             )}
           </div>
+        </div>
         </div>
       </div>
       </div>
