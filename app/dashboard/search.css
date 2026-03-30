@@ -1459,7 +1459,8 @@
   cursor: pointer;
   background: #ffffff;
   border: 1px solid rgba(24, 24, 27, 0.07);
-  backdrop-filter: blur(10px);
+  /* backdrop-filter 제거: 불투명 카드에 불필요하며 스크롤 시 GPU 합성 비용 증가 */
+  contain: layout style;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
