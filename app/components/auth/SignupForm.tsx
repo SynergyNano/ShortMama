@@ -209,7 +209,13 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
               type="email"
               value={formData.email || ''}
               onChange={(e) => {
-                setFormData({ ...formData, email: e.target.value })
+                setFormData({
+                  ...formData,
+                  email: e.target.value,
+                  phone: '',
+                  password: '',
+                  passwordConfirm: '',
+                })
                 setEmailVerified(false)
                 setEmailVerificationToken(null)
                 setVerificationCode('')
@@ -269,92 +275,101 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
           )}
         </div>
 
-        {/* 핸드폰 */}
-        <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-zinc-800 mb-2">
-            핸드폰 번호 <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="phone"
-            type="tel"
-            value={formData.phone || ''}
-            onChange={(e) => {
-              let value = e.target.value.replace(/[^0-9]/g, '')
-              if (value.length > 11) value = value.slice(0, 11)
-              if (value.length >= 4 && value.length <= 7) {
-                value = value.slice(0, 3) + '-' + value.slice(3)
-              } else if (value.length > 7) {
-                value = value.slice(0, 3) + '-' + value.slice(3, 7) + '-' + value.slice(7)
-              }
-              setFormData({ ...formData, phone: value })
-            }}
-            placeholder="01012345678"
-            className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all"
-          />
-          {fieldErrors.phone && (
-            <p className="text-red-500 text-sm mt-1">{fieldErrors.phone[0]}</p>
-          )}
-          <p className="text-zinc-400 text-xs mt-1">하이픈 없이 입력해도 자동으로 추가됩니다</p>
-        </div>
-
-        {/* 비밀번호 */}
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-zinc-800 mb-2">
-            비밀번호 <span className="text-red-500">*</span>
-          </label>
-          <div className="relative">
-            <input
-              id="password"
-              type={showPassword ? 'text' : 'password'}
-              value={formData.password || ''}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              placeholder="최소 8자, 소문자, 숫자 포함"
-              className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all pr-12"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-3.5 text-zinc-400 hover:text-zinc-600 transition-colors"
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
+        {/* 핸드폰·비밀번호: 이메일 인증 완료 후에만 입력 가능 */}
+        {!emailVerified ? (
+          <div className="rounded-xl border border-dashed border-zinc-200 bg-zinc-50/80 px-4 py-5 text-center">
+            <p className="text-sm font-medium text-zinc-600">핸드폰 번호와 비밀번호는</p>
+            <p className="text-sm text-zinc-500 mt-1">위에서 이메일 인증을 완료한 뒤 입력할 수 있습니다.</p>
           </div>
-          {fieldErrors.password && (
-            <p className="text-red-500 text-sm mt-1">{fieldErrors.password[0]}</p>
-          )}
+        ) : (
+          <>
+            {/* 핸드폰 */}
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium text-zinc-800 mb-2">
+                핸드폰 번호 <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="phone"
+                type="tel"
+                value={formData.phone || ''}
+                onChange={(e) => {
+                  let value = e.target.value.replace(/[^0-9]/g, '')
+                  if (value.length > 11) value = value.slice(0, 11)
+                  if (value.length >= 4 && value.length <= 7) {
+                    value = value.slice(0, 3) + '-' + value.slice(3)
+                  } else if (value.length > 7) {
+                    value = value.slice(0, 3) + '-' + value.slice(3, 7) + '-' + value.slice(7)
+                  }
+                  setFormData({ ...formData, phone: value })
+                }}
+                placeholder="01012345678"
+                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all"
+              />
+              {fieldErrors.phone && (
+                <p className="text-red-500 text-sm mt-1">{fieldErrors.phone[0]}</p>
+              )}
+              <p className="text-zinc-400 text-xs mt-1">하이픈 없이 입력해도 자동으로 추가됩니다</p>
+            </div>
 
-          {/* 비밀번호 강도 미터 - 처음부터 표시 */}
-          <div className="mt-3">
-            <PasswordStrengthMeter password={formData.password || ''} />
-          </div>
-        </div>
+            {/* 비밀번호 */}
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-zinc-800 mb-2">
+                비밀번호 <span className="text-red-500">*</span>
+              </label>
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={formData.password || ''}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  placeholder="최소 8자, 소문자, 숫자 포함"
+                  className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all pr-12"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-3.5 text-zinc-400 hover:text-zinc-600 transition-colors"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+              {fieldErrors.password && (
+                <p className="text-red-500 text-sm mt-1">{fieldErrors.password[0]}</p>
+              )}
 
-        {/* 비밀번호 확인 */}
-        <div>
-          <label htmlFor="passwordConfirm" className="block text-sm font-medium text-zinc-800 mb-2">
-            비밀번호 확인 <span className="text-red-500">*</span>
-          </label>
-          <div className="relative">
-            <input
-              id="passwordConfirm"
-              type={showPasswordConfirm ? 'text' : 'password'}
-              value={formData.passwordConfirm || ''}
-              onChange={(e) => setFormData({ ...formData, passwordConfirm: e.target.value })}
-              placeholder="비밀번호 확인"
-              className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all pr-12"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
-              className="absolute right-4 top-3.5 text-zinc-400 hover:text-zinc-600 transition-colors"
-            >
-              {showPasswordConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
-          {fieldErrors.passwordConfirm && (
-            <p className="text-red-500 text-sm mt-1">{fieldErrors.passwordConfirm[0]}</p>
-          )}
-        </div>
+              <div className="mt-3">
+                <PasswordStrengthMeter password={formData.password || ''} />
+              </div>
+            </div>
+
+            {/* 비밀번호 확인 */}
+            <div>
+              <label htmlFor="passwordConfirm" className="block text-sm font-medium text-zinc-800 mb-2">
+                비밀번호 확인 <span className="text-red-500">*</span>
+              </label>
+              <div className="relative">
+                <input
+                  id="passwordConfirm"
+                  type={showPasswordConfirm ? 'text' : 'password'}
+                  value={formData.passwordConfirm || ''}
+                  onChange={(e) => setFormData({ ...formData, passwordConfirm: e.target.value })}
+                  placeholder="비밀번호 확인"
+                  className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all pr-12"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                  className="absolute right-4 top-3.5 text-zinc-400 hover:text-zinc-600 transition-colors"
+                >
+                  {showPasswordConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+              {fieldErrors.passwordConfirm && (
+                <p className="text-red-500 text-sm mt-1">{fieldErrors.passwordConfirm[0]}</p>
+              )}
+            </div>
+          </>
+        )}
 
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex gap-2">
