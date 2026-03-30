@@ -104,7 +104,7 @@ export default function ForgotPasswordPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="example@example.com"
-              className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20"
+              className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
               disabled={loading}
             />
           </div>
@@ -115,14 +115,14 @@ export default function ForgotPasswordPage() {
             </div>
           )}
           {success && (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
-              <p className="text-emerald-800 text-sm">{success}</p>
+            <div className="bg-violet-50 border border-violet-200 rounded-lg p-3">
+              <p className="text-violet-900 text-sm">{success}</p>
             </div>
           )}
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-4 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl shadow-md shadow-teal-900/10 hover:shadow-lg font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full px-4 py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl shadow-md shadow-violet-900/10 hover:shadow-lg font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading && <Loader2 size={20} className="animate-spin" />}
             인증 코드 발송
@@ -146,7 +146,7 @@ export default function ForgotPasswordPage() {
               value={code}
               onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
               placeholder="6자리 코드"
-              className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20"
+              className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
               disabled={loading}
             />
           </div>
@@ -161,7 +161,7 @@ export default function ForgotPasswordPage() {
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="8자 이상"
-                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 pr-12"
+                className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 pr-12"
                 disabled={loading}
               />
               <button
@@ -180,14 +180,14 @@ export default function ForgotPasswordPage() {
             </div>
           )}
           {success && (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
-              <p className="text-emerald-800 text-sm">{success}</p>
+            <div className="bg-violet-50 border border-violet-200 rounded-lg p-3">
+              <p className="text-violet-900 text-sm">{success}</p>
             </div>
           )}
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-4 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl shadow-md shadow-teal-900/10 hover:shadow-lg font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full px-4 py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl shadow-md shadow-violet-900/10 hover:shadow-lg font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading && <Loader2 size={20} className="animate-spin" />}
             비밀번호 재설정
@@ -209,7 +209,7 @@ export default function ForgotPasswordPage() {
       )}
 
       <div className="mt-6 text-center border-t border-zinc-100 pt-6">
-        <Link href="/auth/login" className="text-teal-600 hover:text-teal-700 font-semibold text-sm">
+        <Link href="/auth/login" className="text-violet-600 hover:text-violet-700 font-semibold text-sm">
           ← 로그인으로 돌아가기
         </Link>
       </div>

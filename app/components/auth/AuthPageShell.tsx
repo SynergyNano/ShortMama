@@ -10,11 +10,11 @@ type AuthPageShellProps = {
 
 export default function AuthPageShell({ subtitle, children }: AuthPageShellProps) {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35 flex items-center justify-center p-4">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-violet-100/50 via-purple-50/30 to-white flex items-center justify-center p-4">
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
-        <div className="absolute w-[520px] h-[520px] bg-teal-400/25 rounded-full blur-[120px] -top-48 -right-24" />
-        <div className="absolute w-[480px] h-[480px] bg-emerald-400/20 rounded-full blur-[110px] -bottom-40 -left-20" />
-        <div className="absolute w-[360px] h-[360px] bg-cyan-300/15 rounded-full blur-[90px] top-1/3 left-1/4" />
+        <div className="absolute w-[520px] h-[520px] bg-violet-400/25 rounded-full blur-[120px] -top-48 -right-24" />
+        <div className="absolute w-[480px] h-[480px] bg-fuchsia-400/20 rounded-full blur-[110px] -bottom-40 -left-20" />
+        <div className="absolute w-[360px] h-[360px] bg-purple-300/18 rounded-full blur-[90px] top-1/3 left-1/4" />
       </div>
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.45]"
@@ -28,7 +28,7 @@ export default function AuthPageShell({ subtitle, children }: AuthPageShellProps
 
       <div className="relative z-10 w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-teal-700 via-teal-600 to-emerald-600 mb-2">
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-violet-800 via-purple-600 to-fuchsia-600 mb-2">
             숏마마
           </h1>
           <p className="text-zinc-600 text-base md:text-lg">{subtitle}</p>
@@ -52,7 +52,7 @@ export default function AuthPageShell({ subtitle, children }: AuthPageShellProps
             문제가 있으신가요?{" "}
             <a
               href={`mailto:${SUPPORT_EMAIL}`}
-              className="text-teal-600 hover:text-teal-700 font-medium transition-colors"
+              className="text-violet-600 hover:text-violet-700 font-medium transition-colors"
             >
               고객 지원
             </a>

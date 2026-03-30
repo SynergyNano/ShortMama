@@ -15,13 +15,13 @@ export default function RefundPolicyPage() {
 
           {/* 1. 기본 원칙 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">1. 기본 원칙</h2>
+            <h2 className="text-2xl font-bold text-violet-900">1. 기본 원칙</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-3">
               <p className="text-zinc-700 leading-relaxed">
                 씨너지나노(이하 &quot;회사&quot;)는 ShortMama(숏마마)(이하 &quot;서비스&quot;) 이용자의 권리를 보호하기 위해 다음과 같은 환불정책을 시행합니다.
                 본 정책은 월간 구독형 디지털 서비스의 특성을 고려하여 수립되었습니다.
               </p>
-              <div className="bg-teal-50 border border-teal-200 rounded-lg p-3">
+              <div className="bg-violet-50 border border-violet-200 rounded-lg p-3">
                 <p className="text-zinc-900 font-semibold mb-2">📌 구독 서비스 특성 안내</p>
                 <p className="text-zinc-700 text-sm">
                   본 서비스는 월간 구독형 디지털 서비스입니다. 서비스 특성상 구독 시작 후
@@ -33,9 +33,9 @@ export default function RefundPolicyPage() {
 
           {/* 2. 환불 가능 기간 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">2. 환불 가능 기간</h2>
+            <h2 className="text-2xl font-bold text-violet-900">2. 환불 가능 기간</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-4">
-              <div className="border-l-4 border-teal-500 pl-4">
+              <div className="border-l-4 border-violet-500 pl-4">
                 <h3 className="font-semibold text-zinc-900 mb-2">✅ 전액 환불 가능</h3>
                 <p className="text-zinc-700">
                   <strong>구독 시작 후 3일 이내</strong>에 환불 신청 시 결제한 구독료를 전액 환불받을 수 있습니다.
@@ -57,18 +57,18 @@ export default function RefundPolicyPage() {
 
           {/* 3. 환불 신청 방법 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">3. 환불 신청 방법</h2>
+            <h2 className="text-2xl font-bold text-violet-900">3. 환불 신청 방법</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-3">
               <div>
                 <p className="font-semibold text-zinc-900 mb-3">다음의 방법으로 환불을 신청할 수 있습니다:</p>
                 <ol className="space-y-2 text-zinc-700 ml-4">
                   <li className="flex gap-3">
-                    <span className="text-teal-600 font-bold flex-shrink-0">1</span>
+                    <span className="text-violet-600 font-bold flex-shrink-0">1</span>
                     <span><strong>이메일 신청:</strong> {SUPPORT_EMAIL}로 &quot;환불 신청&quot;이라는 제목으로 이메일 발송</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-teal-600 font-bold flex-shrink-0">2</span>
-                    <span><strong>고객센터:</strong> <a href="/contact" className="text-teal-600 hover:text-teal-700 underline underline-offset-4">고객센터 페이지</a> 안내에 따라 접수</span>
+                    <span className="text-violet-600 font-bold flex-shrink-0">2</span>
+                    <span><strong>고객센터:</strong> <a href="/contact" className="text-violet-600 hover:text-violet-700 underline underline-offset-4">고객센터 페이지</a> 안내에 따라 접수</span>
                   </li>
                 </ol>
               </div>
@@ -84,22 +84,22 @@ export default function RefundPolicyPage() {
 
           {/* 4. 환불 처리 기간 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">4. 환불 처리 기간</h2>
+            <h2 className="text-2xl font-bold text-violet-900">4. 환불 처리 기간</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-3">
               <p className="text-zinc-700 leading-relaxed">
                 환불 신청이 접수된 후 다음과 같은 기간에 처리됩니다:
               </p>
               <ul className="space-y-2 text-zinc-700 ml-4">
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>신청 접수:</strong> 1-2 영업일 이내 확인</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>환불 처리:</strong> 신청 확인 후 3-5 영업일 이내 결제 수단으로 환불</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>은행 입금:</strong> 각 금융기관의 처리 기간은 1-3일이 소요될 수 있습니다</span>
                 </li>
               </ul>
@@ -114,7 +114,7 @@ export default function RefundPolicyPage() {
 
           {/* 5. 환불 불가 경우 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">5. 환불이 불가능한 경우</h2>
+            <h2 className="text-2xl font-bold text-violet-900">5. 환불이 불가능한 경우</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-2">
               <p className="text-zinc-700 leading-relaxed mb-3">
                 다음의 경우에는 환불이 불가능합니다:
@@ -150,21 +150,21 @@ export default function RefundPolicyPage() {
 
           {/* 6. 자동 갱신 안내 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">6. 자동 갱신 안내</h2>
+            <h2 className="text-2xl font-bold text-violet-900">6. 자동 갱신 안내</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-3">
               <div>
                 <p className="font-semibold text-zinc-900 mb-2">📋 자동 갱신 특징</p>
                 <ul className="space-y-2 text-zinc-700 ml-4">
                   <li className="flex gap-3">
-                    <span className="text-teal-600">•</span>
+                    <span className="text-violet-600">•</span>
                     <span>구독료는 매월 자동으로 갱신됩니다</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-teal-600">•</span>
+                    <span className="text-violet-600">•</span>
                     <span>구독한 날짜와 동일한 매월 같은 날짜에 결제됩니다</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-teal-600">•</span>
+                    <span className="text-violet-600">•</span>
                     <span>구독 해지 전까지 자동으로 갱신됩니다</span>
                   </li>
                 </ul>
@@ -174,19 +174,19 @@ export default function RefundPolicyPage() {
                 <p className="font-semibold text-zinc-900 mb-2">🔐 구독 해지 방법</p>
                 <ol className="space-y-2 text-zinc-700 ml-4">
                   <li className="flex gap-3">
-                    <span className="text-teal-600 font-bold">1</span>
+                    <span className="text-violet-600 font-bold">1</span>
                     <span>로그인 후 마이페이지 → 구독 관리 접속</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-teal-600 font-bold">2</span>
+                    <span className="text-violet-600 font-bold">2</span>
                     <span>"구독 해지" 버튼 클릭</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-teal-600 font-bold">3</span>
+                    <span className="text-violet-600 font-bold">3</span>
                     <span>해지 사유 입력 후 "해지하기" 클릭</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-teal-600 font-bold">4</span>
+                    <span className="text-violet-600 font-bold">4</span>
                     <span>다음 결제가 발생하지 않습니다</span>
                   </li>
                 </ol>
@@ -202,24 +202,24 @@ export default function RefundPolicyPage() {
 
           {/* 7. 결제 수단별 환불 안내 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">7. 결제 수단별 환불 안내</h2>
+            <h2 className="text-2xl font-bold text-violet-900">7. 결제 수단별 환불 안내</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-3">
               <div>
-                <p className="font-semibold text-zinc-900 mb-3 text-teal-600">💳 신용카드 / 체크카드</p>
+                <p className="font-semibold text-zinc-900 mb-3 text-violet-600">💳 신용카드 / 체크카드</p>
                 <p className="text-zinc-700 ml-4">
                   환불액이 원래 결제하신 카드로 반환됩니다. 카드사별로 1-3일 정도의 처리 기간이 필요할 수 있습니다.
                 </p>
               </div>
 
               <div>
-                <p className="font-semibold text-zinc-900 mb-3 text-teal-600">🏦 계좌이체</p>
+                <p className="font-semibold text-zinc-900 mb-3 text-violet-600">🏦 계좌이체</p>
                 <p className="text-zinc-700 ml-4">
                   환불액이 원래 결제하신 계좌로 반환됩니다. 금융기관 처리 시간은 1-2 영업일이 소요됩니다.
                 </p>
               </div>
 
               <div>
-                <p className="font-semibold text-zinc-900 mb-3 text-teal-600">💰 가상계좌</p>
+                <p className="font-semibold text-zinc-900 mb-3 text-violet-600">💰 가상계좌</p>
                 <p className="text-zinc-700 ml-4">
                   환불액이 입금한 계좌로 반환됩니다. 은행별로 1-3 영업일이 소요될 수 있습니다.
                 </p>
@@ -229,7 +229,7 @@ export default function RefundPolicyPage() {
 
           {/* 8. 분쟁 해결 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">8. 분쟁 해결 및 문의</h2>
+            <h2 className="text-2xl font-bold text-violet-900">8. 분쟁 해결 및 문의</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-3">
               <p className="text-zinc-700 leading-relaxed">
                 환불 정책과 관련하여 분쟁이 발생하는 경우, 회사와 고객 간의 협의를 통해 해결하며,
@@ -240,15 +240,15 @@ export default function RefundPolicyPage() {
                 <p className="font-semibold text-zinc-900 mb-3">📞 문의 및 환불 신청</p>
                 <ul className="space-y-2 text-zinc-700">
                   <li className="flex gap-3">
-                    <span className="text-teal-600">•</span>
+                    <span className="text-violet-600">•</span>
                     <span><strong>이메일:</strong> {SUPPORT_EMAIL}</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-teal-600">•</span>
+                    <span className="text-violet-600">•</span>
                     <span><strong>운영시간:</strong> 월-금 10:00 ~ 18:00 (공휴일 제외)</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-teal-600">•</span>
+                    <span className="text-violet-600">•</span>
                     <span><strong>응답시간:</strong> 영업일 기준 24시간 이내</span>
                   </li>
                 </ul>
@@ -258,7 +258,7 @@ export default function RefundPolicyPage() {
 
           {/* 9. 정책 변경 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">9. 정책 변경</h2>
+            <h2 className="text-2xl font-bold text-violet-900">9. 정책 변경</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-2">
               <p className="text-zinc-700 leading-relaxed">
                 회사는 필요에 따라 본 환불정책을 변경할 수 있으며, 변경 시 최소 7일 전에 공지합니다.
@@ -268,11 +268,11 @@ export default function RefundPolicyPage() {
           </section>
 
           {/* CTA */}
-          <div className="bg-teal-50 border border-teal-200 rounded-lg p-6 mt-8 text-center">
+          <div className="bg-violet-50 border border-violet-200 rounded-lg p-6 mt-8 text-center">
             <p className="text-zinc-800 mb-4">추가 질문이 있으신가요?</p>
             <a
               href={`mailto:${SUPPORT_EMAIL}`}
-              className="inline-block px-6 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl shadow-md shadow-teal-900/10 hover:shadow-lg transition-all font-semibold"
+              className="inline-block px-6 py-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl shadow-md shadow-violet-900/10 hover:shadow-lg transition-all font-semibold"
             >
               문의하기
             </a>

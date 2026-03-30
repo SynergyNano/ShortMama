@@ -143,7 +143,7 @@ export default function LoginForm() {
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           placeholder="example@example.com"
-          className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all"
+          className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all"
           disabled={loading}
         />
         {fieldErrors.email && (
@@ -163,7 +163,7 @@ export default function LoginForm() {
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             placeholder="비밀번호를 입력하세요"
-            className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all pr-12"
+            className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all pr-12"
             disabled={loading}
           />
           <button
@@ -185,7 +185,7 @@ export default function LoginForm() {
           type="checkbox"
           checked={formData.rememberMe}
           onChange={(e) => setFormData({ ...formData, rememberMe: e.target.checked })}
-          className="w-4 h-4 rounded border-zinc-300 accent-teal-600 cursor-pointer"
+          className="w-4 h-4 rounded border-zinc-300 accent-violet-600 cursor-pointer"
           disabled={loading}
         />
         <span className="text-sm text-zinc-600">로그인 상태 유지</span>
@@ -203,7 +203,7 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full px-4 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl shadow-md shadow-teal-900/10 hover:shadow-lg hover:shadow-teal-900/15 transition-all font-semibold disabled:opacity-50 flex items-center justify-center gap-2 mt-6"
+        className="w-full px-4 py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl shadow-md shadow-violet-900/10 hover:shadow-lg hover:shadow-violet-900/15 transition-all font-semibold disabled:opacity-50 flex items-center justify-center gap-2 mt-6"
       >
         {loading && <Loader2 size={20} className="animate-spin" />}
         로그인
@@ -211,7 +211,7 @@ export default function LoginForm() {
 
       {/* 비밀번호 찾기 */}
       <div className="text-center pt-2">
-        <Link href="/auth/forgot-password" className="text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors">
+        <Link href="/auth/forgot-password" className="text-sm text-violet-600 hover:text-violet-700 font-medium transition-colors">
           비밀번호 찾기
         </Link>
       </div>

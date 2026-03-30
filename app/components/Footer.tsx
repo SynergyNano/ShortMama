@@ -4,45 +4,45 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-200 mt-12 bg-gradient-to-r from-zinc-50 to-teal-50/30">
+    <footer className="border-t border-zinc-200 mt-12 bg-gradient-to-r from-zinc-50 to-violet-50/40">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-wrap gap-2 items-center mb-4 text-sm leading-tight justify-center text-zinc-600">
-          <Link href="/pricing" className="hover:text-teal-700 transition-colors font-medium">
+          <Link href="/pricing" className="hover:text-violet-700 transition-colors font-medium">
             요금제
           </Link>
           <span className="text-zinc-300">|</span>
 
-          <Link href="/dashboard" className="hover:text-teal-700 transition-colors font-medium">
+          <Link href="/dashboard" className="hover:text-violet-700 transition-colors font-medium">
             대시보드
           </Link>
           <span className="text-zinc-300">|</span>
 
-          <a href="mailto:synergynano2026@gmail.com" className="hover:text-teal-700 transition-colors font-medium">
+          <a href="mailto:synergynano2026@gmail.com" className="hover:text-violet-700 transition-colors font-medium">
             고객문의
           </a>
           <span className="text-zinc-300">|</span>
 
-          <Link href="/" className="hover:text-teal-700 transition-colors font-medium">
+          <Link href="/" className="hover:text-violet-700 transition-colors font-medium">
             제휴/입점
           </Link>
           <span className="text-zinc-300">|</span>
 
-          <Link href="/terms" className="hover:text-teal-700 transition-colors font-medium">
+          <Link href="/terms" className="hover:text-violet-700 transition-colors font-medium">
             이용약관
           </Link>
           <span className="text-zinc-300">|</span>
 
-          <Link href="/privacy" className="hover:text-teal-700 transition-colors font-medium">
+          <Link href="/privacy" className="hover:text-violet-700 transition-colors font-medium">
             개인정보처리방침
           </Link>
           <span className="text-zinc-300">|</span>
 
-          <Link href="/refund-policy" className="hover:text-teal-700 transition-colors font-medium">
+          <Link href="/refund-policy" className="hover:text-violet-700 transition-colors font-medium">
             환불정책
           </Link>
           <span className="text-zinc-300">|</span>
 
-          <Link href="/" className="hover:text-teal-700 transition-colors font-medium">
+          <Link href="/" className="hover:text-violet-700 transition-colors font-medium">
             공지사항
           </Link>
         </div>

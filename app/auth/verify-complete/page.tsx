@@ -40,12 +40,12 @@ function VerifyCompleteContent() {
 
   if (status === 'error') {
     return (
-      <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35 flex items-center justify-center p-4">
+      <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-violet-100/50 via-purple-50/30 to-white flex items-center justify-center p-4">
         <div className="w-full max-w-md text-center bg-white/95 rounded-3xl border border-zinc-200/90 shadow-xl shadow-zinc-900/[0.06] p-10">
           <p className="text-red-600 mb-6">{errorMsg}</p>
           <a
             href="/auth/login"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl font-semibold shadow-md shadow-teal-900/10 hover:shadow-lg transition-shadow"
+            className="inline-block px-6 py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl font-semibold shadow-md shadow-violet-900/10 hover:shadow-lg transition-shadow"
           >
             로그인 페이지로 이동
           </a>
@@ -55,19 +55,19 @@ function VerifyCompleteContent() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35 flex items-center justify-center p-4">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-violet-100/50 via-purple-50/30 to-white flex items-center justify-center p-4">
       <div className="w-full max-w-md text-center bg-white/95 rounded-3xl border border-zinc-200/90 shadow-xl shadow-zinc-900/[0.06] p-10">
         <div className="flex justify-center mb-6">
           <div className="relative">
-            <div className="absolute inset-0 bg-emerald-400 rounded-full blur-xl opacity-35 animate-pulse" />
-            <CheckCircle size={80} className="text-emerald-600 relative" />
+            <div className="absolute inset-0 bg-fuchsia-400 rounded-full blur-xl opacity-35 animate-pulse" />
+            <CheckCircle size={80} className="text-violet-600 relative" />
           </div>
         </div>
-        <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-teal-700 to-emerald-600 mb-3">
+        <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-700 to-fuchsia-600 mb-3">
           인증되었습니다
         </h1>
         <p className="text-zinc-600 mb-8 flex items-center justify-center gap-2">
-          <Loader2 size={20} className="animate-spin text-teal-600" />
+          <Loader2 size={20} className="animate-spin text-violet-600" />
           로그인 중입니다...
         </p>
       </div>
@@ -79,10 +79,10 @@ export default function VerifyCompletePage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35 flex items-center justify-center p-4">
+        <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-violet-100/50 via-purple-50/30 to-white flex items-center justify-center p-4">
           <div className="w-full max-w-md text-center bg-white/95 rounded-3xl border border-zinc-200/90 shadow-xl p-10">
             <p className="text-zinc-600 mb-4">인증 링크를 확인하는 중입니다...</p>
-            <Loader2 size={24} className="animate-spin text-teal-600 mx-auto" />
+            <Loader2 size={24} className="animate-spin text-violet-600 mx-auto" />
           </div>
         </div>
       }

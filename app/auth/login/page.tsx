@@ -28,7 +28,7 @@ export default async function LoginPage({ searchParams }: Props) {
           계정이 없으신가요?{" "}
           <Link
             href="/auth/signup"
-            className="text-teal-600 hover:text-teal-700 font-semibold transition-colors"
+            className="text-violet-600 hover:text-violet-700 font-semibold transition-colors"
           >
             회원가입
           </Link>

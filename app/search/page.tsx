@@ -182,7 +182,7 @@ export default function SearchPage() {
                   onClick={() => setPlatform("tiktok")}
                   className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
                     platform === "tiktok"
-                      ? "bg-gradient-to-r from-sky-500 to-violet-600 text-white shadow-lg scale-105"
+                      ? "bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg scale-105"
                       : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
                   }`}
                 >
@@ -193,7 +193,7 @@ export default function SearchPage() {
                   onClick={() => setPlatform("douyin")}
                   className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
                     platform === "douyin"
-                      ? "bg-gradient-to-r from-sky-500 to-violet-600 text-white shadow-lg scale-105"
+                      ? "bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg scale-105"
                       : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
                   }`}
                 >
@@ -212,14 +212,14 @@ export default function SearchPage() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="예: 뷰티, 댄스, 요리, Gaming 등..."
-                className="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                className="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500"
               />
             </div>
 
             {/* 결과 개수 */}
             <div>
               <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-3">
-                결과 개수: <span className="text-sky-600 dark:text-sky-400">{limit}개</span>
+                결과 개수: <span className="text-violet-600 dark:text-violet-400">{limit}개</span>
               </label>
               <input
                 type="range"
@@ -252,9 +252,9 @@ export default function SearchPage() {
                     {Math.round(progress)}%
                   </span>
                 </div>
-                <div className="w-full bg-teal-100 rounded-full h-2.5 overflow-hidden">
+                <div className="w-full bg-violet-100 rounded-full h-2.5 overflow-hidden">
                   <div
-                    className="bg-gradient-to-r from-teal-600 to-emerald-500 h-full rounded-full"
+                    className="bg-gradient-to-r from-violet-600 to-fuchsia-500 h-full rounded-full"
                     style={{ width: `${progress}%`, transition: 'width 800ms ease-out' }}
                   />
                 </div>
@@ -270,7 +270,7 @@ export default function SearchPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-gradient-to-r from-sky-500 to-violet-600 hover:from-sky-600 hover:to-violet-700 disabled:from-slate-400 disabled:to-slate-500 text-white font-bold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+              className="w-full py-4 bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 disabled:from-slate-400 disabled:to-slate-500 text-white font-bold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
@@ -293,7 +293,7 @@ export default function SearchPage() {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
                 검색 결과
-                <span className="text-sky-600 dark:text-sky-400 ml-2">
+                <span className="text-violet-600 dark:text-violet-400 ml-2">
                   ({results.length}개)
                 </span>
               </h2>
@@ -309,7 +309,7 @@ export default function SearchPage() {
                   className="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 flex flex-col"
                 >
                   {/* 카드 헤더 (배경) */}
-                  <div className="h-32 bg-gradient-to-br from-sky-400 to-violet-500 relative">
+                  <div className="h-32 bg-gradient-to-br from-violet-500 to-fuchsia-600 relative">
                     <button className="absolute top-2 right-2 p-2 rounded-full bg-white/20 hover:bg-white/40 transition-all">
                       <MoreVertical size={18} className="text-white" />
                     </button>
@@ -334,7 +334,7 @@ export default function SearchPage() {
                     <h3 className="text-base font-bold text-slate-900 dark:text-white mt-3 break-words">
                       {result.nickname}
                       {result.verified && (
-                        <span className="ml-1 text-sky-600 dark:text-sky-400">✓</span>
+                        <span className="ml-1 text-violet-600 dark:text-violet-400">✓</span>
                       )}
                     </h3>
 
@@ -350,8 +350,8 @@ export default function SearchPage() {
                   <div className="px-4 py-4 border-t border-slate-200 dark:border-slate-700 mt-auto">
                     <div className="grid grid-cols-2 gap-4">
                       {/* 팔로워 */}
-                      <div className="text-center p-3 rounded-lg bg-sky-50 dark:bg-sky-900/30">
-                        <p className="text-xl font-bold text-sky-600 dark:text-sky-400">
+                      <div className="text-center p-3 rounded-lg bg-violet-50 dark:bg-violet-900/30">
+                        <p className="text-xl font-bold text-violet-600 dark:text-violet-400">
                           {(result.followers / 1000).toFixed(1)}K
                         </p>
                         <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
@@ -373,7 +373,7 @@ export default function SearchPage() {
 
                   {/* 액션 버튼 */}
                   <div className="px-4 py-3 border-t border-slate-200 dark:border-slate-700 flex gap-2">
-                    <button className="flex-1 py-2 px-3 text-sm font-semibold rounded-lg bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 hover:bg-sky-200 dark:hover:bg-sky-900/50 transition-all">
+                    <button className="flex-1 py-2 px-3 text-sm font-semibold rounded-lg bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 hover:bg-violet-200 dark:hover:bg-violet-900/50 transition-all">
                       프로필
                     </button>
                     <button className="flex-1 py-2 px-3 text-sm font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
@@ -398,7 +398,7 @@ export default function SearchPage() {
           {/* 로딩 상태 */}
           {loading && (
             <div className="text-center py-32">
-              <Loader2 className="animate-spin mx-auto mb-4 text-sky-600" size={48} />
+              <Loader2 className="animate-spin mx-auto mb-4 text-violet-600" size={48} />
               <p className="text-slate-600 dark:text-slate-400 text-lg">
                 검색 중입니다...
               </p>

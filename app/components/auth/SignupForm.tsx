@@ -191,7 +191,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="예: 홍길동"
             maxLength={50}
-            className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all"
+            className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all"
           />
           {fieldErrors.name && (
             <p className="text-red-500 text-sm mt-1">{fieldErrors.name[0]}</p>
@@ -218,13 +218,13 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
               }}
               placeholder="example@example.com"
               disabled={emailVerified}
-              className="flex-1 px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+              className="flex-1 px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
             />
             <button
               type="button"
               onClick={handleSendCode}
               disabled={emailVerified || sendCodeStatus === 'sending'}
-              className="px-4 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg font-semibold shadow-md shadow-teal-900/10 hover:shadow-lg hover:shadow-teal-900/15 transition-all disabled:opacity-50 whitespace-nowrap"
+              className="px-4 py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-lg font-semibold shadow-md shadow-violet-900/10 hover:shadow-lg hover:shadow-violet-900/15 transition-all disabled:opacity-50 whitespace-nowrap"
             >
               {sendCodeStatus === 'sending' && <Loader2 size={18} className="animate-spin inline mr-1" />}
               {emailVerified ? '인증완료' : sendCodeStatus === 'sent' ? '재발송' : '인증하기'}
@@ -242,7 +242,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
                   onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                   placeholder="6자리 인증 코드"
                   maxLength={6}
-                  className="flex-1 px-4 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 text-center tracking-widest"
+                  className="flex-1 px-4 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 text-center tracking-widest"
                 />
                 <button
                   type="button"
@@ -258,12 +258,12 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
                 <p className="text-red-500 text-sm">{fieldErrors.verificationCode[0]}</p>
               )}
               {verifyCodeStatus === 'success' && (
-                <p className="text-emerald-600 text-sm">이메일 인증이 완료되었습니다.</p>
+                <p className="text-violet-600 text-sm">이메일 인증이 완료되었습니다.</p>
               )}
             </div>
           )}
           {emailVerified && (
-            <p className="text-emerald-600 text-sm mt-1 flex items-center gap-1">
+            <p className="text-violet-600 text-sm mt-1 flex items-center gap-1">
               <span>✓</span> 이메일 인증이 완료되었습니다.
             </p>
           )}
@@ -289,7 +289,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
               setFormData({ ...formData, phone: value })
             }}
             placeholder="01012345678"
-            className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all"
+            className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all"
           />
           {fieldErrors.phone && (
             <p className="text-red-500 text-sm mt-1">{fieldErrors.phone[0]}</p>
@@ -309,7 +309,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
               value={formData.password || ''}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               placeholder="최소 8자, 소문자, 숫자 포함"
-              className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all pr-12"
+              className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all pr-12"
             />
             <button
               type="button"
@@ -341,7 +341,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
               value={formData.passwordConfirm || ''}
               onChange={(e) => setFormData({ ...formData, passwordConfirm: e.target.value })}
               placeholder="비밀번호 확인"
-              className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all pr-12"
+              className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all pr-12"
             />
             <button
               type="button"
@@ -365,7 +365,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
 
         {/* 진행률 */}
         <div className="flex gap-2 justify-center text-sm text-zinc-500">
-          <div className="text-teal-700 font-semibold">1단계</div>
+          <div className="text-violet-700 font-semibold">1단계</div>
           <div className="text-zinc-300">▸</div>
           <div className="text-zinc-400">2단계</div>
         </div>
@@ -374,7 +374,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
           type="button"
           onClick={goToNextStep}
           disabled={!emailVerified}
-          className="w-full px-4 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl shadow-md shadow-teal-900/10 hover:shadow-lg hover:shadow-teal-900/15 transition-all font-semibold mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-4 py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl shadow-md shadow-violet-900/10 hover:shadow-lg hover:shadow-violet-900/15 transition-all font-semibold mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           다음
         </button>
@@ -396,7 +396,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
               type="checkbox"
               checked={formData.termsConsent || false}
               onChange={(e) => setFormData({ ...formData, termsConsent: e.target.checked })}
-              className="w-5 h-5 rounded accent-teal-600 mt-0.5 cursor-pointer flex-shrink-0 border-zinc-300"
+              className="w-5 h-5 rounded accent-violet-600 mt-0.5 cursor-pointer flex-shrink-0 border-zinc-300"
             />
             <div className="flex-1">
               <div className="flex items-center gap-2">
@@ -405,7 +405,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
                   href="/terms"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-teal-600 hover:text-teal-700 transition-colors"
+                  className="inline-flex items-center gap-1 text-violet-600 hover:text-violet-700 transition-colors"
                 >
                   <ExternalLink size={14} />
                   <span className="text-sm">전문 보기</span>
@@ -421,7 +421,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
               type="checkbox"
               checked={formData.ageConsent || false}
               onChange={(e) => setFormData({ ...formData, ageConsent: e.target.checked })}
-              className="w-5 h-5 rounded accent-teal-600 mt-0.5 cursor-pointer flex-shrink-0 border-zinc-300"
+              className="w-5 h-5 rounded accent-violet-600 mt-0.5 cursor-pointer flex-shrink-0 border-zinc-300"
             />
             <div>
               <p className="font-medium text-zinc-900">만 14세 미만 제한 <span className="text-red-500">*</span></p>
@@ -435,7 +435,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
               type="checkbox"
               checked={formData.privacyConsent || false}
               onChange={(e) => setFormData({ ...formData, privacyConsent: e.target.checked })}
-              className="w-5 h-5 rounded accent-teal-600 mt-0.5 cursor-pointer flex-shrink-0 border-zinc-300"
+              className="w-5 h-5 rounded accent-violet-600 mt-0.5 cursor-pointer flex-shrink-0 border-zinc-300"
             />
             <div className="flex-1">
               <div className="flex items-center gap-2">
@@ -444,7 +444,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
                   href="/privacy"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-teal-600 hover:text-teal-700 transition-colors"
+                  className="inline-flex items-center gap-1 text-violet-600 hover:text-violet-700 transition-colors"
                 >
                   <ExternalLink size={14} />
                   <span className="text-sm">전문 보기</span>
@@ -465,7 +465,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
               type="checkbox"
               checked={formData.marketingConsent || false}
               onChange={(e) => setFormData({ ...formData, marketingConsent: e.target.checked })}
-              className="w-5 h-5 rounded accent-emerald-600 mt-0.5 cursor-pointer flex-shrink-0 border-zinc-300"
+              className="w-5 h-5 rounded accent-fuchsia-600 mt-0.5 cursor-pointer flex-shrink-0 border-zinc-300"
             />
             <div>
               <p className="font-medium text-zinc-900">마케팅 정보 수신 동의 <span className="text-zinc-400 text-sm font-normal">(선택)</span></p>
@@ -498,7 +498,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
         <div className="flex gap-2 justify-center text-sm text-zinc-500">
           <div className="text-zinc-400 font-medium">1단계</div>
           <div className="text-zinc-300">▸</div>
-          <div className="text-teal-700 font-semibold">2단계</div>
+          <div className="text-violet-700 font-semibold">2단계</div>
         </div>
 
         <div className="flex gap-3 mt-6">
@@ -513,7 +513,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 px-4 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl shadow-md shadow-teal-900/10 hover:shadow-lg hover:shadow-teal-900/15 transition-all font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
+            className="flex-1 px-4 py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl shadow-md shadow-violet-900/10 hover:shadow-lg hover:shadow-violet-900/15 transition-all font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading && <Loader2 size={20} className="animate-spin" />}
             회원가입
@@ -526,7 +526,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
   // Loading state
   return (
     <div className="flex flex-col items-center justify-center gap-4 py-8">
-      <Loader2 size={40} className="animate-spin text-teal-600" />
+      <Loader2 size={40} className="animate-spin text-violet-600" />
       <p className="text-zinc-600">회원가입 처리 중...</p>
     </div>
   )

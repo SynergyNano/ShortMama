@@ -73,10 +73,10 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-violet-100/50 via-purple-50/30 to-white">
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
-        <div className="absolute w-[520px] h-[520px] bg-teal-400/20 rounded-full blur-[120px] -top-48 -right-24" />
-        <div className="absolute w-[480px] h-[480px] bg-emerald-400/15 rounded-full blur-[110px] -bottom-40 -left-20" />
+        <div className="absolute w-[520px] h-[520px] bg-violet-400/20 rounded-full blur-[120px] -top-48 -right-24" />
+        <div className="absolute w-[480px] h-[480px] bg-fuchsia-400/15 rounded-full blur-[110px] -bottom-40 -left-20" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-16">
@@ -92,7 +92,7 @@ export default function PricingPage() {
 
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-teal-700 via-teal-600 to-emerald-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-violet-800 via-purple-600 to-fuchsia-600 bg-clip-text text-transparent">
               요금제
             </span>
           </h1>
@@ -115,7 +115,7 @@ export default function PricingPage() {
               {/* Badge - outside overflow so it overlaps top of card without clipping */}
               {plan.highlighted && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
-                  <span className="bg-gradient-to-r from-teal-600 to-emerald-600 text-white px-4 py-1 rounded-full text-sm font-bold whitespace-nowrap block shadow-md">
+                  <span className="bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-4 py-1 rounded-full text-sm font-bold whitespace-nowrap block shadow-md">
                     가장 인기
                   </span>
                 </div>
@@ -123,7 +123,7 @@ export default function PricingPage() {
 
                 {selectedPlan === plan.id && !plan.highlighted && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
-                  <span className="bg-gradient-to-r from-teal-500 to-emerald-500 text-white px-4 py-1 rounded-full text-sm font-bold flex items-center gap-2 shadow-md">
+                  <span className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white px-4 py-1 rounded-full text-sm font-bold flex items-center gap-2 shadow-md">
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
@@ -138,8 +138,8 @@ export default function PricingPage() {
                 <div
                   className={`absolute inset-0 rounded-2xl blur-xl transition-all duration-300 ${
                     selectedPlan === plan.id
-                      ? 'bg-gradient-to-r from-teal-400/35 to-emerald-400/35 opacity-100'
-                      : 'bg-gradient-to-r from-teal-300/20 to-emerald-300/20 opacity-0 group-hover:opacity-100'
+                      ? 'bg-gradient-to-r from-violet-400/35 to-fuchsia-400/35 opacity-100'
+                      : 'bg-gradient-to-r from-violet-300/20 to-fuchsia-300/20 opacity-0 group-hover:opacity-100'
                   }`}
                 />
 
@@ -147,8 +147,8 @@ export default function PricingPage() {
                 <div
                   className={`relative p-8 rounded-2xl border backdrop-blur-md transition-all duration-300 h-full flex flex-col ${
                     selectedPlan === plan.id
-                      ? 'border-teal-400 bg-white ring-2 ring-teal-200 shadow-md'
-                      : 'border-zinc-200 bg-white group-hover:border-teal-200 group-hover:bg-teal-50/40'
+                      ? 'border-violet-400 bg-white ring-2 ring-violet-200 shadow-md'
+                      : 'border-zinc-200 bg-white group-hover:border-violet-200 group-hover:bg-violet-50/40'
                   }`}
                 >
                 {/* Plan name */}
@@ -158,7 +158,7 @@ export default function PricingPage() {
                 {/* Price */}
                 <div className="mb-6">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-transparent bg-gradient-to-r from-teal-700 to-emerald-600 bg-clip-text">
+                    <span className="text-4xl font-bold text-transparent bg-gradient-to-r from-violet-700 to-fuchsia-600 bg-clip-text">
                       ₩{plan.price.toLocaleString()}
                     </span>
                     <span className="text-zinc-500">/월</span>
@@ -168,7 +168,7 @@ export default function PricingPage() {
                 {/* Daily Limit */}
                 <div className="mb-8 pb-8 border-b border-zinc-100">
                   <p className="text-zinc-700">
-                    <span className="font-semibold text-teal-700">
+                    <span className="font-semibold text-violet-700">
                       {plan.total === -1 ? '무제한' : `${plan.total}회`}
                     </span>
                     <span className="text-zinc-500"> 일일 사용</span>
@@ -181,7 +181,7 @@ export default function PricingPage() {
                   {plan.features.map((feature, idx) => (
                     <li key={idx} className="flex gap-3 text-zinc-700 text-sm">
                       <svg
-                        className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5"
+                        className="w-5 h-5 text-violet-600 flex-shrink-0 mt-0.5"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -221,7 +221,7 @@ export default function PricingPage() {
             </p>
             <p className="text-zinc-500">
               환불/해지 기준은{" "}
-              <a href="/refund-policy" className="text-teal-600 hover:text-teal-700 underline underline-offset-4 font-medium">
+              <a href="/refund-policy" className="text-violet-600 hover:text-violet-700 underline underline-offset-4 font-medium">
                 환불정책
               </a>
               에서 확인하실 수 있습니다.
@@ -246,7 +246,7 @@ export default function PricingPage() {
 
             <div>
               <h3 className="text-zinc-900 font-semibold mb-2">환불이 가능한가요?</h3>
-              <p className="text-zinc-600">구독 시작 후 3일 이내에는 전액 환불이 가능합니다. <a href="/refund-policy" className="text-teal-600 hover:text-teal-700 font-medium">환불정책</a>을 참고하세요.</p>
+              <p className="text-zinc-600">구독 시작 후 3일 이내에는 전액 환불이 가능합니다. <a href="/refund-policy" className="text-violet-600 hover:text-violet-700 font-medium">환불정책</a>을 참고하세요.</p>
             </div>
 
             <div>
@@ -264,7 +264,7 @@ export default function PricingPage() {
             ref={emailRef}
             onClick={handleCopyEmail}
             type="button"
-            className="inline-block px-8 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl font-semibold shadow-md shadow-teal-900/10 hover:shadow-lg transition-all cursor-pointer group relative"
+            className="inline-block px-8 py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl font-semibold shadow-md shadow-violet-900/10 hover:shadow-lg transition-all cursor-pointer group relative"
           >
             <span className="flex items-center gap-2">
               📧 {SUPPORT_EMAIL}

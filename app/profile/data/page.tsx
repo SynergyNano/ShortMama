@@ -96,8 +96,8 @@ export default function UserDataPage() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35 flex items-center justify-center">
-        <Loader2 size={40} className="animate-spin text-teal-600" />
+      <div className="min-h-screen bg-gradient-to-b from-violet-300/35 via-purple-100/45 to-white flex items-center justify-center">
+        <Loader2 size={40} className="animate-spin text-violet-600" />
       </div>
     )
   }
@@ -107,16 +107,16 @@ export default function UserDataPage() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-violet-300/35 via-purple-100/45 to-white">
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
-        <div className="absolute w-[480px] h-[480px] bg-teal-400/20 rounded-full blur-[120px] -top-48 -right-24" />
-        <div className="absolute w-[420px] h-[420px] bg-emerald-400/15 rounded-full blur-[110px] -bottom-40 -left-20" />
+        <div className="absolute w-[480px] h-[480px] bg-violet-500/20 rounded-full blur-[120px] -top-48 -right-24" />
+        <div className="absolute w-[420px] h-[420px] bg-fuchsia-400/15 rounded-full blur-[110px] -bottom-40 -left-20" />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold gradient-text mb-2">개인정보 조회</h1>
-          <p className="text-zinc-600">
+          <h1 className="text-4xl font-bold gradient-text-profile mb-2">개인정보 조회</h1>
+          <p className="text-violet-950/70">
             GDPR 준수: 귀하의 모든 개인정보를 조회하고 다운로드할 수 있습니다
           </p>
         </div>
@@ -130,23 +130,23 @@ export default function UserDataPage() {
 
         {loading && (
           <div className="flex flex-col items-center justify-center gap-4 py-12">
-            <Loader2 size={40} className="animate-spin text-teal-600" />
-            <p className="text-zinc-600">개인정보 로딩 중...</p>
+            <Loader2 size={40} className="animate-spin text-violet-600" />
+            <p className="text-violet-950/70">개인정보 로딩 중...</p>
           </div>
         )}
 
         {userData && !loading && (
           <div className="space-y-6">
-            <div className="bg-teal-50 border border-teal-200 rounded-xl p-4">
-              <p className="text-teal-900 text-sm">
+            <div className="bg-violet-50 border border-violet-200/80 rounded-xl p-4">
+              <p className="text-violet-950 text-sm">
                 아래는 저희 서비스에 등록되어 있는 모든 개인정보입니다. JSON 형식으로 다운로드하거나 복사할 수 있습니다.
                 민감한 정보이므로 안전하게 보관하시기 바랍니다.
               </p>
             </div>
 
-            <div className="bg-white/95 border border-zinc-200 rounded-2xl p-8 overflow-hidden shadow-sm">
+            <div className="bg-white/90 border border-violet-200/60 rounded-2xl p-8 overflow-hidden shadow-sm shadow-violet-900/5">
               <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-                <h2 className="text-2xl font-bold text-teal-800">저장된 정보</h2>
+                <h2 className="text-2xl font-bold text-violet-900">저장된 정보</h2>
                 <div className="flex gap-2">
                   <button
                     type="button"
@@ -160,7 +160,7 @@ export default function UserDataPage() {
                     type="button"
                     onClick={handleDownloadJSON}
                     disabled={downloading}
-                    className="px-4 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl shadow-md hover:shadow-lg transition-all font-semibold disabled:opacity-50 flex items-center gap-2"
+                    className="px-4 py-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl shadow-md shadow-violet-900/15 hover:shadow-lg transition-all font-semibold disabled:opacity-50 flex items-center gap-2"
                   >
                     {downloading ? (
                       <>
@@ -184,8 +184,8 @@ export default function UserDataPage() {
               </div>
             </div>
 
-            <div className="bg-white/95 border border-zinc-200 rounded-2xl p-8 space-y-4 shadow-sm">
-              <h2 className="text-2xl font-bold text-teal-800 mb-6">정보 설명</h2>
+            <div className="bg-white/90 border border-violet-200/60 rounded-2xl p-8 space-y-4 shadow-sm shadow-violet-900/5">
+              <h2 className="text-2xl font-bold text-violet-900 mb-6">정보 설명</h2>
 
               <div className="space-y-3">
                 <div>
@@ -235,12 +235,12 @@ export default function UserDataPage() {
               </div>
             </div>
 
-            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-2">
-              <h3 className="font-semibold text-emerald-800 flex items-center gap-2">
+            <div className="bg-violet-50 border border-violet-200/80 rounded-xl p-4 space-y-2">
+              <h3 className="font-semibold text-violet-900 flex items-center gap-2">
                 <CheckCircle size={20} />
                 귀하의 권리
               </h3>
-              <ul className="text-emerald-900/90 text-sm space-y-1 ml-6">
+              <ul className="text-violet-950/90 text-sm space-y-1 ml-6">
                 <li>• 본인의 개인정보를 언제든지 조회할 권리</li>
                 <li>• 부정확한 정보의 수정을 요청할 권리</li>
                 <li>• 개인정보의 삭제를 요청할 권리 (계정 탈퇴)</li>
@@ -252,7 +252,7 @@ export default function UserDataPage() {
             <div className="flex gap-3">
               <a
                 href="/profile"
-                className="flex-1 px-4 py-3 border border-zinc-300 text-zinc-800 rounded-xl hover:bg-zinc-50 transition-colors font-medium text-center"
+                className="flex-1 px-4 py-3 border border-violet-300 text-violet-950 rounded-xl hover:bg-violet-50 transition-colors font-medium text-center"
               >
                 프로필로 돌아가기
               </a>

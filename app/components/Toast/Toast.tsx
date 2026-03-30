@@ -41,9 +41,9 @@ const getIconColor = (type: ToastType): string => {
     case 'warning':
       return '#d97706'
     case 'success':
-      return '#0d9488'
+      return '#7c3aed'
     case 'info':
-      return '#0284c7'
+      return '#9333ea'
     default:
       return '#52525b'
   }

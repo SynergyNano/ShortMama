@@ -66,7 +66,7 @@ export default function SubscriptionCard({ userEmail }: SubscriptionCardProps) {
   if (isLoading) {
     return (
       <div className="mb-8 flex items-center justify-center py-8">
-        <Loader2 size={24} className="animate-spin text-teal-600" />
+        <Loader2 size={24} className="animate-spin text-violet-600" />
       </div>
     );
   }
@@ -76,21 +76,21 @@ export default function SubscriptionCard({ userEmail }: SubscriptionCardProps) {
       {toast && (
         <div
           className={`fixed top-4 right-4 border rounded-xl p-4 flex gap-3 z-40 shadow-lg bg-white ${
-            toast.type === "success" ? "border-emerald-200" : "border-red-200"
+            toast.type === "success" ? "border-violet-200" : "border-red-200"
           }`}
         >
           <AlertCircle
             size={20}
-            className={`flex-shrink-0 mt-0.5 ${toast.type === "success" ? "text-emerald-600" : "text-red-600"}`}
+            className={`flex-shrink-0 mt-0.5 ${toast.type === "success" ? "text-violet-600" : "text-red-600"}`}
           />
-          <p className={`font-medium ${toast.type === "success" ? "text-emerald-800" : "text-red-700"}`}>
+          <p className={`font-medium ${toast.type === "success" ? "text-violet-900" : "text-red-700"}`}>
             {toast.message}
           </p>
         </div>
       )}
 
       {isSubscribed && subscription ? (
-        <div className="bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200/80 rounded-2xl p-6 md:p-8 shadow-sm">
+        <div className="bg-gradient-to-r from-violet-50 to-fuchsia-50 border border-violet-200/80 rounded-2xl p-6 md:p-8 shadow-sm">
           <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6">
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-zinc-900 mb-3">
@@ -114,7 +114,7 @@ export default function SubscriptionCard({ userEmail }: SubscriptionCardProps) {
             <div className="flex gap-3 md:flex-col">
               <Link
                 href="/pricing"
-                className="px-6 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl font-semibold shadow-md shadow-teal-900/10 hover:shadow-lg transition-all whitespace-nowrap text-center"
+                className="px-6 py-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl font-semibold shadow-md shadow-violet-900/15 hover:shadow-lg transition-all whitespace-nowrap text-center"
               >
                 플랜 변경
               </Link>
@@ -132,7 +132,7 @@ export default function SubscriptionCard({ userEmail }: SubscriptionCardProps) {
           </div>
         </div>
       ) : (
-        <div className="bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200/80 rounded-2xl p-6 md:p-8 shadow-sm">
+        <div className="bg-gradient-to-r from-violet-50 to-fuchsia-50 border border-violet-200/80 rounded-2xl p-6 md:p-8 shadow-sm">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
             <div>
               <h2 className="text-2xl font-bold text-zinc-900 mb-2">
@@ -144,7 +144,7 @@ export default function SubscriptionCard({ userEmail }: SubscriptionCardProps) {
             </div>
             <Link
               href="/pricing"
-              className="px-8 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl font-semibold shadow-md shadow-teal-900/10 hover:shadow-lg transition-all whitespace-nowrap text-center"
+              className="px-8 py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl font-semibold shadow-md shadow-violet-900/15 hover:shadow-lg transition-all whitespace-nowrap text-center"
             >
               구독하기
             </Link>

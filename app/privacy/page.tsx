@@ -15,7 +15,7 @@ export default function PrivacyPage() {
 
           {/* 1. 개인정보 수집 항목 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">1. 수집하는 개인정보 항목</h2>
+            <h2 className="text-2xl font-bold text-violet-900">1. 수집하는 개인정보 항목</h2>
             <p className="text-zinc-700 leading-relaxed">
               숏마마(이하 "회사")는 서비스 제공을 위해 다음과 같은 개인정보를 수집합니다.
             </p>
@@ -36,27 +36,27 @@ export default function PrivacyPage() {
 
           {/* 2. 수집 및 이용 목적 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">2. 수집 및 이용 목적</h2>
+            <h2 className="text-2xl font-bold text-violet-900">2. 수집 및 이용 목적</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-2">
               <ul className="space-y-2 text-zinc-700">
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>회원 관리:</strong> 회원 가입 및 본인 확인, 회원 제공 서비스 계약 이행 및 청구</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>서비스 제공:</strong> 동영상 검색, 분석 기능 등 플랫폼 서비스 제공</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>교재 배송 (선택):</strong> 무료 교재 우편 배송</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>마케팅 활용 (동의 시):</strong> 이벤트, 프로모션 정보 제공</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>서비스 개선:</strong> 이용 통계, 서비스 이용 패턴 분석</span>
                 </li>
               </ul>
@@ -65,22 +65,22 @@ export default function PrivacyPage() {
 
           {/* 3. 제3자 제공 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">3. 제3자 제공</h2>
+            <h2 className="text-2xl font-bold text-violet-900">3. 제3자 제공</h2>
             <p className="text-zinc-700 leading-relaxed">
               회사는 원칙적으로 이용자의 개인정보를 제3자에게 제공하지 않습니다. 다만, 아래의 경우에는 예외적으로 제공할 수 있습니다.
             </p>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-2">
               <ul className="space-y-2 text-zinc-700">
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>토스페이먼츠:</strong> 결제·정산 및 자동결제(빌링) 처리 목적으로 이메일, 이름, 결제 정보를 제공합니다. 카드 정보는 토스페이먼츠에 저장되며, 회사는 결제 이력만 보관합니다.</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>법적 요청:</strong> 법률에 의해 요구되는 경우</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>동의:</strong> 이용자의 명시적 동의가 있는 경우</span>
                 </li>
               </ul>
@@ -89,7 +89,7 @@ export default function PrivacyPage() {
 
           {/* 4. 보유 및 이용 기간 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">4. 보유 및 이용 기간</h2>
+            <h2 className="text-2xl font-bold text-violet-900">4. 보유 및 이용 기간</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-3">
               <div>
                 <p className="font-semibold text-zinc-900 mb-2">일반 원칙: 목적 달성 후 즉시 삭제</p>
@@ -111,23 +111,23 @@ export default function PrivacyPage() {
 
           {/* 5. 개인정보 보안 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">5. 개인정보 보안 조치</h2>
+            <h2 className="text-2xl font-bold text-violet-900">5. 개인정보 보안 조치</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-2">
               <ul className="space-y-2 text-zinc-700">
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>암호화:</strong> 비밀번호는 bcryptjs를 사용하여 암호화 저장</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>접근 제어:</strong> 권한 있는 직원만 접근 가능</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>안전한 전송:</strong> HTTPS SSL/TLS 암호화 전송</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>로그 관리:</strong> 민감한 정보(이메일 등) 로깅 금지</span>
                 </li>
               </ul>
@@ -136,30 +136,30 @@ export default function PrivacyPage() {
 
           {/* 6. 이용자 권리 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">6. 이용자의 권리</h2>
+            <h2 className="text-2xl font-bold text-violet-900">6. 이용자의 권리</h2>
             <p className="text-zinc-700 leading-relaxed">
               이용자는 다음의 권리를 행사할 수 있습니다.
             </p>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-2">
               <ul className="space-y-2 text-zinc-700">
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>열람권:</strong> 자신의 개인정보 열람 요청</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>정정권:</strong> 부정확한 정보 수정 요청</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>삭제권:</strong> 개인정보 삭제 요청 (계정 탈퇴)</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>처리정지권:</strong> 정보 처리 정지 요청</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-teal-600">•</span>
+                  <span className="text-violet-600">•</span>
                   <span><strong>동의 철회:</strong> 마케팅 동의 철회 및 수정</span>
                 </li>
               </ul>
@@ -168,7 +168,7 @@ export default function PrivacyPage() {
 
           {/* 7. 개인정보 처리방침 변경 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">7. 처리방침 변경</h2>
+            <h2 className="text-2xl font-bold text-violet-900">7. 처리방침 변경</h2>
             <p className="text-zinc-700 leading-relaxed">
               이 개인정보 처리방침은 관련 법령의 변경이나 회사의 정책에 따라 변경될 수 있으며, 변경 시 최소 7일 전에 홈페이지를 통해 공지합니다. 변경된 사항은 공지한 날부터 효력이 발생합니다.
             </p>
@@ -176,7 +176,7 @@ export default function PrivacyPage() {
 
           {/* 8. 회사 정보 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">8. 회사 정보</h2>
+            <h2 className="text-2xl font-bold text-violet-900">8. 회사 정보</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-3">
               <div>
                 <p className="text-zinc-700"><strong className="text-zinc-900">상호명:</strong> 씨너지나노 (SYNERGY NANO)</p>
@@ -195,7 +195,7 @@ export default function PrivacyPage() {
 
           {/* 9. 개인정보 보호책임자 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">9. 개인정보 보호책임자</h2>
+            <h2 className="text-2xl font-bold text-violet-900">9. 개인정보 보호책임자</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-2">
               <p className="text-zinc-700">
                 개인정보 처리와 관련한 문의 사항이 있으신 경우 아래로 연락 주시기 바랍니다.
@@ -209,7 +209,7 @@ export default function PrivacyPage() {
 
           {/* 10. 법적 근거 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-bold text-teal-800">10. 관련 법령</h2>
+            <h2 className="text-2xl font-bold text-violet-900">10. 관련 법령</h2>
             <div className="bg-zinc-50 border border-zinc-200 rounded-lg p-4 space-y-2">
               <ul className="space-y-1 text-zinc-700 text-sm">
                 <li>• 개인정보보호법 (개인정보보호법, 제15조, 제22조, 제30조)</li>

@@ -65,7 +65,7 @@ export default function AddressInput({ value, onChange, error }: AddressInputPro
           <button
             type="button"
             onClick={() => setShowPostcode(true)}
-            className="px-4 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl shadow-md shadow-teal-900/10 hover:shadow-lg transition-all font-semibold"
+            className="px-4 py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl shadow-md shadow-violet-900/10 hover:shadow-lg transition-all font-semibold"
           >
             검색
           </button>
@@ -99,14 +99,14 @@ export default function AddressInput({ value, onChange, error }: AddressInputPro
             })
           }
           placeholder="상세주소 (예: 101호)"
-          className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition-all"
+          className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 transition-all"
         />
         {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
       </div>
 
       {value.address && (
-        <div className="bg-teal-50 border border-teal-200 rounded-lg p-3 flex gap-3">
-          <MapPin size={20} className="text-teal-600 flex-shrink-0 mt-0.5" />
+        <div className="bg-violet-50 border border-violet-200 rounded-lg p-3 flex gap-3">
+          <MapPin size={20} className="text-violet-600 flex-shrink-0 mt-0.5" />
           <div className="text-sm text-zinc-700">
             <p className="font-medium text-zinc-900">{value.zipCode}</p>
             <p>{value.address}</p>

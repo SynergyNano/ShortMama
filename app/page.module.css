@@ -1,4 +1,4 @@
-/* ShortMama 랜딩 — 틸 악센트 */ 
+/* ShortMama 랜딩 — 보라 악센트 */
 
 @keyframes fadeInUp {
   from {
@@ -30,8 +30,8 @@
   overflow: hidden;
   color: #18181b;
   color-scheme: light;
-  background: radial-gradient(120% 80% at 50% -20%, rgba(13, 148, 136, 0.08), transparent 50%),
-    linear-gradient(180deg, #fafafa 0%, #f4f4f5 45%, #ecfeff 100%);
+  background: radial-gradient(120% 80% at 50% -20%, rgba(124, 58, 237, 0.12), transparent 50%),
+    linear-gradient(180deg, #ffffff 0%, #faf5ff 42%, #f5f3ff 100%);
 }
 
 .bgMesh {
@@ -39,10 +39,10 @@
   inset: 0;
   background-image: radial-gradient(
       circle at 20% 30%,
-      rgba(13, 148, 136, 0.06) 0%,
+      rgba(124, 58, 237, 0.08) 0%,
       transparent 45%
     ),
-    radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+    radial-gradient(circle at 80% 70%, rgba(192, 132, 252, 0.06) 0%, transparent 40%);
   pointer-events: none;
   z-index: 0;
 }
@@ -84,7 +84,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #0f766e;
+  color: #6d28d9;
   margin: 0 0 0.75rem;
 }
 
@@ -109,7 +109,7 @@
 }
 
 .wordmark:hover {
-  color: #0d9488;
+  color: #9333ea;
 }
 
 .wordmarkPulse {
@@ -140,16 +140,16 @@
   font-size: 0.9375rem;
   font-weight: 600;
   color: #fff;
-  background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
-  border-radius: 10px;
+  background: linear-gradient(135deg, #7c3aed 0%, #a020f0 100%);
+  border-radius: 999px;
   text-decoration: none;
-  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.25);
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.28);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .ctaPrimary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.32);
 }
 
 .ctaGhost {
@@ -168,8 +168,8 @@
 }
 
 .ctaGhost:hover {
-  background: #fafafa;
-  border-color: rgba(24, 24, 27, 0.2);
+  background: #faf5ff;
+  border-color: rgba(124, 58, 237, 0.22);
 }
 
 .microNote {
@@ -233,7 +233,7 @@
   width: 72px;
   height: 38px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #14b8a6, #059669);
+  background: linear-gradient(135deg, #9333ea, #a020f0);
 }
 
 .mockTags {
@@ -247,8 +247,8 @@
   font-weight: 600;
   padding: 4px 10px;
   border-radius: 999px;
-  background: rgba(13, 148, 136, 0.12);
-  color: #0f766e;
+  background: rgba(124, 58, 237, 0.12);
+  color: #6d28d9;
 }
 
 .mockTagMuted {
@@ -463,7 +463,7 @@
   height: 0;
   border-style: solid;
   border-width: 7px 0 7px 11px;
-  border-color: transparent transparent transparent #0f766e;
+  border-color: transparent transparent transparent #7c3aed;
   margin-left: 3px;
 }
 
@@ -526,7 +526,7 @@
 }
 
 .stepCard:hover {
-  border-color: rgba(13, 148, 136, 0.25);
+  border-color: rgba(124, 58, 237, 0.28);
   box-shadow: 0 8px 24px -8px rgba(15, 23, 42, 0.08);
 }
 
@@ -604,16 +604,16 @@
   font-size: 1rem;
   font-weight: 600;
   color: #fff;
-  background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
-  border-radius: 12px;
+  background: linear-gradient(135deg, #7c3aed 0%, #a020f0 100%);
+  border-radius: 999px;
   text-decoration: none;
-  box-shadow: 0 4px 24px rgba(13, 148, 136, 0.28);
+  box-shadow: 0 4px 24px rgba(124, 58, 237, 0.3);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .ctaPrimaryWide:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(13, 148, 136, 0.32);
+  box-shadow: 0 12px 32px rgba(124, 58, 237, 0.34);
 }
 
 .ctaArrow {

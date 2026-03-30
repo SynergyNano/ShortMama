@@ -63,26 +63,26 @@ function BillingSuccessContent() {
   }, [searchParams]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-violet-100/50 via-purple-50/30 to-white flex items-center justify-center p-4">
       <div className="max-w-md w-full text-center bg-white/95 rounded-3xl border border-zinc-200 shadow-xl p-10">
         {status === 'loading' && (
           <>
-            <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-6" />
+            <div className="w-16 h-16 border-4 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto mb-6" />
             <p className="text-zinc-700 text-lg">결제를 처리하고 있습니다...</p>
           </>
         )}
 
         {status === 'success' && (
           <>
-            <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-6">
-              <span className="text-4xl text-emerald-600">✓</span>
+            <div className="w-20 h-20 rounded-full bg-violet-100 flex items-center justify-center mx-auto mb-6">
+              <span className="text-4xl text-violet-600">✓</span>
             </div>
             <h1 className="text-2xl font-bold text-zinc-900 mb-2">결제가 완료되었습니다</h1>
             <p className="text-zinc-600 mb-8">구독이 정상적으로 활성화되었습니다.</p>
             <button
               type="button"
               onClick={() => router.push('/dashboard')}
-              className="px-8 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl font-semibold shadow-md shadow-teal-900/10 hover:shadow-lg transition-shadow"
+              className="px-8 py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl font-semibold shadow-md shadow-violet-900/10 hover:shadow-lg transition-shadow"
             >
               대시보드로 이동
             </button>
@@ -107,7 +107,7 @@ function BillingSuccessContent() {
               <button
                 type="button"
                 onClick={() => router.push('/dashboard')}
-                className="px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-xl font-semibold shadow-md"
+                className="px-6 py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-xl font-semibold shadow-md"
               >
                 대시보드
               </button>
@@ -123,10 +123,10 @@ export default function BillingSuccessPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-gradient-to-b from-violet-100/50 via-purple-50/30 to-white flex items-center justify-center p-4">
           <div className="max-w-md w-full text-center bg-white/95 rounded-3xl border border-zinc-200 p-10">
             <p className="text-zinc-700 text-lg mb-4">결제 정보를 확인하는 중입니다...</p>
-            <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto" />
+            <div className="w-16 h-16 border-4 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto" />
           </div>
         </div>
       }

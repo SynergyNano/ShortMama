@@ -7,10 +7,10 @@ type LegalPageLayoutProps = {
 
 export default function LegalPageLayout({ children }: LegalPageLayoutProps) {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-teal-50/40 via-white to-emerald-50/35">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-violet-100/50 via-purple-50/30 to-white">
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
-        <div className="absolute w-[520px] h-[520px] bg-teal-400/20 rounded-full blur-[120px] -top-48 -right-24" />
-        <div className="absolute w-[480px] h-[480px] bg-emerald-400/15 rounded-full blur-[110px] -bottom-40 -left-20" />
+        <div className="absolute w-[520px] h-[520px] bg-violet-400/20 rounded-full blur-[120px] -top-48 -right-24" />
+        <div className="absolute w-[480px] h-[480px] bg-fuchsia-400/15 rounded-full blur-[110px] -bottom-40 -left-20" />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-12">

@@ -127,17 +127,17 @@ export function SearchProgress({
           background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
           border: 1px solid rgba(24, 24, 27, 0.08);
           border-radius: 16px;
-          box-shadow: 0 4px 24px rgba(24, 24, 27, 0.06), 0 0 0 1px rgba(13, 148, 136, 0.06);
+          box-shadow: 0 4px 24px rgba(24, 24, 27, 0.06), 0 0 0 1px rgba(124, 58, 237, 0.06);
           transition: box-shadow 0.3s ease, border-color 0.3s ease;
         }
 
         .search-progress-container.queued {
-          border-color: rgba(13, 148, 136, 0.2);
+          border-color: rgba(124, 58, 237, 0.2);
         }
 
         .search-progress-container.active {
-          border-color: rgba(13, 148, 136, 0.28);
-          box-shadow: 0 8px 32px rgba(13, 148, 136, 0.08), 0 0 0 1px rgba(13, 148, 136, 0.08);
+          border-color: rgba(124, 58, 237, 0.28);
+          box-shadow: 0 8px 32px rgba(124, 58, 237, 0.08), 0 0 0 1px rgba(124, 58, 237, 0.08);
         }
 
         .progress-content {
@@ -149,15 +149,15 @@ export function SearchProgress({
         .queue-position-display {
           margin-bottom: 20px;
           padding: 20px;
-          background: linear-gradient(135deg, rgba(13, 148, 136, 0.08) 0%, rgba(5, 150, 105, 0.06) 100%);
-          border: 1px solid rgba(13, 148, 136, 0.18);
+          background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(192, 132, 252, 0.06) 100%);
+          border: 1px solid rgba(124, 58, 237, 0.18);
           border-radius: 14px;
         }
 
         .queue-number {
           font-size: 44px;
           font-weight: 700;
-          color: #0f766e;
+          color: #6d28d9;
           line-height: 1;
           letter-spacing: -0.03em;
           animation: queuePulse 1.5s ease-in-out infinite;
@@ -174,7 +174,7 @@ export function SearchProgress({
         .queue-message {
           font-size: 13px;
           font-weight: 600;
-          color: #0d9488;
+          color: #7c3aed;
           margin-bottom: 10px;
           margin-top: 12px;
           letter-spacing: 0.02em;
@@ -199,7 +199,7 @@ export function SearchProgress({
         .spinner-icon {
           width: 22px;
           height: 22px;
-          color: #0d9488;
+          color: #7c3aed;
           opacity: 0.95;
         }
 
@@ -233,7 +233,7 @@ export function SearchProgress({
         .progress-bar-fill {
           height: 100%;
           border-radius: 9999px;
-          background: linear-gradient(90deg, #0d9488 0%, #14b8a6 45%, #059669 100%);
+          background: linear-gradient(90deg, #7c3aed 0%, #a855f7 45%, #c026d3 100%);
           transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
           will-change: width;
         }
@@ -244,7 +244,7 @@ export function SearchProgress({
 
         .progress-bar-fill.active {
           opacity: 1;
-          box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.15);
+          box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.15);
         }
 
         .cancel-button {
@@ -266,8 +266,8 @@ export function SearchProgress({
 
         .cancel-button:hover {
           background: #fafafa;
-          border-color: rgba(13, 148, 136, 0.35);
-          color: #0f766e;
+          border-color: rgba(124, 58, 237, 0.35);
+          color: #6d28d9;
           box-shadow: 0 2px 8px rgba(24, 24, 27, 0.06);
         }
 
