@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import TossPaymentButton from '@/app/components/TossPaymentButton/TossPaymentButton'
 
 interface SubscriptionModalProps {
@@ -18,45 +20,82 @@ const PLANS = [
 ]
 
 export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
-  if (!isOpen) return null
+  const [mounted, setMounted] = useState(false)
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
 
-  return (
-    <div className="fixed inset-0 bg-zinc-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white border border-zinc-200 rounded-2xl p-8 max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl shadow-zinc-900/10">
-        <div className="flex justify-between items-center mb-8">
-          <h3 className="text-2xl font-bold text-zinc-900">요금제 선택</h3>
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onCloseRef.current()
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = prevOverflow
+    }
+  }, [isOpen])
+
+  if (!isOpen || !mounted) return null
+
+  return createPortal(
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="subscription-modal-title"
+      className="fixed inset-0 z-[10050] flex items-center justify-center bg-zinc-900/40 p-4 backdrop-blur-sm"
+      onClick={() => onCloseRef.current()}
+    >
+      <div
+        className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl border border-zinc-200 bg-white p-8 shadow-2xl shadow-zinc-900/10"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mb-8 flex items-center justify-between">
+          <h3 id="subscription-modal-title" className="text-2xl font-bold text-zinc-900">
+            요금제 선택
+          </h3>
           <button
             type="button"
-            onClick={onClose}
-            className="text-zinc-400 hover:text-zinc-700 text-2xl leading-none"
+            onClick={() => onCloseRef.current()}
+            className="text-2xl leading-none text-zinc-400 hover:text-zinc-700"
+            aria-label="닫기"
           >
             ✕
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {PLANS.map((plan) => (
             <div
               key={plan.id}
-              className="rounded-xl p-4 border border-zinc-200 bg-zinc-50/80 hover:border-violet-300 hover:bg-violet-50/50 transition-all"
+              className="rounded-xl border border-zinc-200 bg-zinc-50/80 p-4 transition-all hover:border-violet-300/80 hover:bg-violet-50/40"
             >
-              <h4 className="text-lg font-bold text-zinc-900 mb-2">{plan.name}</h4>
-              <p className="text-sm text-zinc-600 mb-3">{plan.description}</p>
+              <h4 className="mb-2 text-lg font-bold text-zinc-900">{plan.name}</h4>
+              <p className="mb-3 text-sm text-zinc-600">{plan.description}</p>
               <div className="mb-4">
-                <p className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-700 to-fuchsia-600">
+                <p className="bg-gradient-to-r from-violet-600 to-violet-700 bg-clip-text text-2xl font-bold text-transparent">
                   ₩{plan.price.toLocaleString()}
                 </p>
                 <p className="text-xs text-zinc-500">/월</p>
               </div>
-              <div className="bg-white border border-zinc-200 rounded-lg p-2.5 mb-4">
-                <p className="text-sm text-violet-700">
+              <div className="mb-4 rounded-lg border border-zinc-200 bg-white p-2.5">
+                <p className="text-sm text-violet-700/95">
                   📊 일일 사용: <span className="font-bold">{plan.total === -1 ? '무제한' : `${plan.total}회`}</span>
                 </p>
-                <p className="text-xs text-zinc-500 mt-1">(검색 + 다운로드 + 자막 합산)</p>
+                <p className="mt-1 text-xs text-zinc-500">(검색 + 다운로드 + 자막 합산)</p>
               </div>
               <TossPaymentButton
                 plan={{ id: plan.id, name: plan.name, price: plan.price }}
-                className="w-full py-2 rounded-lg text-sm font-semibold transition-all bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-md shadow-violet-900/10 hover:shadow-lg"
+                className="w-full rounded-lg bg-gradient-to-r from-violet-500 to-violet-600 py-2 text-sm font-semibold text-white shadow-md shadow-violet-900/10 transition-all hover:shadow-lg"
               >
                 결제하기
               </TossPaymentButton>
@@ -65,11 +104,12 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
         </div>
 
         {isTestMode && (
-          <p className="text-violet-700/90 text-sm text-center mt-4">
+          <p className="mt-4 text-center text-sm text-violet-700/85">
             💡 테스트 환경: 결제창에서 <strong>신용/체크카드</strong>를 선택해 주세요. (페이코·카카오페이 등은 테스트 미지원)
           </p>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

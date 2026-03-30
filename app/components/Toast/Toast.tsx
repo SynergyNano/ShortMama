@@ -1,8 +1,11 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { X, AlertTriangle, CheckCircle, AlertCircle, Info } from 'lucide-react'
 import './Toast.css'
+
+const EASE_OUT = [0.22, 1, 0.36, 1] as const
+const EASE_IN = [0.4, 0, 0.2, 1] as const
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info'
 
@@ -50,17 +53,35 @@ const getIconColor = (type: ToastType): string => {
 }
 
 export default function Toast({ toasts, onRemove, position = 'top-center' }: ToastProps) {
+  const reduceMotion = useReducedMotion()
+
   return (
     <div className={`toast-container ${position}`}>
-      <AnimatePresence mode="popLayout">
+      <AnimatePresence mode="sync">
         {toasts.map((toast) => (
           <motion.div
             key={toast.id}
             className="toast-wrapper"
-            initial={{ opacity: 0, y: -100 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -100 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
+            initial={
+              reduceMotion ? { opacity: 0 } : { opacity: 0, y: -16, scale: 0.96 }
+            }
+            animate={
+              reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }
+            }
+            exit={
+              reduceMotion
+                ? { opacity: 0, transition: { duration: 0.12 } }
+                : {
+                    opacity: 0,
+                    y: -6,
+                    scale: 0.985,
+                    transition: { duration: 0.34, ease: EASE_IN },
+                  }
+            }
+            transition={{
+              duration: reduceMotion ? 0.12 : 0.45,
+              ease: EASE_OUT,
+            }}
           >
             <div
               className={`toast-content toast-content--${toast.type}`}
