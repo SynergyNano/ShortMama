@@ -30,34 +30,6 @@ const cache = new LRUCache<string, CacheEntry<any>>({
 });
 
 /**
- * 캐시 통계 조회
- */
-export function getCacheStats() {
-  let count = 0;
-  let totalSize = 0;
-
-  cache.forEach((entry) => {
-    if (Date.now() <= entry.expiresAt) {
-      count++;
-      totalSize += JSON.stringify(entry.data).length;
-    }
-  });
-
-  return {
-    count,
-    totalSizeKB: Math.round(totalSize / 1024),
-  };
-}
-
-/**
- * 캐시 전체 삭제
- */
-export function clearCache() {
-  const size = cache.size;
-  cache.clear();
-}
-
-/**
  * 번역 캐시에서 데이터 조회
  */
 export function getTranslationFromCache(text: string, targetLanguage: string): string | null {

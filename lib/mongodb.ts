@@ -15,11 +15,17 @@ export async function connectToDatabase() {
     throw new Error('Please define MONGODB_URI in .env.local')
   }
 
+  const maxPoolSize = Math.min(
+    100,
+    Math.max(5, parseInt(process.env.MONGODB_MAX_POOL_SIZE || '25', 10) || 25)
+  )
+  const minPoolSize = Math.min(maxPoolSize, parseInt(process.env.MONGODB_MIN_POOL_SIZE || '2', 10) || 2)
+
   const client = new MongoClient(mongoUri, {
-    maxPoolSize: 5,
-    minPoolSize: 0,
+    maxPoolSize,
+    minPoolSize,
     maxIdleTimeMS: 30000,
-    waitQueueTimeoutMS: 5000,
+    waitQueueTimeoutMS: 10000,
     compressors: ['zlib'],
     zlibCompressionLevel: 6,
     readPreference: 'secondaryPreferred'

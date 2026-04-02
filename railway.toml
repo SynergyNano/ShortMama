@@ -15,4 +15,4 @@ port = 6379
 [[services]]
 name = "worker"
 dockerfile = "Dockerfile.worker"
-startCmd = "npm run worker:pm2"
+startCmd = "npm run worker"

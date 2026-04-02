@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { searchQueue } from '@/lib/queue/search-queue'
-
-const APIFY_ABORT_URL = 'https://api.apify.com/v2/actor-runs'
-
-async function abortApifyRuns(runIds: string[], apiKey: string): Promise<void> {
-  await Promise.all(
-    runIds.map((runId) =>
-      fetch(`${APIFY_ABORT_URL}/${runId}/abort?token=${apiKey}`, { method: 'POST' })
-    )
-  )
-}
+import { searchQueue, getApifyRunIdsFromJobData } from '@/lib/queue/search-queue'
+import { abortApifyRuns } from '@/lib/apify'
 
 export async function POST(
   request: NextRequest,
@@ -26,8 +17,7 @@ export async function POST(
       )
     }
 
-    const data = job.data as { apifyRunId?: string; apifyRunIds?: string[] }
-    const runIds = data.apifyRunIds ?? (data.apifyRunId ? [data.apifyRunId] : [])
+    const runIds = getApifyRunIdsFromJobData(job.data)
     const apiKey = process.env.APIFY_API_KEY
     if (runIds.length > 0 && apiKey) {
       try {

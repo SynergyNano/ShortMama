@@ -8,6 +8,7 @@
 
 import { Platform } from '@/types/video';
 import { searchQueue } from './queue/search-queue';
+import { QUEUE_NAME } from './queue/constants';
 import { clearSearchCache } from './cache';
 import { getRedisClient } from './queue/redis-client';
 
@@ -188,6 +189,13 @@ export async function triggerRecrawl(
     if (!job.id) {
       throw new Error('Job ID 생성 실패');
     }
+
+    console.log('[Queue] job enqueued', {
+      queue: QUEUE_NAME,
+      jobId: job.id,
+      jobName: 'recrawl',
+      cacheKey,
+    });
 
     // 5단계: Redis에 갱신 진행 중 표시 (5분 잠금)
     await setRecrawlInProgress(cacheKey, job.id);

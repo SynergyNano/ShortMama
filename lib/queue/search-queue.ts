@@ -1,5 +1,5 @@
 import { Queue } from 'bullmq'
-import { redisConnection } from './redis'
+import { logRedisErrorDiagnostics, redisConnection } from './redis'
 import {
   QUEUE_NAME,
   JOB_ATTEMPTS,
@@ -17,7 +17,14 @@ export interface SearchJobData {
   query: string
   platform: 'tiktok' | 'douyin'
   dateRange?: string
-  isRecrawl?: boolean  // Flag indicating this is a recrawl due to CDN URL expiration
+  isRecrawl?: boolean
+  apifyRunId?: string
+  apifyRunIds?: string[]
+}
+
+/** BullMQ job.data에서 Apify run ID 목록 (도우인 병렬 = 여러 run) */
+export function getApifyRunIdsFromJobData(data: SearchJobData): string[] {
+  return data.apifyRunIds ?? (data.apifyRunId ? [data.apifyRunId] : [])
 }
 
 /**
@@ -43,4 +50,8 @@ export const searchQueue = new Queue<SearchJobData>(QUEUE_NAME, {
       delay: BACKOFF_DELAY, // Initial retry delay: 2 seconds (faster recovery)
     },
   },
+})
+
+searchQueue.on('error', (err) => {
+  logRedisErrorDiagnostics('BullMQ Queue', err)
 })

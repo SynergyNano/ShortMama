@@ -1131,13 +1131,50 @@ export default function Search() {
 
         // ================================================
 
+        let consecutivePollErrors = 0;
         const pollInterval = setInterval(async () => {
+          const stopPolling = () => {
+            clearSearchTimeout();
+            clearInterval(pollInterval);
+            pollIntervalRef.current = null;
+          };
+
           try {
             const statusRes = await fetch(`/api/search/${data.jobId}`, {
               signal: abortControllerRef.current?.signal,
             });
 
-            if (!statusRes.ok) return;
+            if (!statusRes.ok) {
+              if (cancelledJobIdRef.current === data.jobId) return;
+              let errPayload: { error?: string } = {};
+              try {
+                errPayload = await statusRes.json();
+              } catch {
+                /* ignore */
+              }
+              stopPolling();
+              setIsLoading(false);
+              setJobStatus(null);
+              if (statusRes.status === 404) {
+                setError(
+                  "검색 작업을 찾을 수 없습니다. 잡이 만료되었거나 서버가 정리했을 수 있습니다. 같은 검색을 다시 시도해 주세요.",
+                );
+                addToast(
+                  "warning",
+                  "검색 상태를 불러오지 못했습니다. 같은 키워드로 다시 검색하면 캐시된 결과가 나올 수 있습니다.",
+                  "재시도 안내",
+                  6000,
+                );
+              } else {
+                const msg =
+                  errPayload.error || `상태 조회 실패 (HTTP ${statusRes.status})`;
+                setError(msg);
+                addToast("error", "검색 상태를 확인할 수 없습니다. 잠시 후 다시 시도해 주세요.", "❌ 오류", 5000);
+              }
+              return;
+            }
+
+            consecutivePollErrors = 0;
 
             const statusData = await statusRes.json();
 
@@ -1163,6 +1200,7 @@ export default function Search() {
               setError("");
               setJobStatus(null);
               clearInterval(pollInterval);
+              pollIntervalRef.current = null;
 
               if (statusData.data && statusData.data.length > 0) {
                 const urlStats = statusData.data.reduce(
@@ -1190,7 +1228,12 @@ export default function Search() {
                 addToast("success", "검색 완료!", `${statusData.data.length}개의 결과를 찾았습니다`);
               } else {
                 setVideos([]);
-                addToast("info", "결과 없음", "다른 키워드나 필터로 다시 시도해보세요");
+                addToast(
+                  "info",
+                  "이번 요청에서는 결과 목록이 비어 있습니다. 잠시 후 같은 검색을 다시 하면 캐시에서 불러올 수 있습니다.",
+                  "결과 없음",
+                  5000,
+                );
               }
             } else if (statusData.status === "failed") {
               clearSearchTimeout();
@@ -1202,6 +1245,7 @@ export default function Search() {
               setIsLoading(false);
               setJobStatus(null);
               clearInterval(pollInterval);
+              pollIntervalRef.current = null;
 
               // 에러 타입별 토스트 메시지 표시
               if (errorType === "RATE_LIMIT") {
@@ -1219,7 +1263,16 @@ export default function Search() {
               }
             }
           } catch (err) {
+            if (err instanceof Error && err.name === "AbortError") return;
             console.error("[Poll] Error:", err);
+            consecutivePollErrors += 1;
+            if (consecutivePollErrors >= 5) {
+              stopPolling();
+              setIsLoading(false);
+              setJobStatus(null);
+              setError("검색 상태를 여러 번 불러오지 못했습니다. 네트워크를 확인한 뒤 다시 검색해 주세요.");
+              addToast("error", "연결이 불안정합니다. 다시 검색해 주세요.", "네트워크 오류", 5000);
+            }
           }
         }, SEARCH_TIMING.pollIntervalMs);
 

@@ -1,8 +1,11 @@
 import { Collection, Db, ObjectId } from 'mongodb'
 import { connectToDatabase } from './mongodb'
 
-// 환경변수에서 기본 일일 할당량 설정
-const DEFAULT_DAILY_LIMIT = parseInt(process.env.DEFAULT_DAILY_LIMIT || '20', 10)
+// 일일 할당량: API_DAILY_LIMIT 권장 (DEFAULT_DAILY_LIMIT는 레거시 호환)
+const DEFAULT_DAILY_LIMIT = parseInt(
+  process.env.API_DAILY_LIMIT || process.env.DEFAULT_DAILY_LIMIT || '20',
+  10
+)
 
 /**
  * 회원가입 시 제공하는 무료 검색/다운로드 횟수

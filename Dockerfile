@@ -1,25 +1,18 @@
+# Next.js 앱 (Railway "app" 서비스 등)
 FROM node:18-alpine
 
 WORKDIR /app
 
-# 필요한 시스템 패키지 설치
-RUN apk add --no-cache \
-    python3 \
-    make \
-    g++
+RUN apk add --no-cache python3 make g++ curl
 
-# 패키지 파일 복사
-COPY package*.json ./
+COPY package.json package-lock.json ./
+RUN npm ci
 
-# 의존성 설치 (devDependencies 포함)
-RUN npm install --verbose && \
-    npm list tsx
-
-# 소스 코드 복사
 COPY . .
 
-# 로그 디렉토리 생성
-RUN mkdir -p logs
+RUN npm run build
 
-# Worker 실행
-ENTRYPOINT ["npm", "run", "worker"]
+ENV NODE_ENV=production
+EXPOSE 3000
+
+CMD ["npm", "run", "start"]

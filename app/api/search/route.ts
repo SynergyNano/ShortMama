@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { getVideoFromCache, getVideoFromMongoDB } from '@/lib/cache'
 import { searchQueue } from '@/lib/queue/search-queue'
+import { QUEUE_NAME } from '@/lib/queue/constants'
 import { Platform } from '@/types/video'
 import { checkApiUsage, incrementApiUsage } from '@/lib/apiUsage'
 
@@ -142,6 +143,16 @@ export async function POST(request: NextRequest) {
     // 큐 길이 기반 예상 대기시간 계산
     const queueLength = await searchQueue.getWaitingCount()
     const estimatedWaitSeconds = Math.max(15, queueLength * 2)
+
+    console.log('[Queue] job enqueued', {
+      queue: QUEUE_NAME,
+      jobId: job.id,
+      jobName: 'search',
+      queuePosition: queueLength + 1,
+      estimatedWaitSeconds,
+      queryPreview: trimmedQuery.substring(0, 40),
+      platform,
+    })
 
     if (isDev) {
       console.log(`[SearchAPI] 📋 작업을 Queue에 추가`, {

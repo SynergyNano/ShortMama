@@ -9,12 +9,9 @@
     "lint": "eslint",
     "worker": "tsx lib/queue/search-worker.ts",
     "worker:dev": "tsx lib/queue/search-worker-dev.ts",
-    "worker:pm2": "pm2 start ecosystem.config.js",
-    "worker:stop": "pm2 stop all",
-    "worker:logs": "pm2 logs",
     "redis:local": "docker-compose -f docker-compose.local.yml up",
     "redis:stop": "docker-compose -f docker-compose.local.yml down",
-    "test:load": "npm run build && npm run worker:pm2 & npm run dev"
+    "test:load": "npm run build && npm run start"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -35,8 +32,6 @@
     "react-dom": "19.2.0",
     "react-hook-form": "^7.71.0",
     "resend": "^6.9.2",
-    "socket.io": "^4.8.3",
-    "socket.io-client": "^4.8.3",
     "swr": "^2.2.0",
     "zod": "^4.3.5"
   },
@@ -47,7 +42,6 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "pm2": "^6.0.14",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "5.9.3"

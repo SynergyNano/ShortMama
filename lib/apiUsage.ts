@@ -2,8 +2,11 @@ import { connectToDatabase } from './mongodb'
 import { ObjectId } from 'mongodb'
 import { getUserDailyLimit, decrementUserQuota } from './userLimits'
 
-// 환경변수에서 설정, 기본값 20
-const DEFAULT_DAILY_LIMIT = parseInt(process.env.API_DAILY_LIMIT || '20', 10)
+// 일일 검색 한도 기본값 (userLimits와 동일 변수 우선순위 유지)
+const DEFAULT_DAILY_LIMIT = parseInt(
+  process.env.API_DAILY_LIMIT || process.env.DEFAULT_DAILY_LIMIT || '20',
+  10
+)
 
 interface ApiUsageRecord {
   _id?: ObjectId

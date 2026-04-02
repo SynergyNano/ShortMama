@@ -1,6 +1,6 @@
 import { Worker } from 'bullmq'
 import { SearchJobData } from './search-queue'
-import { redisConnection } from './redis'
+import { logRedisErrorDiagnostics, redisConnection } from './redis'
 import { searchTikTokVideos } from '@/lib/scrapers/tiktok'
 import { searchDouyinVideosParallel } from '@/lib/scrapers/douyin'
 import { setVideoToCache } from '@/lib/cache'
@@ -18,10 +18,10 @@ import {
 
 const CONCURRENCY = process.env.WORKER_CONCURRENCY ? parseInt(process.env.WORKER_CONCURRENCY) : DEFAULT_WORKER_CONCURRENCY
 const APIFY_KEY = process.env.APIFY_API_KEY
+const isProd = process.env.NODE_ENV === 'production'
 
-// ✅ IMPROVED: 시작 시 필수 환경 변수 검증
 if (!APIFY_KEY) {
-  console.error('❌ FATAL: APIFY_API_KEY environment variable is not set')
+  console.error('FATAL: APIFY_API_KEY environment variable is not set')
   process.exit(1)
 }
 
@@ -69,13 +69,12 @@ const worker = new Worker<SearchJobData>(
         throw new Error('APIFY_KEY environment variable not configured')
       }
 
-      console.log(`[Worker] 🔄 스크래핑 시작`, {
+      console.log('[Worker] scrape start', {
         jobId: job.id,
-        query: query.substring(0, 30),
+        query: query.substring(0, isProd ? 40 : 30),
         platform,
-        dateRange: dateRange || 'all',
         attempts: job.attemptsMade,
-        timestamp: new Date().toISOString()
+        ...(isProd ? {} : { dateRange: dateRange || 'all', timestamp: new Date().toISOString() }),
       })
 
       switch (platform) {
@@ -103,14 +102,6 @@ const worker = new Worker<SearchJobData>(
           throw new Error(`Unknown platform: ${platform}`)
       }
 
-      console.log(`[Worker] ✅ 스크래핑 완료`, {
-        jobId: job.id,
-        query: query.substring(0, 30),
-        platform,
-        videoCount: videos.length,
-        timestamp: new Date().toISOString()
-      })
-
       try {
         await job.updateProgress(80)
       } catch (err) {
@@ -129,7 +120,7 @@ const worker = new Worker<SearchJobData>(
 
       // Cache write should not block job completion
       setVideoToCache(query, platform, videos, dateRange).catch((err) => {
-        console.error(`[Worker] ❌ 캐시 작성 실패`, {
+        console.error('[Worker] cache write failed', {
           jobId: job.id,
           query: query.substring(0, 30),
           platform,
@@ -144,18 +135,17 @@ const worker = new Worker<SearchJobData>(
         // Progress update failure is non-critical
       }
 
-      console.log(`[Worker] 🎉 작업 완료 및 캐시 저장`, {
+      console.log('[Worker] scrape done', {
         jobId: job.id,
-        query: query.substring(0, 30),
         platform,
         videoCount: videos.length,
-        timestamp: new Date().toISOString()
+        ...(isProd ? {} : { query: query.substring(0, 30), timestamp: new Date().toISOString() }),
       })
 
       return videos
     } catch (error) {
       const classifiedError = classifyScrapingError(error, platform)
-      console.error(`[Worker] ❌ 스크래핑 실패`, {
+      console.error('[Worker] scrape failed', {
         jobId: job.id,
         query: query.substring(0, 30),
         platform,
@@ -180,5 +170,42 @@ const worker = new Worker<SearchJobData>(
     stalledInterval: STALLED_INTERVAL, // Check for stalled jobs every 30 seconds
   }
 )
+
+worker.on('error', (err) => {
+  logRedisErrorDiagnostics('BullMQ Worker', err)
+})
+
+worker.on('active', (job) => {
+  console.log('[Queue] job active (worker)', {
+    queue: QUEUE_NAME,
+    jobId: job.id,
+    jobName: job.name,
+    attemptsMade: job.attemptsMade,
+  })
+})
+
+worker.on('completed', (job) => {
+  console.log('[Queue] job completed', {
+    queue: QUEUE_NAME,
+    jobId: job.id,
+    jobName: job.name,
+    finishedOn: job.finishedOn,
+  })
+})
+
+worker.on('failed', (job, err) => {
+  console.error('[Queue] job failed (will retry if attempts left)', {
+    queue: QUEUE_NAME,
+    jobId: job?.id,
+    jobName: job?.name,
+    attemptsMade: job?.attemptsMade,
+    error: err?.message,
+  })
+})
+
+console.log('[Queue] worker listening', {
+  queue: QUEUE_NAME,
+  concurrency: CONCURRENCY,
+})
 
 export default worker
