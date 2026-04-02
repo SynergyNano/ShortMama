@@ -1,5 +1,5 @@
 # Next.js 앱 (Railway "app" 서비스 등)
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 

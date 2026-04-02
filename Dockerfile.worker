@@ -1,5 +1,5 @@
 # BullMQ 워커 — PM2 없이 Node + tsx (Next.js 빌드 불필요)
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
