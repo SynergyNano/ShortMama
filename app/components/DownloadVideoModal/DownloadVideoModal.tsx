@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { X, Download, AlertCircle, FileText } from "lucide-react";
+import { X, Download, AlertCircle, FileText, Sparkles } from "lucide-react";
 
 interface Video {
   id: string;
@@ -261,8 +261,8 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: "rgba(10, 10, 15, 0.85)",
-          backdropFilter: "blur(12px)",
+          backgroundColor: "rgba(24, 24, 27, 0.45)",
+          backdropFilter: "blur(10px)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -273,16 +273,17 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
           className="download-modal-content"
           onClick={(e) => e.stopPropagation()}
           style={{
-            background: "linear-gradient(135deg, rgba(37, 37, 48, 0.98) 0%, rgba(26, 26, 36, 0.98) 100%)",
-            borderRadius: "12px",
-            padding: "32px",
+            background: "#ffffff",
+            borderRadius: "16px",
+            padding: "28px 32px",
             maxWidth: "600px",
             width: "90%",
             maxHeight: "80vh",
             overflowY: "auto",
-            boxShadow: "0 24px 80px rgba(0, 0, 0, 0.7)",
+            boxShadow:
+              "0 25px 50px -12px rgba(24, 24, 27, 0.15), 0 0 0 1px rgba(24, 24, 27, 0.06)",
             animation: "slideUp 0.3s ease-out",
-            border: "1px solid rgba(0, 229, 115, 0.2)",
+            border: "1px solid rgba(167, 139, 250, 0.22)",
           }}
         >
           {/* 헤더 */}
@@ -298,15 +299,32 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
               style={{
                 fontSize: "20px",
                 fontWeight: "700",
-                color: "#FFFFFF",
+                color: "#18181b",
                 margin: 0,
                 display: "flex",
                 alignItems: "center",
-                gap: "8px",
+                gap: "10px",
+                letterSpacing: "-0.02em",
               }}
             >
-              <Download size={24} />
-              영상 자막 추출
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 40,
+                  height: 40,
+                  borderRadius: "12px",
+                  background: "linear-gradient(135deg, rgba(167, 139, 250, 0.2) 0%, rgba(192, 132, 252, 0.15) 100%)",
+                  color: "#7c3aed",
+                }}
+              >
+                <Sparkles size={22} strokeWidth={2} />
+              </span>
+              <span style={{ display: "flex", flexDirection: "column", gap: "2px", alignItems: "flex-start" }}>
+                <span>영상 자막 추출</span>
+                <span style={{ fontSize: "12px", fontWeight: 500, color: "#71717a" }}>숏마마 · URL로 다운로드·자막</span>
+              </span>
             </h2>
             <button
               type="button"
@@ -321,7 +339,7 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                 border: "none",
                 fontSize: "24px",
                 cursor: isLoading ? "not-allowed" : "pointer",
-                color: "rgba(255, 255, 255, 0.5)",
+                color: "#a1a1aa",
                 padding: "0",
                 width: "32px",
                 height: "32px",
@@ -330,8 +348,8 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                 justifyContent: "center",
                 transition: "color 0.2s",
               }}
-              onMouseEnter={(e) => !isLoading && (e.currentTarget.style.color = "#00E573")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255, 255, 255, 0.5)")}
+              onMouseEnter={(e) => !isLoading && (e.currentTarget.style.color = "#7c3aed")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#a1a1aa")}
               title={isBusy ? "취소" : "닫기"}
             >
               <X size={20} />
@@ -341,21 +359,22 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
           {/* 정보 메시지 */}
           <div
             style={{
-              padding: "12px",
-              backgroundColor: "rgba(0, 229, 115, 0.1)",
-              border: "1px solid rgba(0, 229, 115, 0.3)",
-              borderRadius: "8px",
+              padding: "12px 14px",
+              backgroundColor: "#f5f3ff",
+              border: "1px solid rgba(167, 139, 250, 0.35)",
+              borderRadius: "10px",
               marginBottom: "20px",
               fontSize: "13px",
-              color: "#00E573",
+              color: "#5b21b6",
+              lineHeight: 1.5,
               display: "flex",
-              gap: "8px",
+              gap: "10px",
               alignItems: "flex-start",
             }}
           >
-            <AlertCircle size={16} style={{ flexShrink: 0, marginTop: "2px" }} />
+            <AlertCircle size={18} style={{ flexShrink: 0, marginTop: "1px", color: "#7c3aed" }} />
             <div>
-              <strong>TikTok</strong> 영상 URL을 붙여넣기하면 자동으로 감지하여 다운로드하거나 자막을 추출합니다.
+              <strong style={{ color: "#6d28d9" }}>TikTok·Douyin</strong> 영상 URL을 붙여넣으면 플랫폼을 자동 감지해 다운로드하거나 자막을 추출합니다.
             </div>
           </div>
 
@@ -364,12 +383,12 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
             <div
               style={{
                 marginBottom: "12px",
-                padding: "12px",
-                backgroundColor: "rgba(0, 229, 115, 0.1)",
-                border: "1px solid rgba(0, 229, 115, 0.3)",
-                borderRadius: "8px",
+                padding: "12px 14px",
+                backgroundColor: "#faf5ff",
+                border: "1px solid rgba(167, 139, 250, 0.35)",
+                borderRadius: "10px",
                 fontSize: "13px",
-                color: "#00E573",
+                color: "#6d28d9",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
@@ -383,8 +402,8 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                     display: "inline-block",
                     width: "12px",
                     height: "12px",
-                    border: "2px solid rgba(0, 229, 115, 0.2)",
-                    borderTop: "2px solid #00E573",
+                    border: "2px solid rgba(124, 58, 237, 0.2)",
+                    borderTop: "2px solid #7c3aed",
                     borderRadius: "50%",
                     animation: "spin 0.8s linear infinite",
                   }}
@@ -396,24 +415,26 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                 onClick={() => handleCancelDownload()}
                 style={{
                   padding: "6px 12px",
-                  border: "1px solid rgba(255, 255, 255, 0.3)",
-                  background: "rgba(255, 255, 255, 0.08)",
-                  borderRadius: "6px",
+                  border: "1px solid rgba(24, 24, 27, 0.12)",
+                  background: "#ffffff",
+                  borderRadius: "8px",
                   fontSize: "12px",
                   fontWeight: "600",
-                  color: "rgba(255, 255, 255, 0.9)",
+                  color: "#3f3f46",
                   cursor: "pointer",
                   whiteSpace: "nowrap",
                   boxShadow: "none",
                   outline: "none",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.16)";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.6)";
+                  e.currentTarget.style.background = "#fafafa";
+                  e.currentTarget.style.borderColor = "rgba(124, 58, 237, 0.35)";
+                  e.currentTarget.style.color = "#6d28d9";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
+                  e.currentTarget.style.background = "#ffffff";
+                  e.currentTarget.style.borderColor = "rgba(24, 24, 27, 0.12)";
+                  e.currentTarget.style.color = "#3f3f46";
                 }}
               >
                 취소
@@ -426,12 +447,12 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
             <div
               style={{
                 marginBottom: "12px",
-                padding: "12px",
-                backgroundColor: "rgba(147, 51, 234, 0.1)",
-                border: "1px solid rgba(147, 51, 234, 0.3)",
-                borderRadius: "8px",
+                padding: "12px 14px",
+                backgroundColor: "#faf5ff",
+                border: "1px solid rgba(167, 139, 250, 0.35)",
+                borderRadius: "10px",
                 fontSize: "13px",
-                color: "#c084fc",
+                color: "#6d28d9",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
@@ -445,8 +466,8 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                     display: "inline-block",
                     width: "12px",
                     height: "12px",
-                    border: "2px solid rgba(147, 51, 234, 0.2)",
-                    borderTop: "2px solid #c084fc",
+                    border: "2px solid rgba(124, 58, 237, 0.2)",
+                    borderTop: "2px solid #7c3aed",
                     borderRadius: "50%",
                     animation: "spin 0.8s linear infinite",
                   }}
@@ -458,24 +479,26 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                 onClick={() => handleCancelSubtitle()}
                 style={{
                   padding: "6px 12px",
-                  border: "1px solid rgba(255, 255, 255, 0.3)",
-                  background: "rgba(255, 255, 255, 0.08)",
-                  borderRadius: "6px",
+                  border: "1px solid rgba(24, 24, 27, 0.12)",
+                  background: "#ffffff",
+                  borderRadius: "8px",
                   fontSize: "12px",
                   fontWeight: "600",
-                  color: "rgba(255, 255, 255, 0.9)",
+                  color: "#3f3f46",
                   cursor: "pointer",
                   whiteSpace: "nowrap",
                   boxShadow: "none",
                   outline: "none",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.16)";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.6)";
+                  e.currentTarget.style.background = "#fafafa";
+                  e.currentTarget.style.borderColor = "rgba(124, 58, 237, 0.35)";
+                  e.currentTarget.style.color = "#6d28d9";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
+                  e.currentTarget.style.background = "#ffffff";
+                  e.currentTarget.style.borderColor = "rgba(24, 24, 27, 0.12)";
+                  e.currentTarget.style.color = "#3f3f46";
                 }}
               >
                 취소
@@ -490,7 +513,7 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                 display: "block",
                 fontSize: "13px",
                 fontWeight: "600",
-                color: "rgba(255, 255, 255, 0.75)",
+                color: "#3f3f46",
                 marginBottom: "8px",
               }}
             >
@@ -512,26 +535,28 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
               disabled={isBusy || isLoading}
               style={{
                 width: "100%",
-                padding: "12px",
-                border: (error || subtitleError) ? "2px solid #ff6b6b" : "1px solid rgba(255, 255, 255, 0.08)",
-                borderRadius: "8px",
+                padding: "12px 14px",
+                border: (error || subtitleError) ? "2px solid #f87171" : "1px solid rgba(24, 24, 27, 0.12)",
+                borderRadius: "10px",
                 fontSize: "13px",
                 fontFamily: "inherit",
                 boxSizing: "border-box",
-                backgroundColor: isBusy || isLoading ? "rgba(37, 37, 48, 0.4)" : "rgba(37, 37, 48, 0.6)",
-                color: "#FFFFFF",
+                backgroundColor: isBusy || isLoading ? "#f4f4f5" : "#fafafa",
+                color: "#18181b",
                 outline: "none",
-                transition: "border-color 0.2s",
+                transition: "border-color 0.2s, box-shadow 0.2s",
                 marginBottom: "12px",
               }}
               className="download-modal-input"
               onFocus={(e) => {
                 if (!error && !subtitleError) {
-                  e.currentTarget.style.borderColor = "#00E573";
+                  e.currentTarget.style.borderColor = "#7c3aed";
+                  e.currentTarget.style.boxShadow = "0 0 0 3px rgba(124, 58, 237, 0.12)";
                 }
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = (error || subtitleError) ? "#ff6b6b" : "rgba(255, 255, 255, 0.08)";
+                e.currentTarget.style.boxShadow = "none";
+                e.currentTarget.style.borderColor = (error || subtitleError) ? "#f87171" : "rgba(24, 24, 27, 0.12)";
               }}
             />
             {/* 버튼 행 */}
@@ -542,31 +567,34 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                 style={{
                   flex: 1,
                   padding: "12px 16px",
-                  border: "none",
+                  border: "1px solid transparent",
                   background:
                     isBusy || isLoading || !input.trim()
-                      ? "rgba(0, 229, 115, 0.3)"
-                      : "linear-gradient(135deg, #00E573 0%, #00B85C 100%)",
-                  borderRadius: "8px",
+                      ? "rgba(124, 58, 237, 0.22)"
+                      : "linear-gradient(135deg, #ffffff 0%, #faf5ff 100%)",
+                  borderRadius: "10px",
                   fontSize: "13px",
                   fontWeight: "700",
                   cursor: isBusy || isLoading || !input.trim() ? "not-allowed" : "pointer",
-                  color: "#000",
+                  color: isBusy || isLoading || !input.trim() ? "#a1a1aa" : "#6d28d9",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   gap: "6px",
                   transition: "all 0.3s",
                   whiteSpace: "nowrap",
+                  boxShadow: isBusy || isLoading || !input.trim() ? "none" : "inset 0 0 0 1px rgba(167, 139, 250, 0.45)",
                 }}
                 onMouseEnter={(e) => {
                   if (!isBusy && !isLoading && input.trim()) {
-                    e.currentTarget.style.background = "linear-gradient(135deg, #00FF7F 0%, #00E573 100%)";
+                    e.currentTarget.style.background = "linear-gradient(135deg, #faf5ff 0%, #f5f3ff 100%)";
+                    e.currentTarget.style.boxShadow = "inset 0 0 0 1px rgba(124, 58, 237, 0.45)";
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!isBusy && !isLoading && input.trim()) {
-                    e.currentTarget.style.background = "linear-gradient(135deg, #00E573 0%, #00B85C 100%)";
+                    e.currentTarget.style.background = "linear-gradient(135deg, #ffffff 0%, #faf5ff 100%)";
+                    e.currentTarget.style.boxShadow = "inset 0 0 0 1px rgba(167, 139, 250, 0.45)";
                   }
                 }}
               >
@@ -577,8 +605,8 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                         display: "inline-block",
                         width: "12px",
                         height: "12px",
-                        border: "2px solid rgba(255,255,255,0.3)",
-                        borderTop: "2px solid white",
+                        border: "2px solid rgba(124, 58, 237, 0.25)",
+                        borderTop: "2px solid #7c3aed",
                         borderRadius: "50%",
                         animation: "spin 0.8s linear infinite",
                       }}
@@ -601,9 +629,9 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                   border: "none",
                   background:
                     isBusy || isLoading || !input.trim()
-                      ? "rgba(147, 51, 234, 0.3)"
-                      : "linear-gradient(135deg, #9333ea 0%, #7c3aed 100%)",
-                  borderRadius: "8px",
+                      ? "rgba(124, 58, 237, 0.25)"
+                      : "linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)",
+                  borderRadius: "10px",
                   fontSize: "13px",
                   fontWeight: "700",
                   cursor: isBusy || isLoading || !input.trim() ? "not-allowed" : "pointer",
@@ -614,15 +642,16 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                   gap: "6px",
                   transition: "all 0.3s",
                   whiteSpace: "nowrap",
+                  boxShadow: isBusy || isLoading || !input.trim() ? "none" : "0 4px 14px rgba(124, 58, 237, 0.35)",
                 }}
                 onMouseEnter={(e) => {
                   if (!isBusy && !isLoading && input.trim()) {
-                    e.currentTarget.style.background = "linear-gradient(135deg, #a855f7 0%, #9333ea 100%)";
+                    e.currentTarget.style.background = "linear-gradient(135deg, #9333ea 0%, #7c3aed 100%)";
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!isBusy && !isLoading && input.trim()) {
-                    e.currentTarget.style.background = "linear-gradient(135deg, #9333ea 0%, #7c3aed 100%)";
+                    e.currentTarget.style.background = "linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)";
                   }
                 }}
               >
@@ -633,7 +662,7 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                         display: "inline-block",
                         width: "12px",
                         height: "12px",
-                        border: "2px solid rgba(255,255,255,0.3)",
+                        border: "2px solid rgba(255,255,255,0.35)",
                         borderTop: "2px solid white",
                         borderRadius: "50%",
                         animation: "spin 0.8s linear infinite",
@@ -656,11 +685,11 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
             <div
               style={{
                 marginBottom: "12px",
-                padding: "12px",
-                backgroundColor: "rgba(255, 107, 107, 0.1)",
-                border: "1px solid rgba(255, 107, 107, 0.3)",
-                borderRadius: "8px",
-                color: "#ff6b6b",
+                padding: "12px 14px",
+                backgroundColor: "#fef2f2",
+                border: "1px solid rgba(248, 113, 113, 0.35)",
+                borderRadius: "10px",
+                color: "#b91c1c",
                 fontSize: "13px",
               }}
             >
@@ -671,12 +700,12 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                   onClick={() => setError("")}
                   style={{
                     padding: "6px 12px",
-                    border: "1px solid rgba(255, 107, 107, 0.5)",
-                    background: "rgba(255, 107, 107, 0.15)",
-                    borderRadius: "6px",
+                    border: "1px solid rgba(248, 113, 113, 0.45)",
+                    background: "#ffffff",
+                    borderRadius: "8px",
                     fontSize: "12px",
                     fontWeight: "600",
-                    color: "#ff8a8a",
+                    color: "#b91c1c",
                     cursor: "pointer",
                   }}
                 >
@@ -691,11 +720,11 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
             <div
               style={{
                 marginBottom: "12px",
-                padding: "12px",
-                backgroundColor: "rgba(255, 107, 107, 0.1)",
-                border: "1px solid rgba(255, 107, 107, 0.3)",
-                borderRadius: "8px",
-                color: "#ff6b6b",
+                padding: "12px 14px",
+                backgroundColor: "#fef2f2",
+                border: "1px solid rgba(248, 113, 113, 0.35)",
+                borderRadius: "10px",
+                color: "#b91c1c",
                 fontSize: "13px",
               }}
             >
@@ -706,12 +735,12 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                   onClick={() => setSubtitleError("")}
                   style={{
                     padding: "6px 12px",
-                    border: "1px solid rgba(255, 107, 107, 0.5)",
-                    background: "rgba(255, 107, 107, 0.15)",
-                    borderRadius: "6px",
+                    border: "1px solid rgba(248, 113, 113, 0.45)",
+                    background: "#ffffff",
+                    borderRadius: "8px",
                     fontSize: "12px",
                     fontWeight: "600",
-                    color: "#ff8a8a",
+                    color: "#b91c1c",
                     cursor: "pointer",
                   }}
                 >
@@ -733,24 +762,24 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                 style={{
                   flex: 1,
                   padding: "12px",
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
-                  backgroundColor: "rgba(255, 100, 100, 0.2)",
-                  borderRadius: "8px",
+                  border: "1px solid rgba(248, 113, 113, 0.35)",
+                  backgroundColor: "#fef2f2",
+                  borderRadius: "10px",
                   fontSize: "13px",
                   fontWeight: "700",
                   cursor: "pointer",
-                  color: "#ff8a8a",
+                  color: "#b91c1c",
                   transition: "all 0.2s",
                   boxShadow: "none",
                   outline: "none",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(255, 130, 130, 0.35)";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.35)";
+                  e.currentTarget.style.backgroundColor = "#fee2e2";
+                  e.currentTarget.style.borderColor = "rgba(248, 113, 113, 0.5)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(255, 100, 100, 0.2)";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
+                  e.currentTarget.style.backgroundColor = "#fef2f2";
+                  e.currentTarget.style.borderColor = "rgba(248, 113, 113, 0.35)";
                 }}
               >
                 취소
@@ -763,24 +792,26 @@ export default function DownloadVideoModal({ isOpen, onClose, onDownload, isLoad
                 style={{
                   flex: 1,
                   padding: "12px",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  backgroundColor: "rgba(37, 37, 48, 0.4)",
-                  borderRadius: "8px",
+                  border: "1px solid rgba(24, 24, 27, 0.12)",
+                  backgroundColor: "#ffffff",
+                  borderRadius: "10px",
                   fontSize: "13px",
                   fontWeight: "700",
                   cursor: isLoading ? "not-allowed" : "pointer",
-                  color: "rgba(255, 255, 255, 0.75)",
+                  color: "#52525b",
                   transition: "all 0.2s",
                 }}
                 onMouseEnter={(e) => {
                   if (!isLoading) {
-                    e.currentTarget.style.backgroundColor = "rgba(37, 37, 48, 0.7)";
-                    e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
+                    e.currentTarget.style.backgroundColor = "#fafafa";
+                    e.currentTarget.style.borderColor = "rgba(124, 58, 237, 0.25)";
+                    e.currentTarget.style.color = "#6d28d9";
                   }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(37, 37, 48, 0.4)";
-                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                  e.currentTarget.style.backgroundColor = "#ffffff";
+                  e.currentTarget.style.borderColor = "rgba(24, 24, 27, 0.12)";
+                  e.currentTarget.style.color = "#52525b";
                 }}
               >
                 닫기
