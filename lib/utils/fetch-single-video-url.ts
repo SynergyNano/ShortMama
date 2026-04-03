@@ -111,12 +111,23 @@ export async function fetchSingleVideoUrl(
 
     const result = dataset[0];
 
-    // Enhanced videoUrl extraction with multiple fallbacks for different actor response formats
-    const videoUrl =
-      result.videoUrl ||              // Priority 1: videoUrl (uppercase)
-      result.videourl ||              // Priority 2: videourl (lowercase for douyin)
-      result.downloadUrl ||           // Priority 3: downloadUrl (epctex fallback)
-      result.downloadAddress;         // Priority 4: downloadAddress (epctex alternative)
+    // actor 응답 스키마가 종종 바뀌거나(또는 subtitle 트랙 URL이 섞여 들어오기도 해서),
+    // "영상(MP4)처럼 보이는 URL"을 우선 선택하도록 간단한 휴리스틱을 적용합니다.
+    const candidates = [
+      (result as any).videoUrl,
+      (result as any).videourl,
+      (result as any).downloadUrl,
+      (result as any).downloadAddress,
+    ].filter((u: unknown): u is string => typeof u === 'string' && u.startsWith('http'));
+
+    const looksLikeMp4 = (u: string) =>
+      u.includes('mime_type=video_mp4') ||
+      u.includes('/video/tos/') ||
+      u.includes('.mp4') ||
+      u.includes('mp4?');
+
+    const mp4Candidates = candidates.filter(looksLikeMp4);
+    const videoUrl = mp4Candidates[0] || candidates[0];
 
     if (!videoUrl) {
       console.error(`[fetchSingleVideoUrl] No video URL in response`);

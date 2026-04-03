@@ -101,11 +101,25 @@ export async function POST(req: NextRequest) {
       'douyin': 'https://www.douyin.com/',
     };
 
+    // TikTok CDN/봇 차단은 "해당 포스트 URL의 도메인+path referer"가 필요할 때가 많음.
+    // 쿼리 문자열이 붙은 URL은 차단/다르게 응답되는 케이스가 있어 origin+pathname만 사용.
+    let referer = webVideoUrl || refererMap[platform] || 'https://www.tiktok.com/';
+    try {
+      if (webVideoUrl) {
+        const u = new URL(webVideoUrl);
+        referer = `${u.origin}${u.pathname}`;
+      }
+    } catch {
+      // ignore; fallback referer 사용
+    }
+
     // 비디오 다운로드
     let videoResponse = await fetch(finalVideoUrl, {
+      redirect: 'follow',
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Referer': refererMap[platform] || 'https://www.tiktok.com/',
+        'Referer': referer,
+        'Accept': '*/*',
       },
     });
 
@@ -121,9 +135,11 @@ export async function POST(req: NextRequest) {
         const baseUrl = finalVideoUrl.split('?')[0];
 
         const retryResponse = await fetch(baseUrl, {
+            redirect: 'follow',
           headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            'Referer': refererMap[platform] || 'https://www.tiktok.com/',
+              'Referer': referer,
+              'Accept': '*/*',
           },
         });
 
@@ -168,15 +184,62 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const buffer = await videoResponse.arrayBuffer();
+    let buffer = await videoResponse.arrayBuffer();
 
     // Validate file size (at least 50KB for a valid video)
     if (buffer.byteLength < 50000) {
-      console.error('[ExtractSubtitles] File too small:', buffer.byteLength, 'bytes');
-      return NextResponse.json(
-        { error: '영상 파일이 너무 작습니다. 유효한 영상이 아닙니다.' },
-        { status: 400 }
-      );
+      const contentType = videoResponse.headers.get('Content-Type') || '';
+      const contentLength = videoResponse.headers.get('Content-Length') || '';
+
+      let preview = '';
+      try {
+        const decoder = new TextDecoder('utf-8');
+        preview = decoder.decode(buffer.slice(0, 1024));
+      } catch {
+        // ignore
+      }
+
+      console.warn('[ExtractSubtitles] File too small (likely error response).', {
+        bytes: buffer.byteLength,
+        preview: preview.trim().slice(0, 120),
+        referer,
+        contentType,
+        contentLength,
+        fetchUrl: finalVideoUrl,
+      });
+
+      // 동일 URL을 한 번 더 시도
+      const retryResponse = await fetch(finalVideoUrl, {
+        redirect: 'follow',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'Referer': referer,
+          'Accept': '*/*',
+        },
+      });
+
+      if (retryResponse.ok) {
+        const retryBuffer = await retryResponse.arrayBuffer();
+        if (retryBuffer.byteLength >= 50000) {
+          buffer = retryBuffer;
+        }
+      }
+
+      if (buffer.byteLength < 50000) {
+        return NextResponse.json(
+          {
+            error: '영상 파일이 너무 작습니다. 유효한 영상이 아닙니다.',
+            debug: {
+              referer,
+              fetchUrl: finalVideoUrl,
+              contentType,
+              contentLength,
+              preview: preview.trim().slice(0, 400),
+            },
+          },
+          { status: 400 }
+        );
+      }
     }
 
     // Whisper API 제한: 25MB

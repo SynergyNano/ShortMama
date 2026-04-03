@@ -47,7 +47,8 @@ export async function searchTikTokVideos(
         keywords: [query],
         maxItems: 50,
         sortType: 'RELEVANCE',
-        location: 'US',
+        // ISO 3166-1 alpha-2 — 한국 지역 검색 기본 (숏마마)
+        location: 'KR',
         dateRange: mapDateRange(dateRange),
         includeSearchKeywords: false,
         startUrls: [],
