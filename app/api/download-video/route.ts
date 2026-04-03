@@ -120,8 +120,9 @@ export async function POST(req: NextRequest) {
       'douyin': 'https://www.douyin.com/',
     };
 
-    // TikTok CDN/봇 차단은 "해당 포스트 URL의 도메인+path referer"가 필요할 때가 많음.
-    // 쿼리 문자열이 붙은 URL은 차단/다르게 응답되는 케이스가 있어 origin+pathname만 사용.
+    // TikTok CDN은 종종 "해당 포스트 URL referer"가 필요합니다.
+    // querystring이 붙은 URL은 차단/다르게 처리되는 케이스가 있어
+    // 가능하면 "도메인+path"만 사용합니다.
     let referer = webVideoUrl || refererMap[platform] || 'https://www.tiktok.com/';
     try {
       if (webVideoUrl) {
@@ -129,8 +130,21 @@ export async function POST(req: NextRequest) {
         referer = `${u.origin}${u.pathname}`;
       }
     } catch {
-      // ignore; fallback referer 사용
+      // ignore (use fallback referer)
     }
+
+    const filePrefix = platform === 'douyin' ? 'douyin' : 'tiktok';
+    const fileName = `${filePrefix}_${videoId}.mp4`;
+    const createVideoResponse = (buf: ArrayBuffer) =>
+      new NextResponse(buf, {
+        status: 200,
+        headers: {
+          'Content-Type': 'video/mp4',
+          'Content-Disposition': `attachment; filename="${fileName}"`,
+          'Content-Length': buf.byteLength.toString(),
+          'Cache-Control': 'no-cache',
+        },
+      });
 
     // 비디오 URL에서 파일 fetch
     let videoResponse = await fetch(finalVideoUrl, {
@@ -246,17 +260,8 @@ export async function POST(req: NextRequest) {
       if (retryResponse.ok) {
         const retryBuffer = await retryResponse.arrayBuffer();
         if (retryBuffer.byteLength >= 50000) {
-          const filePrefix = platform === 'douyin' ? 'douyin' : 'tiktok';
-          const fileName = `${filePrefix}_${videoId}.mp4`;
-          return new NextResponse(retryBuffer, {
-            status: 200,
-            headers: {
-              'Content-Type': 'video/mp4',
-              'Content-Disposition': `attachment; filename="${fileName}"`,
-              'Content-Length': retryBuffer.byteLength.toString(),
-              'Cache-Control': 'no-cache',
-            },
-          });
+          console.log('[Download] ✅ Retry successful after small-file response');
+          return createVideoResponse(retryBuffer);
         }
       }
 
@@ -279,20 +284,8 @@ export async function POST(req: NextRequest) {
       console.log('[Download] Video file size:', buffer.byteLength, 'bytes');
     }
 
-    // 파일명 생성 (플랫폼별)
-    const filePrefix = platform === 'douyin' ? 'douyin' : 'tiktok';
-    const fileName = `${filePrefix}_${videoId}.mp4`;
-
     // 다운로드 응답 반환
-    return new NextResponse(buffer, {
-      status: 200,
-      headers: {
-        'Content-Type': 'video/mp4',
-        'Content-Disposition': `attachment; filename="${fileName}"`,
-        'Content-Length': buffer.byteLength.toString(),
-        'Cache-Control': 'no-cache',
-      },
-    });
+    return createVideoResponse(buffer);
   } catch (error) {
     console.error('[Download] 오류:', error);
     return NextResponse.json(

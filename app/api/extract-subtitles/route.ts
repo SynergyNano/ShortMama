@@ -101,8 +101,9 @@ export async function POST(req: NextRequest) {
       'douyin': 'https://www.douyin.com/',
     };
 
-    // TikTok CDN/봇 차단은 "해당 포스트 URL의 도메인+path referer"가 필요할 때가 많음.
-    // 쿼리 문자열이 붙은 URL은 차단/다르게 응답되는 케이스가 있어 origin+pathname만 사용.
+    // TikTok CDN은 종종 "해당 포스트 URL referer"가 필요합니다.
+    // querystring이 붙은 URL은 차단/다르게 처리되는 케이스가 있어
+    // 가능하면 "도메인+path"만 사용합니다.
     let referer = webVideoUrl || refererMap[platform] || 'https://www.tiktok.com/';
     try {
       if (webVideoUrl) {
@@ -110,7 +111,7 @@ export async function POST(req: NextRequest) {
         referer = `${u.origin}${u.pathname}`;
       }
     } catch {
-      // ignore; fallback referer 사용
+      // ignore (use fallback referer)
     }
 
     // 비디오 다운로드
@@ -226,6 +227,7 @@ export async function POST(req: NextRequest) {
       }
 
       if (buffer.byteLength < 50000) {
+        console.error('[ExtractSubtitles] File too small:', buffer.byteLength, 'bytes');
         return NextResponse.json(
           {
             error: '영상 파일이 너무 작습니다. 유효한 영상이 아닙니다.',
@@ -235,7 +237,7 @@ export async function POST(req: NextRequest) {
               contentType,
               contentLength,
               preview: preview.trim().slice(0, 400),
-            },
+            }
           },
           { status: 400 }
         );
