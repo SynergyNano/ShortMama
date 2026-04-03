@@ -27,31 +27,51 @@ export function getApifyRunIdsFromJobData(data: SearchJobData): string[] {
   return data.apifyRunIds ?? (data.apifyRunId ? [data.apifyRunId] : [])
 }
 
-/**
- * Video search queue instance
- * Handles async video scraping jobs with retry logic and automatic cleanup
- */
-export const searchQueue = new Queue<SearchJobData>(QUEUE_NAME, {
-  connection: redisConnection.connection,
-  defaultJobOptions: {
-    // Job retention settings for debugging and monitoring
-    removeOnComplete: {
-      count: COMPLETED_JOB_RETENTION_COUNT, // Keep last 20 completed jobs
-      age: COMPLETED_JOB_RETENTION_AGE, // Remove completed jobs older than 1 hour
-    },
-    removeOnFail: {
-      count: FAILED_JOB_RETENTION_COUNT, // Keep last 50 failed jobs for analysis
-      age: FAILED_JOB_RETENTION_AGE, // Remove failed jobs older than 24 hours
-    },
-    // Retry configuration
-    attempts: JOB_ATTEMPTS,
-    backoff: {
-      type: 'exponential',
-      delay: BACKOFF_DELAY, // Initial retry delay: 2 seconds (faster recovery)
-    },
-  },
-})
+let searchQueueInstance: Queue<SearchJobData> | undefined
 
-searchQueue.on('error', (err) => {
-  logRedisErrorDiagnostics('BullMQ Queue', err)
-})
+function createSearchQueue(): Queue<SearchJobData> {
+  const q = new Queue<SearchJobData>(QUEUE_NAME, {
+    connection: redisConnection.connection,
+    defaultJobOptions: {
+      removeOnComplete: {
+        count: COMPLETED_JOB_RETENTION_COUNT,
+        age: COMPLETED_JOB_RETENTION_AGE,
+      },
+      removeOnFail: {
+        count: FAILED_JOB_RETENTION_COUNT,
+        age: FAILED_JOB_RETENTION_AGE,
+      },
+      attempts: JOB_ATTEMPTS,
+      backoff: {
+        type: 'exponential',
+        delay: BACKOFF_DELAY,
+      },
+    },
+  })
+  q.on('error', (err) => {
+    logRedisErrorDiagnostics('BullMQ Queue', err)
+  })
+  return q
+}
+
+function getSearchQueue(): Queue<SearchJobData> {
+  if (!searchQueueInstance) {
+    searchQueueInstance = createSearchQueue()
+  }
+  return searchQueueInstance
+}
+
+/** Lazy init: `next build` 시 Redis 연결하지 않음 (Docker 빌드에 Redis 없음). */
+export const searchQueue: Queue<SearchJobData> = new Proxy(
+  {} as Queue<SearchJobData>,
+  {
+    get(_target, prop, receiver) {
+      const q = getSearchQueue()
+      const value = Reflect.get(q, prop, receiver)
+      if (typeof value === 'function') {
+        return value.bind(q)
+      }
+      return value
+    },
+  }
+)

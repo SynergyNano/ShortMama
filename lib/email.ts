@@ -1,6 +1,18 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+let resendSingleton: Resend | null = null
+
+/** 빌드 시 import만으로는 클라이언트 생성 안 함 (Docker/Railway 빌드에 SECRET 없을 수 있음). */
+function getResend(): Resend {
+  const key = process.env.RESEND_API_KEY
+  if (!key) {
+    throw new Error('RESEND_API_KEY is not set')
+  }
+  if (!resendSingleton) {
+    resendSingleton = new Resend(key)
+  }
+  return resendSingleton
+}
 
 // 운영에서는 반드시 본인 도메인의 발신 주소를 사용하세요 (예: no-reply@your-domain.com)
 const FROM_EMAIL = process.env.EMAIL_FROM || 'onboarding@resend.dev'
@@ -13,7 +25,7 @@ function getBaseUrl() {
 export async function sendVerificationEmail(email: string, token: string) {
   const verifyUrl = `${getBaseUrl()}/api/auth/verify-email?token=${token}`
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to: email,
     subject: `[${APP_NAME}] 이메일 인증을 완료해주세요`,
@@ -55,7 +67,7 @@ export async function sendVerificationEmail(email: string, token: string) {
 
 /** 6자리 비밀번호 재설정 코드 발송 */
 export async function sendPasswordResetCodeEmail(email: string, code: string) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to: email,
     subject: `[${APP_NAME}] 비밀번호 재설정 코드`,
@@ -81,7 +93,7 @@ export async function sendPasswordResetCodeEmail(email: string, code: string) {
 
 /** 6자리 인증 코드 발송 (회원가입 폼용) */
 export async function sendVerificationCodeEmail(email: string, code: string) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to: email,
     subject: `[${APP_NAME}] 이메일 인증 코드`,
@@ -118,7 +130,7 @@ export async function sendBillingSuccessEmail(
   const subtitle = isRenewal ? '자동 갱신 완료' : '구독 시작'
   const amountFormatted = amount.toLocaleString('ko-KR')
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to: email,
     subject: `[${APP_NAME}] ${isRenewal ? '구독 자동 갱신' : '구독 시작'} 완료`,
@@ -175,7 +187,7 @@ export async function sendBillingFailureEmail(
     ? `결제가 ${failCount}회 연속 실패하여 구독 서비스가 정지되었습니다. 카드 정보를 확인하고 다시 구독해 주세요.`
     : `${planName} 플랜 자동 갱신 결제가 실패했습니다. ${serviceUntil ? `${serviceUntil}까지 서비스를 계속 이용하실 수 있으며, ` : ''}결제 수단을 확인해 주세요.`
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to: email,
     subject: `[${APP_NAME}] ${isFinal ? '구독 서비스 정지' : `결제 실패 알림 (${failCount}회차)`}`,
@@ -222,7 +234,7 @@ export async function sendCancelConfirmEmail(
 ) {
   const { planName, serviceUntil } = params
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to: email,
     subject: `[${APP_NAME}] 구독 취소 확인`,
@@ -270,7 +282,7 @@ export async function sendBillingReminderEmail(
   const { planName, amount, billingDate, cardLast4 } = params
   const amountFormatted = amount.toLocaleString('ko-KR')
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to: email,
     subject: `[${APP_NAME}] 3일 후 구독 결제 예정 안내`,
