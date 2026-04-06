@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import HomeContent from './home-content'
+import { SITE_ORIGIN } from '@/lib/site-url'
 
 export const metadata: Metadata = {
   title: '숏마마 | ShortMama - 틱톡 영상 검색 및 분석 도구',
@@ -19,21 +20,17 @@ export const metadata: Metadata = {
       'max-video-preview': -1,
     },
   },
-  icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
-  },
   manifest: '/site.webmanifest',
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
-    url: 'https://www.shortmama.com',
+    url: SITE_ORIGIN,
     siteName: '숏마마 | ShortMama',
     title: '숏마마 - 틱톡 영상 검색 및 분석 도구',
     description: '숏마마는 TikTok, Douyin 영상을 한눈에 검색하고 분석합니다. 숏마마로 인기 콘텐츠를 발견하세요.',
     images: [
       {
-        url: 'https://www.shortmama.com/og-image.png',
+        url: `${SITE_ORIGIN}/og-image.png`,
         width: 1200,
         height: 630,
         alt: 'ShortMama',
@@ -44,10 +41,10 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '숏마마 - 틱톡 영상 검색 및 분석 도구',
     description: '숏마마는 TikTok, Douyin 영상을 한눈에 검색하고 분석합니다. 숏마마로 인기 콘텐츠를 발견하세요.',
-    images: ['https://www.shortmama.com/twitter-image.png'],
+    images: [`${SITE_ORIGIN}/twitter-image.png`],
   },
   alternates: {
-    canonical: 'https://www.shortmama.com',
+    canonical: SITE_ORIGIN,
   },
   verification: {
     google: 'google-site-verification-code-here',

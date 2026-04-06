@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next'
+import { SITE_ORIGIN } from '@/lib/site-url'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://www.shortmama.com'
+  const baseUrl = SITE_ORIGIN
 
   return [
     {

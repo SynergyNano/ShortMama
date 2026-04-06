@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { SITE_ORIGIN } from '@/lib/site-url'
 
 export const metadata: Metadata = {
   title: '회원가입 | 숏마마',
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
     follow: false,
   },
   alternates: {
-    canonical: 'https://www.shortmama.com/auth/signup',
+    canonical: `${SITE_ORIGIN}/auth/signup`,
   },
 }
 

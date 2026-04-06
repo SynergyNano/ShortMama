@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { SITE_ORIGIN } from '@/lib/site-url'
 
 export const metadata: Metadata = {
   title: '개인정보 처리방침 | 숏마마',
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: 'https://www.shortmama.com/privacy',
+    canonical: `${SITE_ORIGIN}/privacy`,
   },
 }
 

@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { SITE_ORIGIN } from '@/lib/site-url'
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -12,6 +13,6 @@ export default function robots(): MetadataRoute.Robots {
         '/*?*filter=',
       ],
     },
-    sitemap: 'https://www.shortmama.com/sitemap.xml',
+    sitemap: `${SITE_ORIGIN}/sitemap.xml`,
   }
 }

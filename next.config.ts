@@ -1,6 +1,18 @@
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
+  // apex → www 단일 호스트 (CORS·Auth.js·RSC 혼선 방지)
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'shortmama.co.kr' }],
+        destination: 'https://www.shortmama.co.kr/:path*',
+        permanent: true,
+      },
+    ]
+  },
+
   // ✅ 보안 헤더 추가
   async headers() {
     return [

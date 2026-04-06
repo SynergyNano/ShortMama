@@ -1,9 +1,11 @@
+import { SITE_ORIGIN } from '@/lib/site-url'
+
 export const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
   name: 'ShortMama',
   alternateName: '숏마마',
-  url: 'https://www.shortmama.com',
+  url: SITE_ORIGIN,
   applicationCategory: 'SearchApplication',
   description:
     '숏마마(ShortMama)는 TikTok, Douyin 영상을 한눈에 검색하고 분석하는 도구입니다. 숏마마로 인기 콘텐츠를 발견하세요.',
@@ -11,7 +13,7 @@ export const structuredData = {
   author: {
     '@type': 'Organization',
     name: 'ShortMama Team',
-    url: 'https://www.shortmama.com',
+    url: SITE_ORIGIN,
   },
   offers: {
     '@type': 'Offer',
@@ -28,7 +30,7 @@ export const structuredData = {
     '@type': 'SearchAction',
     target: {
       '@type': 'EntryPoint',
-      urlTemplate: 'https://www.shortmama.com/search?q={search_term_string}',
+      urlTemplate: `${SITE_ORIGIN}/search?q={search_term_string}`,
     },
     query_input: 'required name=search_term_string',
   },
@@ -39,15 +41,15 @@ export const organizationSchema = {
   '@type': 'Organization',
   name: 'ShortMama',
   alternateName: '숏마마',
-  url: 'https://www.shortmama.com',
-  logo: 'https://www.shortmama.com/logo.png',
+  url: SITE_ORIGIN,
+  logo: `${SITE_ORIGIN}/logo.png`,
   description:
     '숏마마(ShortMama)는 TikTok, Douyin 영상을 한눈에 검색하고 분석합니다. 숏마마로 인기 콘텐츠와 크리에이터를 발견하세요.',
   sameAs: [],
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'Customer Support',
-    url: 'https://www.shortmama.com',
+    url: SITE_ORIGIN,
   },
 }
 
@@ -56,13 +58,13 @@ export const websiteSchema = {
   '@type': 'WebSite',
   name: 'ShortMama',
   alternateName: '숏마마',
-  url: 'https://www.shortmama.com',
+  url: SITE_ORIGIN,
   description: '숏마마(ShortMama)는 TikTok, Douyin 영상을 한눈에 검색하고 분석합니다.',
   potentialAction: {
     '@type': 'SearchAction',
     target: {
       '@type': 'EntryPoint',
-      urlTemplate: 'https://www.shortmama.com/search?q={search_term_string}',
+      urlTemplate: `${SITE_ORIGIN}/search?q={search_term_string}`,
     },
     queryInput: 'required name=search_term_string',
   },

@@ -9,4 +9,4 @@ Disallow: /api/
 # Disallow: /auth/
 
 # Sitemap
-Sitemap: https://www.shortmama.com/sitemap.xml
+Sitemap: https://www.shortmama.co.kr/sitemap.xml
