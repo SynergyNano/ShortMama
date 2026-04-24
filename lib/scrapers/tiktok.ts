@@ -2,8 +2,7 @@ import { VideoResult } from '@/types/video';
 import { fetchWithRetry, fetchPostWithRetry, fetchGetWithRetry } from '@/lib/utils/fetch-with-retry';
 
 /**
- * TikTok 영상 검색 (Api Dojo TikTok Scraper)
- * ⭐ 최고 평점 (4.8/5), 가장 정확하고 빠름
+ * TikTok 영상 검색 (paul_44/tiktok-search)
  *
  * ✅ 429 Rate Limit 자동 재시도 (Exponential Backoff)
  * - 최대 3회 재시도
@@ -24,35 +23,43 @@ export async function searchTikTokVideos(
   options?: SearchScraperOptions
 ): Promise<VideoResult[]> {
   try {
-    const actorId = 'apidojo~tiktok-scraper';
+    // Apify API URL path는 `/` 허용 안 함 → `username~actor-name` 포맷 사용
+    const actorId = process.env.APIFY_TIKTOK_SEARCH_ACTOR_ID || 'paul_44~tiktok-search';
     const startTime = Date.now();
 
-    // 날짜 범위 매핑
-    const mapDateRange = (uploadPeriod?: string): string => {
+    // 새 액터 period 매핑 (Form 라벨 그대로)
+    const mapPeriod = (uploadPeriod?: string): string => {
       const mapping: Record<string, string> = {
-        'all': 'DEFAULT',
-        'yesterday': 'YESTERDAY',
-        '7days': 'THIS_WEEK',
-        '1month': 'THIS_MONTH',
-        '3months': 'LAST_THREE_MONTHS',
+        'all': 'all',
+        'yesterday': 'yesterday',
+        '7days': '7days',
+        '1month': '1month',
+        '3months': '3months',
       };
-      return mapping[uploadPeriod || 'all'] || 'DEFAULT';
+      return mapping[uploadPeriod || '3months'] || '3months';
     };
 
 
     // 1️⃣ Run 시작 (429 에러 시 자동 재시도)
     const runRes = await fetchPostWithRetry(
-      `https://api.apify.com/v2/acts/${actorId}/runs?token=${apiKey}`,
+      `https://api.apify.com/v2/acts/${actorId}/runs?token=${apiKey}&maxTotalChargeUsd=5`,
       {
-        keywords: [query],
-        maxItems: 50,
-        sortType: 'RELEVANCE',
-        // ISO 3166-1 alpha-2 — 한국 지역 검색 기본 (숏마마)
-        location: 'KR',
-        dateRange: mapDateRange(dateRange),
-        includeSearchKeywords: false,
+        keyword: query,
+        keywords: [],
+        // Actor 는 dateRange + maxItems 필드명을 읽음 (main.py _DATE_RANGE_MAP).
+        dateRange: mapPeriod(dateRange),
+        maxItems: Math.min(limit, 50),
+        sortType: 'MOST_LIKED',
+        location: 'JP',
+        minDurationSec: 0,
+        minPlayCount: 0,
+        maxConcurrentKeywords: 1,
         startUrls: [],
-        disableDataset: true,  // ✅ R2 저장 비활성화 (결과만 메모리에 반환)
+        disableDataset: true,
+        // Apify KV 미러는 OFF — Actor 가 이미 Railway /v/:videoId 서명 프록시 URL 을 previewVideoUrl 에 담아 반환.
+        // 전제: Apify Actor env var TIKTOK_VIDEO_PROXY_SECRET = Railway env var VIDEO_PROXY_SECRET (동일 값).
+        mirrorVideos: false,
+        strictKeywordMatch: false,
       },
       {},
       { maxRetries: 3, initialDelayMs: 1000 }
@@ -60,19 +67,21 @@ export async function searchTikTokVideos(
 
     const runData = await runRes.json();
     if (!runRes.ok) {
-      const errorMsg = `[TikTok] Run creation failed: ${runRes.status} ${JSON.stringify(runData)}`
+      console.error(`[TikTok] Run creation failed: ${runRes.status}`, runData);
       return [];
     }
 
     const runId = runData.data.id;
     options?.onRunStarted?.(runId);
+    console.log(`[TikTok] ▶ run  runId=${runId}  query="${query}"  dateRange=${mapPeriod(dateRange)}`);
 
     // 2️⃣ 완료 대기 (Polling with exponential backoff)
+    // 체감 속도 개선: 초기 300ms, 상한 2000ms — Actor 완료 후 최대 대기 2s
     let status = 'RUNNING';
     let attempt = 0;
-    const maxAttempts = 120;  // ✅ IMPROVED: Douyin과 일관성 (60→120)
-    let waitTime = 500;
-    const maxWaitTime = 5000;
+    const maxAttempts = 200;
+    let waitTime = 300;
+    const maxWaitTime = 2000;
 
     while ((status === 'RUNNING' || status === 'READY') && attempt < maxAttempts) {
       await new Promise(r => setTimeout(r, waitTime));  // ✅ 루프 시작 시 대기
@@ -93,14 +102,16 @@ export async function searchTikTokVideos(
 
       if (status === 'SUCCEEDED') break;
       if (status === 'FAILED' || status === 'ABORTED') {
+        console.error(`[TikTok] ✗ run ${status}  runId=${runId}  elapsed=${Date.now() - startTime}ms`);
         return [];
       }
 
-      // ✅ 다음 폴링을 위해 wait time 증가
-      waitTime = Math.min(waitTime * 1.5, maxWaitTime);
+      // 다음 폴링까지 대기 시간 증가 (1.3배씩, 상한 2s)
+      waitTime = Math.min(Math.floor(waitTime * 1.3), maxWaitTime);
     }
 
     if (status !== 'SUCCEEDED') {
+      console.error(`[TikTok] ✗ run timeout  status=${status}  pollAttempts=${attempt}  elapsed=${Date.now() - startTime}ms`);
       return [];
     }
 
@@ -113,18 +124,18 @@ export async function searchTikTokVideos(
     );
 
     if (!datasetRes.ok) {
-      const errorMsg = `[TikTok] Dataset fetch failed: ${datasetRes.status}`
+      console.error(`[TikTok] ✗ dataset fetch failed  status=${datasetRes.status}  runId=${runId}`);
       return [];
     }
 
     const dataset = await datasetRes.json();
     if (!Array.isArray(dataset)) {
-      const errorMsg = `[TikTok] Invalid dataset response: ${typeof dataset}`
+      console.error(`[TikTok] ✗ invalid dataset  type=${typeof dataset}  runId=${runId}`);
       return [];
     }
 
     if (dataset.length === 0) {
-      const warnMsg = `[TikTok] No results found for query: "${query}"`
+      console.warn(`[TikTok] ∅ empty dataset  query="${query}"  runId=${runId}  elapsed=${Date.now() - startTime}ms`);
       return [];
     }
 
@@ -138,7 +149,10 @@ export async function searchTikTokVideos(
               .map((h: any) => typeof h === 'string' ? h : (h && h.name ? h.name : h))
           : [];
 
-        const videoUrl = item.video?.url || item.downloadUrl || item.videoUrl || undefined;
+        // 검색 액터가 반환하는 CDN URL은 v16-webapp-prime.tiktok.com 등
+        // Akamai 레벨 차단으로 서버 측 fetch 불가. videoUrl을 비워
+        // app/api/download-video/route.ts의 paul_44~tiktok-download-max 폴백이 타도록 함.
+        const videoUrl = undefined;
         const webVideoUrl = item.postPage ||
                            (item.channel?.url && item.id ? `${item.channel.url}/video/${item.id}` : undefined) ||
                            undefined;
@@ -158,22 +172,6 @@ export async function searchTikTokVideos(
                          (Array.isArray(item.imagePost) && item.imagePost[0]) ||
                          undefined;
 
-        // ✅ CDN URL 수신 (R2 업로드 없음)
-        console.log(`[Worker:TikTok] 🖼️ Item 상세 정보`, {
-          videoId: item.id || `video-${index}`,
-          hasThumbnail: !!tiktokThumbnail,
-          thumbnailPreview: tiktokThumbnail ? tiktokThumbnail.substring(0, 60) : 'N/A',
-          hasVideo: !!videoUrl,
-          itemKeys: Object.keys(item),
-          videoFieldKeys: item.video ? Object.keys(item.video) : 'no video field',
-          thumbnail: item.thumbnail || 'N/A',
-          image: item.image || 'N/A',
-          coverImage: item.coverImage || 'N/A',
-          videoCover: item.videoCover || 'N/A',
-          videoThumbnail: item.video?.thumbnail || 'N/A',
-          videoCover2: item.video?.cover || 'N/A',
-        });
-
         return {
           id: item.id || `video-${index}`,
           title: item.title || `영상 ${index + 1}`,
@@ -191,12 +189,25 @@ export async function searchTikTokVideos(
           thumbnail: tiktokThumbnail,
           videoUrl: videoUrl,
           webVideoUrl: webVideoUrl,
+          // previewVideoUrl: Actor 가 Railway 프록시 URL(/v/<id>?u=...&s=...) 또는 CDN URL 폴백으로 설정.
+          // Railway URL 이면 <video> 태그에서 재생 가능. CDN URL 이면 Akamai 차단으로 재생 실패.
+          // 화이트리스트: Railway 도메인 시작 OR Apify KV (과거 미러) 만 허용. CDN URL 은 undefined 처리.
+          previewVideoUrl:
+            typeof item.previewVideoUrl === 'string' &&
+            (item.previewVideoUrl.startsWith('https://proxyapify-production-d4c5.up.railway.app/v/') ||
+              item.previewVideoUrl.startsWith('https://api.apify.com/'))
+              ? item.previewVideoUrl
+              : undefined,
         };
       })
     );
 
+    const withThumb = results.filter(r => !!r.thumbnail).length;
+    console.log(`[TikTok] ✓ done  videos=${results.length}/${dataset.length}  thumb=${withThumb}/${results.length}  runId=${runId}  elapsed=${Date.now() - startTime}ms`);
+
     return results;
   } catch (error) {
+    console.error(`[TikTok] ✗ unexpected error:`, error);
     return [];
   }
 }

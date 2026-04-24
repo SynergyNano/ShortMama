@@ -82,6 +82,8 @@ interface Video {
   thumbnail?: string;
   videoUrl?: string;
   webVideoUrl?: string;
+  /** Actor 가 생성한 재생 가능 URL. Railway `/v/<id>?u=...&s=...` 서명 프록시 URL 또는 레거시 KV 미러. */
+  previewVideoUrl?: string;
   _platform?: Platform; // 찜 목록에서 저장 시점 플랫폼 보존용
 }
 
@@ -147,6 +149,38 @@ const SearchResultsGrid = memo(function SearchResultsGridInner({
   onDownloadVideo,
   onExtractSubtitles,
 }: SearchResultsGridProps) {
+  // 썸네일 페이드아웃 트리거. <video> onPlaying 또는 /player/v1/ postMessage (onStateChange=1) 수신 시 추가.
+  const [iframePlayingIds, setIframePlayingIds] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    const handler = (e: MessageEvent) => {
+      if (e.origin !== "https://www.tiktok.com") return;
+      const data = e.data as { type?: string; value?: unknown; "x-tiktok-player"?: boolean } | null;
+      if (!data || !data["x-tiktok-player"]) return;
+      const playing =
+        (data.type === "onStateChange" && data.value === 1) ||
+        (data.type === "onCurrentTime" && typeof data.value === "number" && data.value > 0.05);
+      if (!playing) return;
+      const target = e.source as Window | null;
+      if (!target) return;
+      const iframes = document.querySelectorAll<HTMLIFrameElement>("iframe.card-video-preview");
+      for (const f of iframes) {
+        if (f.contentWindow === target) {
+          const m = f.src.match(/player\/v1\/([^?\/]+)/);
+          if (m?.[1]) {
+            setIframePlayingIds((prev) => (prev.has(m[1]) ? prev : new Set(prev).add(m[1])));
+          }
+          break;
+        }
+      }
+    };
+    window.addEventListener("message", handler);
+    return () => window.removeEventListener("message", handler);
+  }, []);
+  // 호버 영상이 바뀔 때마다 playing set 리셋 → 카드 A → B 전환 시 이전 ID 누적 방지.
+  useEffect(() => {
+    setIframePlayingIds((prev) => (prev.size === 0 ? prev : new Set()));
+  }, [hoveredVideoId]);
+
   return (
     <div style={{ width: "100%" }}>
       <div className="results-count">총 {results.length}개의 영상</div>
@@ -168,26 +202,46 @@ const SearchResultsGrid = memo(function SearchResultsGridInner({
                   loading={index < THUMBNAIL_EAGER_LOAD_COUNT ? "eager" : "lazy"}
                   {...(index === 0 ? { fetchPriority: "high" as const } : {})}
                   referrerPolicy="no-referrer"
+                  // 썸네일은 iframe(z-index:2) 위에 덮어 TikTok 로고 스플래시를 가림.
+                  // 재생 시작(postMessage onStateChange=1) 시 페이드아웃 → iframe 영상 노출.
+                  style={
+                    iframePlayingIds.has(video.id) && hoveredVideoId === video.id
+                      ? { opacity: 0, transition: "opacity 0.25s ease", zIndex: 3 }
+                      : { opacity: 1, transition: "opacity 0s", zIndex: 3 }
+                  }
                 />
               ) : (
                 <div className="card-thumbnail-fallback">🎬</div>
               )}
 
-              {(video._platform ?? platform) === "tiktok" && (video.videoUrl || previewVideoUrls[video.id]) && (
-                <video
-                  ref={(el) => {
-                    const m = videoRefs.current;
-                    if (el) m.set(video.id, el);
-                    else m.delete(video.id);
-                  }}
-                  className={`card-video-preview${hoveredVideoId === video.id ? "" : " card-video-hidden"}`}
-                  src={video.videoUrl || previewVideoUrls[video.id]}
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  {...({ referrerPolicy: "no-referrer" } as React.ComponentProps<"video">)}
-                />
+              {/* 호버 프리뷰 2단 우선순위:
+                  1) Actor 가 발급한 previewVideoUrl (Railway `/v/<id>?u=...&s=...` 프록시) → <video> 태그 풀 영상 재생
+                  2) previewVideoUrl 없으면 TikTok `/player/v1/` iframe — autoplay 지원. rate limit 구간 403 가능 */}
+              {(video._platform ?? platform) === "tiktok" && playingVideoId === video.id && video.id && (
+                video.previewVideoUrl ? (
+                  <video
+                    className="card-video-preview"
+                    src={video.previewVideoUrl}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    onPlaying={() => {
+                      setIframePlayingIds((prev) => (prev.has(video.id) ? prev : new Set(prev).add(video.id)));
+                    }}
+                  />
+                ) : (
+                  <iframe
+                    className="card-video-preview"
+                    src={`https://www.tiktok.com/player/v1/${video.id}?autoplay=1&mute=1&loop=1&controls=0&description=0&music_info=0&rel=0&progress_bar=0&timestamp=0&fullscreen_button=0&play_button=0&volume_control=0${
+                      typeof window !== "undefined" ? `&origin=${encodeURIComponent(window.location.origin)}` : ""
+                    }`}
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                    style={{ border: 0 }}
+                  />
+                )
               )}
               {(video._platform ?? platform) === "tiktok" && loadingPreviewId === video.id && (
                 <div className="card-preview-loading">

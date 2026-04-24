@@ -18,6 +18,8 @@ export interface VideoResult {
   thumbnail?: string;
   videoUrl?: string;
   webVideoUrl?: string;
+  /** Actor 가 생성한 재생 가능 URL. Railway `/v/<id>?u=...&s=...` 서명 프록시 URL 또는 (레거시) Apify KV 미러 URL. */
+  previewVideoUrl?: string;
 }
 
 export type Platform = 'tiktok' | 'douyin';
